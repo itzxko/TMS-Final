@@ -77,19 +77,19 @@ const Large = () => {
   const handleFilter = () => {
     setFilter(!filter);
     setOpenType(false);
-    setOpenRole(false);
+    // setOpenRole(false);
   };
 
   // Toggle role dropdown
   const handleOpenRole = () => {
-    setOpenRole(!openRole);
+    // setOpenRole(!openRole);
     setOpenType(false);
   };
 
   // Function to toggle the type filter
   const handleOpenType = () => {
     setOpenType(!openType);
-    setOpenRole(false);
+    // setOpenRole(false);
     // console.log(`type value below: ${openType}`);
   };
   const nextPage = () => {
