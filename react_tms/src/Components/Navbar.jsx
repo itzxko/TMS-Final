@@ -36,6 +36,7 @@ function Navbar({ selectedRole }) {
       .then(() => {
         setTimeout(() => {
           localStorage.removeItem("username");
+          localStorage.removeItem("role");
           navigate("/");
           setLogout(false);
         }, 2000);
@@ -131,7 +132,7 @@ function Navbar({ selectedRole }) {
                         </p>
                         <div className="w-full flex items-center justify-center truncate">
                           <p className="text-[10px] font-semibold py-1 px-2 text-white bg-[#2f2f2f] rounded-md">
-                            {selectedRole}
+                            {localStorage.getItem("role")}
                           </p>
                         </div>
                       </div>

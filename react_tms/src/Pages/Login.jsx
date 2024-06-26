@@ -9,7 +9,7 @@ import { RiMailSendLine } from "react-icons/ri";
 import { RiAccountPinCircleLine } from "react-icons/ri";
 import { RiKey2Line } from "react-icons/ri";
 import Loading from "../Components/Loading/Loading";
-
+import useRole from "../Components/customHooks/useRole"
 const Login = () => {
   const [email, setEmail] = useState(""); // State variable for email input
   const [password, setPassword] = useState(""); // State variable for password input
@@ -20,7 +20,14 @@ const Login = () => {
   const [ready, setReady] = useState(false);
   const [toggleSubmit, setToggleSubmit] = useState(false);
   const [one_time_pin, setOneTimePin] = useState(0);
+  const {role, setRole} = useRole();
   // Function to handle form submission
+
+  useEffect(() => {
+    axiosClient("/csrf-cookie");
+  }, [])
+  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -39,6 +46,8 @@ const Login = () => {
           localStorage.setItem("username", res.username);
           setLoading(false);
           setInvalid(false);
+          setRole(res.role);
+          localStorage.setItem("role", res.role);
           navigate("/dashboard"); // Redirect to dashboard on successful login
         }, 2000);
       })

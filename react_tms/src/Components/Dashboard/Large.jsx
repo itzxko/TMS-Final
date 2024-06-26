@@ -22,6 +22,7 @@ import UserModal from "../UserModal";
 import TechModal from "../TechModal";
 import AdminModal from "../AdminModal";
 import FollowUp from "../Popups/FollowUp";
+import useRole from "../customHooks/useRole";
 
 const Large = () => {
   const [ticketID, setTicketID] = useState(false);
@@ -40,7 +41,7 @@ const Large = () => {
   const [pages, setPages] = useState(null);
   const [search, setSearch] = useState("");
   const [selectedRole, setSelectedRole] = useState("user"); // use state for setting the selected role
-  const [role, setRole] = useState("");
+  // const [role, setRole] = useState("");
   const [pendingTicket, setPendingTicket] = useState([]);
   const [request_type, set_request_type] = useState("");
   const [request_desc, set_request_desc] = useState("");
@@ -53,14 +54,14 @@ const Large = () => {
   const [ticket_assigned_to_name, setTicket_assigned_to_name] = useState(null);
 
   const containerRef = useRef(null); //scrolling
-
+  const { role } = useRole();
   //handling scrolling
   const handleScrollUp = (scrollOffset) => {
     if (containerRef.current) {
       containerRef.current.scrollTop -= scrollOffset;
     }
   };
-
+  console.log(role);
   const handleScrollDown = (scrollOffset) => {
     if (containerRef.current) {
       containerRef.current.scrollTop += scrollOffset;
@@ -202,10 +203,10 @@ const Large = () => {
   }, []);
 
   // setting the selected role
-  const handleRole = (role, id) => {
-    selectedRole === role ? setSelectedRole("user") : setSelectedRole(role);
-    setOpenRole(false);
-  };
+  // const handleRole = (roles, id) => {
+  //   role === roles ? setSelectedRole("user") : setSelectedRole(roles);
+  //   setOpenRole(false);
+  // };
 
   // Fetch ticket descriptions for selected ticket type
   const get_ticket_desc = (ticket_type_param) => {
@@ -267,14 +268,14 @@ const Large = () => {
   //Render Page
   return (
     <>
-      <Navbar selectedRole={selectedRole} />
+      <Navbar selectedRole={role} />
       {/* gray background page for the body */}
       <div className="relative hidden lg:block bg-[#ebebeb] min-h-[100vh] w-full px-6 md:px-8 lg:px-10 pb-6 font-dm items-center justify-center">
         {/* for large screen and beyond */}
         <div className="hidden lg:block py-12"></div>
         <div
           className={
-            selectedRole === "admin"
+            role === "admin"
               ? "hidden lg:flex flex-row w-full gap-6"
               : "hidden lg:flex w-full gap-6"
           }
@@ -352,7 +353,7 @@ const Large = () => {
                           <div
                             key={role.id}
                             className={
-                              selectedRole === role.role
+                              role === role.role
                                 ? "cursor-pointer bg-[#2f2f2f] text-white w-full py-2 px-4"
                                 : "cursor-pointer bg-[#FAF5FF] hover:bg-gray-100 w-full py-2 px-4"
                             }
@@ -489,12 +490,12 @@ const Large = () => {
                     ) : (
                       pendingTicket
                         .filter((data) => {
-                          if (selectedRole === "technical") {
+                          if (role === "technical") {
                             return (
                               data.ticket_assigned_to_name ===
                               localStorage.getItem("username")
                             );
-                          } else if (selectedRole === "user") {
+                          } else if (role === "user") {
                             return (
                               data.ticket_client_name ===
                               localStorage.getItem("username")
@@ -575,7 +576,7 @@ const Large = () => {
                                 </td>
                                 <td className="p-4 text-center" key={index}>
                                   {/* button if role is user */}
-                                  {selectedRole === "user" &&
+                                  {role === "user" &&
                                   data.ticket_status === "5" ? (
                                     <button className="bg-[#474747] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500 disabled">
                                       <div className="flex flex-row gap-1 items-center justify-center w-full">
@@ -585,7 +586,7 @@ const Large = () => {
                                         </p>
                                       </div>
                                     </button>
-                                  ) : selectedRole === "user" ? (
+                                  ) : role === "user" ? (
                                     <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
@@ -600,7 +601,7 @@ const Large = () => {
                                         </p>
                                       </div>
                                     </button>
-                                  ) : selectedRole === "admin" &&
+                                  ) : role === "admin" &&
                                     data.ticket_status === "5" ? (
                                     <button className="bg-[#474747] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500 disabled">
                                       <div className="flex flex-row gap-1 items-center justify-center w-full">
@@ -610,7 +611,7 @@ const Large = () => {
                                         </p>
                                       </div>
                                     </button>
-                                  ) : selectedRole === "admin" &&
+                                  ) : role === "admin" &&
                                     data.ticket_status === "4" ? (
                                     <button className="bg-[#474747] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500 disabled">
                                       <div className="flex flex-row gap-1 items-center justify-center w-full">
@@ -620,7 +621,7 @@ const Large = () => {
                                         </p>
                                       </div>
                                     </button>
-                                  ) : selectedRole === "admin" ? (
+                                  ) : role === "admin" ? (
                                     <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
@@ -647,7 +648,7 @@ const Large = () => {
                                         </p>
                                       </div>
                                     </button>
-                                  ) : selectedRole === "technical" &&
+                                  ) : role === "technical" &&
                                     data.ticket_status === "5" ? (
                                     <button className="bg-[#474747] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500 disabled">
                                       <div className="flex flex-row gap-1 items-center justify-center w-full">
@@ -758,7 +759,7 @@ const Large = () => {
                                 </td>
                                 <td className="p-4 text-center" key={index}>
                                   {/* button if role is user */}
-                                  {selectedRole === "user" &&
+                                  {role === "user" &&
                                   data.ticket_status === "5" ? (
                                     <button className="bg-[#474747] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500 disabled">
                                       <div className="flex flex-row gap-1 items-center justify-center w-full">
@@ -768,7 +769,7 @@ const Large = () => {
                                         </p>
                                       </div>
                                     </button>
-                                  ) : selectedRole === "user" ? (
+                                  ) : role === "user" ? (
                                     <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
@@ -783,7 +784,7 @@ const Large = () => {
                                         </p>
                                       </div>
                                     </button>
-                                  ) : selectedRole === "admin" &&
+                                  ) : role === "admin" &&
                                     data.ticket_status === "5" ? (
                                     <button className="bg-[#474747] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500 disabled">
                                       <div className="flex flex-row gap-1 items-center justify-center w-full">
@@ -803,7 +804,7 @@ const Large = () => {
                                         </p>
                                       </div>
                                     </button>
-                                  ) : selectedRole === "admin" ? (
+                                  ) : role === "admin" ? (
                                     <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
@@ -830,7 +831,7 @@ const Large = () => {
                                         </p>
                                       </div>
                                     </button>
-                                  ) : selectedRole === "technical" &&
+                                  ) : role === "technical" &&
                                     data.ticket_status === "5" ? (
                                     <button className="bg-[#474747] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500 disabled">
                                       <div className="flex flex-row gap-1 items-center justify-center w-full">
@@ -920,9 +921,9 @@ const Large = () => {
           {/* start of div for staff overview */}
           <div
             className={
-              selectedRole === "user"
+              role === "user"
                 ? "hidden"
-                : selectedRole === "technical"
+                : role === "technical"
                 ? "hidden"
                 : "flex w-1/5"
             }
