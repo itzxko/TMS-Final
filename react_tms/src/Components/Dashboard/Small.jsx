@@ -68,6 +68,7 @@ const Small = () => {
   const [current_page, set_current_page] = useState(null);
   const [pages, setPages] = useState(null);
 
+  const {role} = useRole();
   const generatePageNumbers = (current_page, total_pages) => {
     const pages = [];
 
@@ -408,9 +409,9 @@ const Small = () => {
                     })
                     .filter((data) => {
                       if (role === "technical") {
-                        return data.ticket_assigned_to_name === userName;
+                        return data.ticket_assigned_to_name === localStorage.getItem("username");
                       } else if (role === "user") {
-                        return data.ticket_client_name === userName;
+                        return data.ticket_client_name === localStorage.getItem("username");
                       }
                       return true;
                     })
