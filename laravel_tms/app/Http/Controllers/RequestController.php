@@ -176,6 +176,20 @@ class RequestController extends Controller
         return response()->json(["Message" => $ticket, "role" => Auth::user()->role], 200);
     }
 
+    public function getTicketByTechnical(){
+        $ticket = DB::table('ticketing_main')
+                ->where("tickete_assigned_to_id", Auth::user()->emp_no)
+                ->orderBy("ticket_update_date", "desc")->paginate(10);
+        return response()->json(["Message" => $ticket, "role" => Auth::user()->role], 200);
+    }
+
+    public function getTicketByUser(){
+        $ticket = DB::table('ticketing_main')
+                ->where("tickete_assigned_to_id", Auth::user()->emp_no)
+                ->orderBy("ticket_update_date", "desc")->paginate(10);
+        return response()->json(["Message" => $ticket, "role" => Auth::user()->role], 200);
+    }
+
     public function filterPendingTicket($type)
     {
         $query = DB::table('ticketing_main')->orderBy("ticket_update_date", "desc");
