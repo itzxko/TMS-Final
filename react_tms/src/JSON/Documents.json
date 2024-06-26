@@ -1,0 +1,22 @@
+[
+  {
+    "filename": "document1",
+    "type": "docx"
+  },
+  {
+    "filename": "pdf1",
+    "type": "pdf"
+  },
+  {
+    "filename": "excel1",
+    "type": "xlsx"
+  },
+  {
+    "filename": "powerpoint1",
+    "type": "pptx"
+  },
+  {
+    "filename": "php1",
+    "type": "php"
+  }
+]

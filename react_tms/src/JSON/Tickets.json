@@ -1,0 +1,36 @@
+[
+  {
+    "id": 1,
+    "type": "Installation"
+  },
+
+  {
+    "id": 2,
+    "type": "Network Cabling"
+  },
+
+  {
+    "id": 3,
+    "type": "Hardware Repair"
+  },
+
+  {
+    "id": 4,
+    "type": "IT Support"
+  },
+
+  {
+    "id": 5,
+    "type": "Network Troubleshooting"
+  },
+
+  {
+    "id": 6,
+    "type": "Hardware/Software Troubleshooting"
+  },
+
+  {
+    "id": 7,
+    "type": "Others"
+  }
+]
