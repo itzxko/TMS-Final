@@ -19,6 +19,7 @@ import { FaCodeMerge } from "react-icons/fa6";
 import { LuSettings2 } from "react-icons/lu";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { LiaExclamationSolid } from "react-icons/lia";
+import { FiLayers } from "react-icons/fi";
 
 // importing popup modals
 import UserModal from "../UserModal";
@@ -75,8 +76,9 @@ const Small = () => {
   // const [currentPage, setCurrentPage] = useState(1);
   const [current_page, set_current_page] = useState(null);
   const [pages, setPages] = useState(null);
-
-  const {role} = useRole();
+  const [name_requester, set_name_requester] = useState(null);
+  const [ticket_assigned_to_name, setTicket_assigned_to_name] = useState(null);
+  const { role } = useRole();
   const generatePageNumbers = (current_page, total_pages) => {
     const pages = [];
 
@@ -252,7 +254,7 @@ const Small = () => {
   //Render Page
   return (
     <>
-      <Navbar selectedRole={role} />
+      <Navbar selectedRole={role} setShowUserForm={setShowUserForm} />
       {/* gray background page for the body */}
       <div className="block lg:hidden bg-[#ebebeb] min-h-[100vh] w-full px-6 md:px-8 lg:px-12 pb-6 font-dm">
         {/* for large screen and beyond */}
@@ -308,52 +310,16 @@ const Small = () => {
                         : "absolute bg-white flex flex-col justify-center items-center rounded-lg top-[50px] shadow-lg"
                     }
                   >
-                    <div className="relative w-full flex flex-justify justify-start items-start">
-                      <div
-                        className="flex flex-row-reverse gap-1 items-center justify-end bg-[#FAF5FF] hover:bg-gray-100 ease-in-out duration-700 w-full h-full cursor-pointer px-4 py-2 rounded-t-lg"
-                        onClick={handleOpenRole}
-                      >
-                        <div className="text-center">
-                          <p className="text-xs font-normal">Role</p>
-                        </div>
-                        <div className="flex items-center justify-center text-sm">
-                          {openRole ? <MdClose /> : <RiUserSettingsLine />}
-                        </div>
-                      </div>
-                      <div
-                        className={
-                          openRole
-                            ? "absolute bg-[#FAF5FF] rounded-lg flex flex-col justify-center items-center left-[-94px] shadow-lg overflow-hidden"
-                            : "hidden"
-                        }
-                      >
-                        {roles.map((role, index) => (
-                          <div
-                            key={role.id}
-                            className={
-                              role === role.role
-                                ? "cursor-pointer bg-[#2f2f2f] text-white w-full py-2 px-4"
-                                : "cursor-pointer bg-[#FAF5FF] text-black hover:bg-gray-100 w-full py-2 px-4"
-                            }
-                            onClick={() => handleRole(role.role, role.id)}
-                          >
-                            <p className="text-xs font-normal truncate">
-                              {role.role}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
                     <div className="relative w-full flex flex-col justify-start items-end">
                       <div
-                        className="flex flex-row-reverse gap-1 items-center justify-end bg-[#FAF5FF] hover:bg-gray-100 ease-in-out duration-700 w-full  h-full cursor-pointer px-4 py-2 rounded-b-lg"
+                        className="flex flex-row-reverse gap-1 items-center justify-end bg-[#FAF5FF] hover:bg-gray-100 ease-in-out duration-700 w-full  h-full cursor-pointer px-4 py-2 rounded-lg"
                         onClick={handleOpenType}
                       >
                         <div className="text-center">
                           <p className="text-xs font-normal">Type</p>
                         </div>
                         <div className="flex items-center justify-center text-sm">
-                          {openType ? <MdClose /> : <HiOutlineTicket />}
+                          {openType ? <MdClose /> : <FiLayers />}
                         </div>
                       </div>
                       <div
@@ -417,9 +383,15 @@ const Small = () => {
                     })
                     .filter((data) => {
                       if (role === "technical") {
-                        return data.ticket_assigned_to_name === localStorage.getItem("username");
+                        return (
+                          data.ticket_assigned_to_name ===
+                          localStorage.getItem("username")
+                        );
                       } else if (role === "user") {
-                        return data.ticket_client_name === localStorage.getItem("username");
+                        return (
+                          data.ticket_client_name ===
+                          localStorage.getItem("username")
+                        );
                       }
                       return true;
                     })
@@ -728,6 +700,12 @@ const Small = () => {
                                       get_ticket_desc(data.ticket_type);
                                       set_request_desc(
                                         data.ticket_desc_concern
+                                      );
+                                      set_name_requester(
+                                        data.ticket_client_name
+                                      );
+                                      setTicket_assigned_to_name(
+                                        data.ticket_assigned_to_name
                                       );
                                       set_request_type(data.ticket_type);
                                       setID(data.id);
