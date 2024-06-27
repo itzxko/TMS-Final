@@ -7,9 +7,8 @@ import img from "../assets/logo.png";
 import { div } from "prelude-ls";
 import { RiMailSendLine } from "react-icons/ri";
 import { RiAccountPinCircleLine } from "react-icons/ri";
-import { RiKey2Line } from "react-icons/ri";
-import Loading from "../Components/Loading/Loading";
-import useRole from "../Components/customHooks/useRole"
+import { LuUser, LuKey } from "react-icons/lu";
+import useRole from "../Components/customHooks/useRole";
 const Login = () => {
   const [email, setEmail] = useState(""); // State variable for email input
   const [password, setPassword] = useState(""); // State variable for password input
@@ -20,13 +19,12 @@ const Login = () => {
   const [ready, setReady] = useState(false);
   const [toggleSubmit, setToggleSubmit] = useState(false);
   const [one_time_pin, setOneTimePin] = useState(0);
-  const {role, setRole} = useRole();
+  const { role, setRole } = useRole();
   // Function to handle form submission
 
   useEffect(() => {
     axiosClient("/csrf-cookie");
-  }, [])
-  
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -109,7 +107,7 @@ const Login = () => {
                   <div className="w-full flex flex-col gap-2">
                     <p className="text-xs font-semibold px-1">Email</p>
                     <div className="py-3 px-4 bg-[#f6edff] rounded-md flex flex-row w-full gap-3 items-center justify-center">
-                      <RiAccountPinCircleLine className="text-xl" />
+                      <LuUser className="text-md" />
                       <input
                         type="text"
                         placeholder="enter email"
@@ -123,35 +121,18 @@ const Login = () => {
                   </div>
 
                   <div className="w-full flex flex-col gap-2">
-                    <p className="text-xs font-semibold px-1">OTP</p>
-                    <div className="flex flex-row justify-center items-center">
-                      <div className="py-3 px-4 bg-[#f6edff] rounded-l-md flex flex-row w-full gap-3 items-center justify-center">
-                        <RiMailSendLine className="text-xl" />
-                        <input
-                          type="number"
-                          placeholder="one time pin"
-                          className="text-xs w-full outline-none bg-[#f6edff] truncate"
-                          autoComplete="off"
-                          onChange={(e) => setOneTimePin(e.target.value)}
-                          disabled={invalid === true ? true : false}
-                        />
-                      </div>
-                      <div
-                        className={`px-4 py-3 ease-in-out duration-500 rounded-r-md flex items-center justify-center  ${
-                          toggleSubmit === false
-                            ? "bg-[#2f2f2f] hover:bg-[#474747] cursor-pointer"
-                            : "bg-[#2f2f2f] cursor-default"
-                        }`}
-                        onClick={sendOTP}
-                        disabled={toggleSubmit ? false : true}
-                      >
-                        <p
-                          className="text-xs font-normal text-white"
-                          id="send-button"
-                        >
-                          Send
-                        </p>
-                      </div>
+                    <p className="text-xs font-semibold px-1">Email</p>
+                    <div className="py-3 px-4 bg-[#f6edff] rounded-md flex flex-row w-full gap-3 items-center justify-center">
+                      <LuKey className="text-md" />
+                      <input
+                        type="password"
+                        placeholder="enter password"
+                        className="text-xs w-full outline-none bg-[#f6edff] truncate"
+                        role="presentation"
+                        autoComplete="off"
+                        onChange={(e) => setPassword(e.target.value)}
+                        id="password-input"
+                      />
                     </div>
                   </div>
                   <div className="w-full flex flex-row items-center justify-between px-2">
@@ -173,10 +154,7 @@ const Login = () => {
                     </div>
                   </div>
                   <div className="w-full flex items-end justify-start pt-4">
-                    <button
-                      className="text-xs font-semibold text-white bg-[#2f2f2f] px-6 py-2 rounded-md hover:bg-[#5e5e5e] ease-in-out duration-700"
-                      disabled={ready === true ? false : true}
-                    >
+                    <button className="text-xs font-semibold text-white bg-[#2f2f2f] px-6 py-2 rounded-md hover:bg-[#5e5e5e] ease-in-out duration-700">
                       {loading ? (
                         <div className="flex flex-row py-1 gap-1">
                           <div
