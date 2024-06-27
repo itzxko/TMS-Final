@@ -149,7 +149,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
     formData.append("ticket_desc_concern", ticket_desc_concern);
 
     try {
-      const response = await axiosClient.post("/add-request", formData, {
+      await axiosClient.post("/add-request", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

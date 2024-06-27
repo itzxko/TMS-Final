@@ -68,7 +68,8 @@ const Small = () => {
   // const [currentPage, setCurrentPage] = useState(1);
   const [current_page, set_current_page] = useState(null);
   const [pages, setPages] = useState(null);
-
+  const [name_requester, set_name_requester] = useState(null);
+  const [ticket_assigned_to_name, setTicket_assigned_to_name] = useState(null);
   const { role } = useRole();
   const generatePageNumbers = (current_page, total_pages) => {
     const pages = [];
@@ -493,6 +494,13 @@ const Small = () => {
                                       set_request_desc(
                                         data.ticket_desc_concern
                                       );
+                                      set_name_requester(
+                                        data.ticket_client_name
+                                      );
+                                      setTicket_assigned_to_name(
+                                        data.ticket_assigned_to_name
+                                      );
+
                                       set_request_type(data.ticket_type);
                                       setID(data.id);
                                       set_ticket_cde(data.ticket_cde);
@@ -635,6 +643,12 @@ const Small = () => {
                                       set_request_desc(
                                         data.ticket_desc_concern
                                       );
+                                      set_name_requester(
+                                        data.ticket_client_name
+                                      );
+                                      setTicket_assigned_to_name(
+                                        data.ticket_assigned_to_name
+                                      );
                                       set_request_type(data.ticket_type);
                                       setID(data.id);
                                       set_ticket_cde(data.ticket_cde);
@@ -739,10 +753,13 @@ const Small = () => {
       <AdminModal
         isVisible={showAdminForm}
         ticket_type={request_type}
-        ticket_cde={ticket_cde}
         request_desc={request_desc}
         data={tech_name}
+        ticket_cde={ticket_cde}
         id={id}
+        selected={setTicket_assigned_to_name}
+        name_requester={name_requester}
+        assigned_name={ticket_assigned_to_name}
         onClose={() => setAdminForm(false)}
       />
       <TechModal
