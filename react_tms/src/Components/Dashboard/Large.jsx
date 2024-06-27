@@ -68,7 +68,7 @@ const Large = () => {
       containerRef.current.scrollTop -= scrollOffset;
     }
   };
-  console.log(role);
+  // console.log(role);
   const handleScrollDown = (scrollOffset) => {
     if (containerRef.current) {
       containerRef.current.scrollTop += scrollOffset;
@@ -478,28 +478,28 @@ const Large = () => {
                           data.ticket_type === selectedType ? (
                             <tbody>
                               <tr
-                                class="text-xs font-normal hover:bg-[#f6edff] ease-in-out duration-500 cursor-pointer border-b"
-                                key={index}
+                                className="text-xs font-normal hover:bg-[#f6edff] ease-in-out duration-500 cursor-pointer border-b"
+                                key={index.id}
                               >
                                 <th
                                   scope="row"
-                                  class="text-[#24693c] text-start p-4"
+                                  className="text-[#24693c] text-start p-4"
                                 >
                                   <p className="w-full truncate">
                                     {data.ticket_type}
                                   </p>
                                 </th>
-                                <td class="p-4" scope="">
+                                <td className="p-4" scope="">
                                   <p className="w-full line-clamp-2">
                                     {data.ticket_desc_concern}
                                   </p>
                                 </td>
-                                <td class="p-4">
+                                <td className="p-4">
                                   <p className="w-full truncate">
                                     {data.ticket_status_if_date}
                                   </p>
                                 </td>
-                                <td class="p-4">
+                                <td className="p-4">
                                   <p className="w-full truncate">
                                     {data.ticket_update_date}
                                   </p>
@@ -515,14 +515,14 @@ const Large = () => {
                                     {data.ticket_client_name}
                                   </p>
                                 </td>
-                                <td className="p-4" key={index}>
+                                <td className="p-4" key={index.id}>
                                   <p className="font-bold text-gray-600 w-full truncate">
                                     {data.ticket_assigned_to_name
                                       ? data.ticket_assigned_to_name
                                       : "Not Assigned"}
                                   </p>
                                 </td>
-                                <td className="p-4" key={index}>
+                                <td className="p-4" key={index.id}>
                                   {data.ticket_status === "1" ? (
                                     <p className="text-[#113e21] w-full font-bold truncate">
                                       Requested
@@ -545,7 +545,7 @@ const Large = () => {
                                     </p>
                                   )}
                                 </td>
-                                <td className="p-4 text-center" key={index}>
+                                <td className="p-4 text-center" key={index.id}>
                                   {/* button if role is user */}
                                   {role === "user"  &&
                                   data.ticket_status === "5" ? (
@@ -686,28 +686,28 @@ const Large = () => {
                           ) : selectedType === "All" ? (
                             <tbody>
                               <tr
-                                class="text-xs font-normal even:bg-red-300 hover:bg-[#f6edff] ease-in-out duration-500 cursor-pointer border-b"
-                                key={index}
+                                className="text-xs font-normal even:bg-red-300 hover:bg-[#f6edff] ease-in-out duration-500 cursor-pointer border-b"
+                                key={index.id}
                               >
                                 <th
                                   scope="row"
-                                  class="text-[#24693c] text-start p-4"
+                                  className="text-[#24693c] text-start p-4"
                                 >
                                   <p className="w-full truncate">
                                     {data.ticket_type}
                                   </p>
                                 </th>
-                                <td class="p-4" scope="row">
+                                <td className="p-4" scope="row">
                                   <p className="w-full line-clamp-2">
                                     {data.ticket_desc_concern}
                                   </p>
                                 </td>
-                                <td class="p-4">
+                                <td className="p-4">
                                   <p className="w-full truncate">
                                     {data.ticket_status_if_date}
                                   </p>
                                 </td>
-                                <td class="p-4">
+                                <td className="p-4">
                                   <p className="w-full truncate">
                                     {data.ticket_update_date}
                                   </p>
@@ -723,7 +723,7 @@ const Large = () => {
                                     {data.ticket_client_name}
                                   </p>
                                 </td>
-                                <td className="p-4" key={index}>
+                                <td className="p-4" key={index.id}>
                                   <p className="font-bold text-gray-600 w-full truncate">
                                     {data.ticket_assigned_to_name
                                       ? data.ticket_assigned_to_name
@@ -731,7 +731,7 @@ const Large = () => {
                                   </p>
                                 </td>
 
-                                <td className="p-4" key={index}>
+                                <td className="p-4" key={index.id}>
                                   {data.ticket_status === "1" ? (
                                     <p className="text-[#113e21] w-full font-bold truncate">
                                       Requested
@@ -754,7 +754,7 @@ const Large = () => {
                                     </p>
                                   )}
                                 </td>
-                                <td className="p-4 text-center" key={index}>
+                                <td className="p-4 text-center" key={index.id}>
                                   {/* button if role is user */}
                                   {role === "user"  &&
                                   data.ticket_status === "5" ? (
@@ -913,7 +913,7 @@ const Large = () => {
                     </button>
                     {pageNumbers.map((pageNumber) => (
                       <button
-                        key={pageNumber}
+                        key={pageNumber.id}
                         className={`p-1 ease-in-out duration-500  font-semibold ${
                           pageNumber === current_page
                             ? "text-sm text-black"
@@ -979,7 +979,7 @@ const Large = () => {
                       {name.map((names, index) => (
                         <div
                           className="flex flex-row justify-between py-2 px-4 hover:bg-[#f6edff] ease-in-out duration-500 border-b"
-                          key={index}
+                          key={index.id}
                         >
                           <div className="flex items-center justify-start w-1/2 gap-4 py-2">
                             <p className="text-xs font-bold text-[#113e21] truncate ">

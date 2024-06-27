@@ -76,8 +76,6 @@ const Small = () => {
   // const [currentPage, setCurrentPage] = useState(1);
   const [current_page, set_current_page] = useState(null);
   const [pages, setPages] = useState(null);
-  const [name_requester, set_name_requester] = useState(null);
-  const [ticket_assigned_to_name, setTicket_assigned_to_name] = useState(null);
   const { role } = useRole();
   const generatePageNumbers = (current_page, total_pages) => {
     const pages = [];
