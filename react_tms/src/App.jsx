@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import Button from "./Components/Button";
 import Techform from "./Pages/Techform";
 import { RoleProvider } from "./Components/customHooks/RoleContext";
+import Pin from "../src/Components/Popups/Pin";
 function App() {
   return (
     <RoleProvider>
