@@ -15,7 +15,7 @@ import { PiArrowDownRightBold } from "react-icons/pi";
 import { RiAddFill } from "react-icons/ri";
 import { IoMenuOutline } from "react-icons/io5";
 
-function Navbar({ selectedRole }) {
+function Navbar({ selectedRole, setShowUserForm }) {
   const [menu, setMenu] = React.useState(false); //Toggline Menu
   const [name, setName] = useState([]); //Setting username
   const [logout, setLogout] = useState(false); //Logout
@@ -85,10 +85,16 @@ function Navbar({ selectedRole }) {
                 role === "user"
                   ? "flex flex-row bg-[#2f2f2f] hover:bg-[#474747] transition-all duration-500 text-white px-3 py-2 rounded-md cursor-pointer gap-1"
                   : "hidden"
+                  
               }
+              onClick={(e) => {
+                e.preventDefault()
+                setShowUserForm(true);
+              }}
+
             >
               <RiAddFill className="text-md" />
-              <p className="text-xs font-normal">Create.</p>
+              <p className="text-xs font-normal" >Create.</p>
             </div>
             {/* div for containing the profile picture */}
             <div className="flex flex-row gap-2 items-center justfy-center">

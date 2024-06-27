@@ -268,7 +268,7 @@ const Large = () => {
   //Render Page
   return (
     <>
-      <Navbar selectedRole={role} />
+      <Navbar selectedRole={role} setShowUserForm={setShowUserForm}  />
       {/* gray background page for the body */}
       <div className="relative hidden lg:block bg-[#ebebeb] min-h-[100vh] w-full px-6 md:px-8 lg:px-10 pb-6 font-dm items-center justify-center">
         {/* for large screen and beyond */}
