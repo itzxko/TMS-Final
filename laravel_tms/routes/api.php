@@ -48,10 +48,17 @@ Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanc
             ->update(['ticket_update_date' => now()]);
         return response()->json(["Message" => "Bumped!"], 200);
     });
+
+    //Ito dinagdag ko
+    Route::get("/user/pending-ticket", [RequestController::class, "getTicketByUser"]);
+    Route::get("/admin/pending-ticket", [RequestController::class, "getTicketByAdmin"]);
+    Route::get("/tech/pending-ticket", [RequestController::class, "getTicketByTechnical"]);
     Route::get('spec_ticket_type/{type}', [TicketController::class, 'getSpecificTicketType']);
+   
 });
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/verify-otp', [UserController::class, 'userLogin']);
 Route::post('/loginOTP', [UserController::class, 'userLoginWithOtp']);
 Route::post('/techUpdate', [TechnicalController::class, 'updateTechnical']);
 Route::get('/techShow/{id}', [TechnicalController::class, 'show']);
+
