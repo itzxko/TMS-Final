@@ -39,7 +39,7 @@ const Large = () => {
   const [data, setData] = useState([]);
   const [id, setID] = useState("");
   const [pages, setPages] = useState(null);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(null);
   const [selectedRole, setSelectedRole] = useState("user"); // use state for setting the selected role
   // const [role, setRole] = useState("");
   const [pendingTicket, setPendingTicket] = useState([]);
@@ -105,49 +105,29 @@ const Large = () => {
     set_current_page(current_page - 1);
   };
   useEffect(() => {
-    axiosClient.get(`/pending-ticket?page=${current_page}`).then((res) => {
+    let url = ``
+    if(role === 'user'){
+        url = `user/`;
+    }
+    axiosClient.get(`/${url}pending-ticket?page=${current_page}`).then((res) => {
       setPendingTicket(res.data.Message.data);
     });
   }, [current_page]);
 
-  //For Welcome Back User
   useEffect(() => {
-    axiosClient
-      .get("/get_user")
-      .then((res) => {
-        setUserName(res.data.username);
-        // console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-  useEffect(() => {
-    axiosClient
+    if(role === "user"){
+      axiosClient
       .get("/ticket")
       .then((res) => {
         setData(res.data.Message);
         setLoading(true);
       })
       .catch((err) => console.log(err));
-    axiosClient
-      .get("/pending-ticket")
-      .then((res) => {
-        // console.log(res.data.role);
-        return res.data.Message;
-        // setRole(res.data.role);
-      })
-      .then((res) => {
-        setPendingTicket(res.data);
-        setPages(res.last_page);
-        set_current_page(res.current_page);
-      })
-      .catch((err) => console.log(err));
+    }
   }, []);
 
   useEffect(() => {
-    if (search === "") {
+    if (search === "" && role !== "technical") {
       axiosClient
         .get(`/pending-ticket/All`)
         .then((res) => {
@@ -167,14 +147,33 @@ const Large = () => {
     }
   }, [search]);
 
+  // const fetchPendingTickets = async (url) =>{
+  //       try{
+  //         const res = await axiosClient.all(url);
+  //          setPendingTicket(res.Message.data);
+  //       set_current_page(res.Message.current_page);
+  //       setPages(res.Message.last_page);
+  //       }catch(err){
+  //         console.log("Error fetchPendingTickets: " + err);
+  //         throw new err;
+  //       }
+  // }
+
   // Filtering Pending Ticket
   useEffect(() => {
+    let url = ``
+    if(role === "admin"){
+      url = `/pending-ticket/${selectedType}`;
+    }else if(role === "technical"){
+      url = '/tech/pending-ticket';
+    }else if(role === "user"){
+      url = "/user/pending-ticket"
+    }
     axiosClient
-      .get(`/pending-ticket/${selectedType}`)
+      .get(url)
       .then((res) => {
         return res.data;
       })
-      .then((res) => res.data)
       .then((res) => {
         // console.log(res.Message.last_page);
         // console.log(res.Message.current_page)
@@ -185,6 +184,7 @@ const Large = () => {
       .catch((err) => {
         console.log(err);
       });
+    
   }, [selectedType]);
 
   //For Employee Job Count
@@ -202,13 +202,6 @@ const Large = () => {
     }
   }, []);
 
-  // setting the selected role
-  // const handleRole = (roles, id) => {
-  //   role === roles ? setSelectedRole("user") : setSelectedRole(roles);
-  //   setOpenRole(false);
-  // };
-
-  // Fetch ticket descriptions for selected ticket type
   const get_ticket_desc = (ticket_type_param) => {
     axiosClient
       .get("spec_ticket_type/" + ticket_type_param)
@@ -222,9 +215,6 @@ const Large = () => {
   const handleType = (type, id) => {
     setSelectedType(selectedType === type ? "All" : type);
     setOpenType(false);
-  };
-  const openAdminForm = () => {
-    return <AdminModal />;
   };
 
   const generatePageNumbers = (current_page, total_pages) => {
