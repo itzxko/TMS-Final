@@ -125,12 +125,12 @@ const UserModal = ({ isVisible, onClose, data }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (ticket_desc_concern === "" || ticket_type === "Select Ticket Type") {
-      setIncompleteInput(true);
-      setTimeout(() => {
-        setIncompleteInput(false);
-      }, 3000);
-    }
+    // if (ticket_desc_concern === "" || ticket_type === "Select Ticket Type") {
+    //   setIncompleteInput(true);
+    //   setTimeout(() => {
+    //     setIncompleteInput(false);
+    //   }, 3000);
+    // }
 
     const formData = new FormData();
     for (let i = 0; i < file.length; i++) {
