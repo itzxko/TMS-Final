@@ -23,32 +23,55 @@ const Login = () => {
   // Function to handle form submission
 
   useEffect(() => {
-    axiosClient("/csrf-cookie");
+    axiosClient.get("/csrf-cookie");
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsLogged(true);
-    setLoading(true);
-    setInvalid(false);
-    axiosClient("/csrf-cookie");
-    axiosClient
-      .post("/verify-otp", {
+    axiosClient.get("/csrf-cookie");
+    setLoading(true)
+    if(!isLogged){
+      LoginWithPassWord()
+    }else{
+      verifyOTP()
+    }
+  };
+
+  const LoginWithPassWord = async () => {
+      try{
+        const response = await axiosClient.post('/login', { email, password});
+        if(response){
+          setLoading(false);
+          setIsLogged(true);
+          setInvalid(false);
+        }
+      }catch(err){
+          console.log(err)
+      }
+  }
+  const sendOTP = async () => {
+        try{
+          await axiosClient.get("/csrf-cookie");
+          await axiosClient.post('/send-otp', {email});
+        }catch(err){
+          console.log(err)
+        }
+    }
+  const verifyOTP = () => {
+    axiosClient.post("/verify-otp", {
         email: email,
-        password: password,
+        otp: password,
       })
       .then((response) => {
         return response.data.user;
       })
       .then((res) => {
-        setTimeout(() => {
-          localStorage.setItem("username", res.username);
-          setLoading(false);
+          localStorage.setItem("username", res.username);        
           setInvalid(false);
           setRole(res.role);
           localStorage.setItem("role", res.role);
+          setLoading(false);
           navigate("/dashboard"); // Redirect to dashboard on successful login
-        }, 2000);
       })
       .catch((error) => {
         console.error(error);
@@ -57,32 +80,6 @@ const Login = () => {
           setLoading(false);
         }, 2000);
       });
-  };
-
-  async function sendOTP() {
-    const emailAdd = document.getElementById("email-input").value;
-
-    const da = "@da.gov.ph";
-    const gmail = "@gmail.com";
-    if (emailAdd.includes(gmail)) {
-      setInvalid(false);
-      console.log("valid");
-      setSendError(false);
-
-      setToggleSubmit(!toggleSubmit);
-      setInterval(() => {
-        setToggleSubmit(false);
-      }, 5000);
-
-      document.getElementById("send-button").innerHTML = "Resend";
-      setReady(true);
-      axiosClient("/csrf-cookie");
-      await axiosClient.post("/loginOTP", { email });
-    } else {
-      setInvalid(true);
-      setSendError(true);
-      console.log("invalid");
-    }
   }
   useEffect(() => {
     console.log(one_time_pin);
@@ -160,10 +157,15 @@ const Login = () => {
                       </div>
                       <div
                         className="w-full flex items-center justify-center bg-[#2f2f2f] py-3 rounded-md cursor-pointer hover:bg-[#474747] transition-colors duration-700"
-                        onClick={() => setShowModal(true)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          sendOTP();
+                          setShowModal(true);
+
+                        }}
                       >
                         <p className="text-xs font-semibold text-white">
-                          Resend
+                          Send
                         </p>
                       </div>
                     </>

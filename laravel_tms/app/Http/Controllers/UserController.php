@@ -25,26 +25,41 @@ class UserController extends Controller
         return response()->json(['username' => $username], 200);
     }
 
-    public function userLoginWithOtp(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => 'required|email'
-        ]);
 
-        try {
-            $otp = rand(100000, 999999); // Ensure 6-digit OTP
-            Mail::to($credentials['email'])->send(new OtpEmail($otp, $credentials['email']));
-            DB::table('users')->where("email", $credentials['email'])->update(["otp" => $otp]);
-
-            return response()->json(['message' => 'OTP sent to your email.'], 200);
-        } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+    public function verifyOTP(Request $request){ 
+        $data = $request->validate([
+            'email' => 'required|email',
+            'otp' => 'required'
+        ]);      
+        $user = DB::table('users')->where('email', $data['email'])->first();
+        if ($user && $user->otp == $data['otp']) {
+            // OTP matched, proceed with login
+            // Manually log in the user
+            Auth::loginUsingId($user->emp_no);
+            return response()->json([
+                'message' => 'Request success',
+                'user' => Auth::user() 
+            ], 200);
         }
     }
-
-
-    
-
+    public function sendOTP(Request $request){
+        try {
+            //code...
+            $data = $request->validate([
+                'email' => 'required|email',
+            ]);       
+            $otp = rand(100000, 999999); // Ensure 6-digit OTP
+            Mail::to($data['email'])->send(new OtpEmail($otp, $data['email']));
+            $user = DB::table('users')->where("email", $data['email'])->update(["otp" => $otp]);  
+            if($user){
+                
+                return $this->success(["Message" => "Request success! OTP is sent to your email"]);
+            }
+            return $this->error(["Message" => "Request failed!"]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
     public function userLogin(Request $request)
         {
         $data = $request->validate([
@@ -52,29 +67,10 @@ class UserController extends Controller
             // 'otp' => 'required|numeric'
             'password' => 'required'
         ]);
-
-        // $user = DB::table('users')->where('email', $data['email'])->first();
-
-        //     if ($user && $user->otp == $data['otp']) {
-        //         // OTP matched, proceed with login
-        //         // Manually log in the user
-        //         Auth::loginUsingId($user->emp_no);
-
-        //         $request->session()->regenerate();
-
-        //         return response()->json([
-        //             'message' => 'Request success',
-        //             'user' => Auth::user() 
-        //         ], 200);
-        //     }
         if(Auth::attempt($data)){
             $request->session()->regenerate();
-             return response()->json([
-                'message' => 'Request success',
-                'user' => Auth::user() 
-            ], 200);
+             return $this->success(["Message" => "Login Success. OTP is being sent right now, please wait a moment~."]);
         }
-        // return response()->json(['message' => 'Invalid OTP.'], 400);
         return response()->json(['message' => 'Invalid Credentials.'], 401);
     }
 
