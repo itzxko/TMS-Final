@@ -333,42 +333,6 @@ const Large = () => {
                     <div className="relative w-full flex flex-col justify-start items-end">
                       <div
                         className="flex flex-row-reverse gap-2 items-center justify-end bg-[#FAF5FF] hover:bg-gray-100 ease-in-out duration-700 w-full h-full cursor-pointer px-4 py-3 rounded-lg"
-                        onClick={handleOpenRole}
-                      >
-                        <div className="text-center">
-                          <p className="text-xs font-normal">Role</p>
-                        </div>
-                        <div className="flex items-center justify-center text-sm">
-                          {openRole ? <MdClose /> : <MdWorkOutline />}
-                        </div>
-                      </div>
-                      <div
-                        className={
-                          openRole
-                            ? "absolute bg-[#FAF5FF] rounded-lg flex flex-col justify-center items-center left-[-88px] shadow-lg overflow-hidden"
-                            : "hidden"
-                        }
-                      >
-                        {roles.map((role, index) => (
-                          <div
-                            key={role.id}
-                            className={
-                              role === role.role
-                                ? "cursor-pointer bg-[#2f2f2f] text-white w-full py-2 px-4"
-                                : "cursor-pointer bg-[#FAF5FF] hover:bg-gray-100 w-full py-2 px-4"
-                            }
-                            onClick={() => handleRole(role.role, role.id)}
-                          >
-                            <p className="text-xs font-normal truncate">
-                              {role.role}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="relative w-full flex flex-col justify-start items-end">
-                      <div
-                        className="flex flex-row-reverse gap-2 items-center justify-end bg-[#FAF5FF] hover:bg-gray-100 ease-in-out duration-700 w-full h-full cursor-pointer px-4 py-3 rounded-b-lg"
                         onClick={handleOpenType}
                       >
                         <div className="text-center">
