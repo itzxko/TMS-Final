@@ -8,10 +8,12 @@ import axiosClient from "../../axios"; //axios
 import { LuSettings2 } from "react-icons/lu";
 import { MdClose } from "react-icons/md";
 import { BiSearch } from "react-icons/bi";
+import { MdWorkOutline } from "react-icons/md";
 import { FiLayers } from "react-icons/fi";
 import { RiUserSharedLine } from "react-icons/ri";
 import { TbTransfer } from "react-icons/tb";
 import { RiEditLine } from "react-icons/ri";
+import { CgMathPlus } from "react-icons/cg";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { LiaExclamationSolid } from "react-icons/lia";
 
@@ -59,131 +61,214 @@ const Large = () => {
       containerRef.current.scrollTop -= scrollOffset;
     }
   };
-
+  console.log(role);
   const handleScrollDown = (scrollOffset) => {
     if (containerRef.current) {
       containerRef.current.scrollTop += scrollOffset;
     }
   };
 
-  // Toggle filter, role dropdown, and type filter
+  // Check if there are tickets of the selected type
+  const hasTicketsOfType =
+    selectedType === "All" ||
+    pendingTicket.some((data) => data.ticket_type === selectedType);
+
+  // Function to handle filter use state
   const handleFilter = () => {
     setFilter(!filter);
     setOpenType(false);
     // setOpenRole(false);
   };
 
+  // Toggle role dropdown
   const handleOpenRole = () => {
     // setOpenRole(!openRole);
     setOpenType(false);
   };
 
+  // Function to toggle the type filter
   const handleOpenType = () => {
     setOpenType(!openType);
     // setOpenRole(false);
+    // console.log(`type value below: ${openType}`);
   };
-
   const nextPage = () => {
-    if (current_page < pages) {
-      set_current_page(current_page + 1);
+    if (current_page === pages) {
+      return;
     }
+    set_current_page(current_page + 1);
   };
-
   const prevPage = () => {
-    if (current_page > 1) {
-      set_current_page(current_page - 1);
+    if (current_page === 1) {
+      return;
     }
+    set_current_page(current_page - 1);
   };
- const hasTicketsOfType =
-    selectedType === "All" ||
-    pendingTicket.some((data) =>  (data.ticket_type === selectedType));
-  const fetchPendingTickets = (url) => {
-    axiosClient.get(url)
-      .then((res) => {
-          setPendingTicket(res.data.Message.data);
-          set_current_page(res.data.Message.current_page);
-          setPages(res.data.Message.last_page);
-      })
-      .catch((err) => console.log(err));
-  };
-
   useEffect(() => {
-    axiosClient.get('/get_user')
+    axiosClient.get(`/pending-ticket?page=${current_page}`).then((res) => {
+      setPendingTicket(res.data.Message.data);
+    });
+  }, [current_page]);
+
+  //For Welcome Back User
+  useEffect(() => {
+    axiosClient
+      .get("/get_user")
       .then((res) => {
         setUserName(res.data.username);
-        setSelectedRole(res.data.role);
+        // console.log(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   useEffect(() => {
-    if (role === 'user') {
-      axiosClient.get('/ticket')
+    axiosClient
+      .get("/ticket")
       .then((res) => {
         setData(res.data.Message);
         setLoading(true);
       })
       .catch((err) => console.log(err));
-
-      fetchPendingTickets(`/pending-ticket?page=${current_page}`);
-    }
-  }, [role, current_page]);
+    axiosClient
+      .get("/pending-ticket")
+      .then((res) => {
+        // console.log(res.data.role);
+        return res.data.Message;
+        // setRole(res.data.role);
+      })
+      .then((res) => {
+        setPendingTicket(res.data);
+        setPages(res.last_page);
+        set_current_page(res.current_page);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   useEffect(() => {
-    if (search === '') {
-      fetchPendingTickets(`/pending-ticket/All`);
-    } else {
-      fetchPendingTickets(`/pending-ticket/search/${search}`);
+    if (search === "") {
+      axiosClient
+        .get(`/pending-ticket/All`)
+        .then((res) => {
+          return res.data;
+        })
+        .then((res) => {
+          return res.data.Message;
+        })
+        .then((res) => {
+          setPendingTicket(res.data);
+          set_current_page(res.current_page);
+          setPages(res.last_page);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, [search]);
 
+  // Filtering Pending Ticket
   useEffect(() => {
-    fetchPendingTickets(`/pending-ticket/${selectedType}`);
+    axiosClient
+      .get(`/pending-ticket/${selectedType}`)
+      .then((res) => {
+        return res.data;
+      })
+      .then((res) => res.data)
+      .then((res) => {
+        // console.log(res.Message.last_page);
+        // console.log(res.Message.current_page)
+        setPendingTicket(res.Message.data);
+        set_current_page(res.Message.current_page);
+        setPages(res.Message.last_page);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [selectedType]);
 
+  //For Employee Job Count
   useEffect(() => {
     if (role === "admin") {
-      axiosClient.get("/getEmployeeJobs")
+      axiosClient
+        .get("/getEmployeeJobs")
         .then((res) => {
           setName(res.data.data);
+          // console.log(res.data.data);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+        });
     }
-  }, [role]);
+  }, []);
 
+  // setting the selected role
+  // const handleRole = (roles, id) => {
+  //   role === roles ? setSelectedRole("user") : setSelectedRole(roles);
+  //   setOpenRole(false);
+  // };
 
+  // Fetch ticket descriptions for selected ticket type
   const get_ticket_desc = (ticket_type_param) => {
-    axiosClient.get(`/spec_ticket_type/${ticket_type_param}`)
+    axiosClient
+      .get("spec_ticket_type/" + ticket_type_param)
       .then((res) => {
         set_tech_name(res.data);
       })
       .catch((err) => console.log(err));
   };
 
-  const handleType = (type) => {
+  // Toggle selected ticket type filter
+  const handleType = (type, id) => {
     setSelectedType(selectedType === type ? "All" : type);
     setOpenType(false);
+  };
+  const openAdminForm = () => {
+    return <AdminModal />;
   };
 
   const generatePageNumbers = (current_page, total_pages) => {
     const pages = [];
-    if (current_page > 1) pages.push(current_page - 1);
-    pages.push(current_page);
-    if (current_page < total_pages) pages.push(current_page + 1);
+
+    if (current_page > 1) {
+      pages.push(current_page - 1); // Previous page
+    }
+
+    pages.push(current_page); // Current page
+
+    if (current_page < total_pages) {
+      pages.push(current_page + 1); // Next page
+    }
+
     return pages;
   };
 
   const pageNumbers = generatePageNumbers(current_page, pages);
-
+  // Fetch initial data on component mount
   const filteredSearch = (e) => {
     e.preventDefault();
-    fetchPendingTickets(`/pending-ticket/search/${search}`);
+    axiosClient
+      .get(`/pending-ticket/search/${search}`)
+      .then((res) => {
+        return res.data;
+      })
+      .then((res) => {
+        return res.data.Message;
+      })
+      .then((res) => {
+        setPendingTicket(res.data);
+        set_current_page(res.current_page);
+        setPages(res.last_page);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   //Render Page
   return (
     <>
-      <Navbar selectedRole={role} setShowUserForm={setShowUserForm} />
+      <Navbar selectedRole={role} setShowUserForm={setShowUserForm}  />
       {/* gray background page for the body */}
       <div className="relative hidden lg:block bg-[#ebebeb] min-h-[100vh] w-full px-6 md:px-8 lg:px-10 pb-6 font-dm items-center justify-center">
         {/* for large screen and beyond */}
