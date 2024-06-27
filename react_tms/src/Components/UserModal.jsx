@@ -149,7 +149,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
     formData.append("ticket_desc_concern", ticket_desc_concern);
 
     try {
-      const response = await axiosClient.post("/add-request", formData, {
+      await axiosClient.post("/add-request", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -450,9 +450,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
                     : "hidden"
                 }
               >
-                {incompleteInput
-                  ? "Fill the Required Fields!"
-                  : "Attachmenet Limit Exceeded!"}
+                {incompleteInput ? "Fill the Required Fields!" : ""}
               </p>
             </div>
             <div className="w-1/2 flex flex-row gap-2 items-center justify-end">

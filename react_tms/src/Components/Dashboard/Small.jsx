@@ -63,7 +63,8 @@ const Small = () => {
   const [openSearch, setOpenSearch] = useState(false);
   const [search, setSearch] = useState("");
   const [bumpCode, setBumpCode] = useState("");
-
+  const [ticket_assigned_to_name, setTicket_assigned_to_name] = useState(null);
+  const [name_requester, set_name_requester] = useState(null);
   // const [currentPage, setCurrentPage] = useState(1);
   const [current_page, set_current_page] = useState(null);
   const [pages, setPages] = useState(null);
@@ -244,7 +245,7 @@ const Small = () => {
   //Render Page
   return (
     <>
-      <Navbar selectedRole={role} />
+      <Navbar selectedRole={role} setShowUserForm={setShowUserForm}/>
       {/* gray background page for the body */}
       <div className="block lg:hidden bg-[#ebebeb] min-h-[100vh] w-full px-6 md:px-8 lg:px-12 pb-6 font-dm">
         {/* for large screen and beyond */}
@@ -522,6 +523,10 @@ const Small = () => {
                                       set_request_desc(
                                         data.ticket_desc_concern
                                       );
+                                      setTicket_assigned_to_name(
+                                        data.ticket_assigned_to_name
+                                      );
+
                                       set_request_type(data.ticket_type);
                                       setID(data.id);
                                       set_ticket_cde(data.ticket_cde);
@@ -664,6 +669,12 @@ const Small = () => {
                                       set_request_desc(
                                         data.ticket_desc_concern
                                       );
+                                      setTicket_assigned_to_name(
+                                        data.ticket_assigned_to_name
+                                      );
+                                      set_name_requester(
+                                        data.ticket_client_name
+                                      );
                                       set_request_type(data.ticket_type);
                                       setID(data.id);
                                       set_ticket_cde(data.ticket_cde);
@@ -768,10 +779,13 @@ const Small = () => {
       <AdminModal
         isVisible={showAdminForm}
         ticket_type={request_type}
-        ticket_cde={ticket_cde}
         request_desc={request_desc}
         data={tech_name}
+        ticket_cde={ticket_cde}
         id={id}
+        selected={setTicket_assigned_to_name}
+        name_requester={name_requester}
+        assigned_name={ticket_assigned_to_name}
         onClose={() => setAdminForm(false)}
       />
       <TechModal
