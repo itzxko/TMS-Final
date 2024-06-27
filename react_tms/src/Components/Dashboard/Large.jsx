@@ -8,12 +8,10 @@ import axiosClient from "../../axios"; //axios
 import { LuSettings2 } from "react-icons/lu";
 import { MdClose } from "react-icons/md";
 import { BiSearch } from "react-icons/bi";
-import { MdWorkOutline } from "react-icons/md";
 import { FiLayers } from "react-icons/fi";
 import { RiUserSharedLine } from "react-icons/ri";
 import { TbTransfer } from "react-icons/tb";
 import { RiEditLine } from "react-icons/ri";
-import { CgMathPlus } from "react-icons/cg";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { LiaExclamationSolid } from "react-icons/lia";
 
@@ -268,7 +266,7 @@ const Large = () => {
   //Render Page
   return (
     <>
-      <Navbar selectedRole={role} setShowUserForm={setShowUserForm}  />
+      <Navbar selectedRole={role} setShowUserForm={setShowUserForm} />
       {/* gray background page for the body */}
       <div className="relative hidden lg:block bg-[#ebebeb] min-h-[100vh] w-full px-6 md:px-8 lg:px-10 pb-6 font-dm items-center justify-center">
         {/* for large screen and beyond */}
