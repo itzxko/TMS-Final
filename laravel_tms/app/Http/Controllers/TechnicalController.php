@@ -39,4 +39,15 @@ class TechnicalController extends Controller
 
         return $this->success(['message' => 'Updated successfully']);
     }
+
+    public function acceptRequest(Request $request)
+    {
+        // Perform an update directly
+        DB::table('ticketing_main')->where('ticket_cde', $request->ticket_cde)->update([
+            'ticket_status' => 5,
+            'ticket_update_date' => now()
+        ]);
+
+        return $this->success(['message' => 'Request accepted']);
+    }
 }

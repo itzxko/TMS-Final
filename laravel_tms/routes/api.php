@@ -11,10 +11,10 @@ use Illuminate\Support\Facades\Auth;
 
 Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 
-    Route::middleware(['auth:sanctum'])->group(function () {
-        Route::get('get_images/{ticket_cde}', [RequestController::class, 'getImagesByTicketCode']);
-        Route::get('get_videos/{ticket_cde}', [RequestController::class, 'getVideosByTicketCode']);
-        Route::get('get_documents/{ticket_cde}', [RequestController::class, 'getDocumentsByTicketCode']);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('get_images/{ticket_cde}', [RequestController::class, 'getImagesByTicketCode']);
+    Route::get('get_videos/{ticket_cde}', [RequestController::class, 'getVideosByTicketCode']);
+    Route::get('get_documents/{ticket_cde}', [RequestController::class, 'getDocumentsByTicketCode']);
 
     Route::get('ticket', [TicketController::class, 'getTicketType']);
     Route::get('getEmployeeJobs', [TicketController::class, 'getEmployeeJobs']);
@@ -54,11 +54,10 @@ Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanc
     Route::get("/admin/pending-ticket", [RequestController::class, "getTicketByAdmin"]);
     Route::get("/tech/pending-ticket", [RequestController::class, "getTicketByTechnical"]);
     Route::get('spec_ticket_type/{type}', [TicketController::class, 'getSpecificTicketType']);
-   
 });
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/verify-otp', [UserController::class, 'userLogin']);
 Route::post('/loginOTP', [UserController::class, 'userLoginWithOtp']);
 Route::post('/techUpdate', [TechnicalController::class, 'updateTechnical']);
+Route::post('/acceptRequest', [TechnicalController::class, 'acceptRequest']);
 Route::get('/techShow/{id}', [TechnicalController::class, 'show']);
-
