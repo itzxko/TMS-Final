@@ -437,18 +437,6 @@ const AcceptDenyModal = ({
                     </p>
                   </div>
                   <div
-                    className="flex items-center justify-center py-2 px-4 bg-[#2f2f2f] hover:bg-[#474747] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
-                    onClick={() => {
-                      setShowImageModal(false);
-                      onClose();
-                      setActiveDetails(false);
-                    }}
-                  >
-                    <p className="text-xs font-normal text-white truncate">
-                      Deny
-                    </p>
-                  </div>
-                  <div
                     className="flex items-center justify-center py-2 px-4 bg-[#FFFFFF] hover:bg-[#f2f2f2] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
                     onClick={() => {
                       setShowImageModal(false);
@@ -457,7 +445,7 @@ const AcceptDenyModal = ({
                     }}
                   >
                     <p className="text-xs font-normal text-black truncate">
-                      Cancel
+                      Deny
                     </p>
                   </div>
                 </>
