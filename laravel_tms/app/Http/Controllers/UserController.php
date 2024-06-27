@@ -46,28 +46,36 @@ class UserController extends Controller
     
 
     public function userLogin(Request $request)
-{
-    $data = $request->validate([
-        'email' => 'required|email',
-        'otp' => 'required|numeric'
-    ]);
+        {
+        $data = $request->validate([
+            'email' => 'required|email',
+            // 'otp' => 'required|numeric'
+            'password' => 'required'
+        ]);
 
-    $user = DB::table('users')->where('email', $data['email'])->first();
+        // $user = DB::table('users')->where('email', $data['email'])->first();
 
-        if ($user && $user->otp == $data['otp']) {
-            // OTP matched, proceed with login
-            // Manually log in the user
-            Auth::loginUsingId($user->emp_no);
+        //     if ($user && $user->otp == $data['otp']) {
+        //         // OTP matched, proceed with login
+        //         // Manually log in the user
+        //         Auth::loginUsingId($user->emp_no);
 
+        //         $request->session()->regenerate();
+
+        //         return response()->json([
+        //             'message' => 'Request success',
+        //             'user' => Auth::user() 
+        //         ], 200);
+        //     }
+        if(Auth::attempt($data)){
             $request->session()->regenerate();
-
-            return response()->json([
+             return response()->json([
                 'message' => 'Request success',
                 'user' => Auth::user() 
             ], 200);
         }
-
-        return response()->json(['message' => 'Invalid OTP.'], 400);
+        // return response()->json(['message' => 'Invalid OTP.'], 400);
+        return response()->json(['message' => 'Invalid Credentials.'], 401);
     }
 
     public function logout(Request $request){
