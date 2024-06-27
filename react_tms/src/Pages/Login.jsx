@@ -34,7 +34,7 @@ const Login = () => {
     axiosClient
       .post("/verify-otp", {
         email: email,
-        otp: one_time_pin,
+        password: password,
       })
       .then((response) => {
         return response.data.user;
@@ -121,7 +121,7 @@ const Login = () => {
                   </div>
 
                   <div className="w-full flex flex-col gap-2">
-                    <p className="text-xs font-semibold px-1">Email</p>
+                    <p className="text-xs font-semibold px-1">Password</p>
                     <div className="py-3 px-4 bg-[#f6edff] rounded-md flex flex-row w-full gap-3 items-center justify-center">
                       <LuKey className="text-md" />
                       <input
