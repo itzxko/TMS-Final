@@ -125,12 +125,12 @@ const UserModal = ({ isVisible, onClose, data }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (ticket_desc_concern === "" || ticket_type === "Select Ticket Type") {
-      setIncompleteInput(true);
-      setTimeout(() => {
-        setIncompleteInput(false);
-      }, 3000);
-    }
+    // if (ticket_desc_concern === "" || ticket_type === "Select Ticket Type") {
+    //   setIncompleteInput(true);
+    //   setTimeout(() => {
+    //     setIncompleteInput(false);
+    //   }, 3000);
+    // }
 
     const formData = new FormData();
     for (let i = 0; i < file.length; i++) {
@@ -450,9 +450,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
                     : "hidden"
                 }
               >
-                {incompleteInput
-                  ? "Fill the Required Fields!"
-                  : "Attachmenet Limit Exceeded!"}
+                {incompleteInput ? "Fill the Required Fields!" : ""}
               </p>
             </div>
             <div className="w-1/2 flex flex-row gap-2 items-center justify-end">
