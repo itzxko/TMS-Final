@@ -30,6 +30,7 @@ class TicketController extends Controller
                     'users.username',
                     DB::raw('COUNT(ticketing_main.ticket_assigned_to_name) - SUM(CASE WHEN ticketing_main.ticket_status = 5 THEN 1 ELSE 0 END) as job_count')
                )
+               ->where('users.role', '=', 'technical')
                ->groupBy('users.username')
                ->get();
 
