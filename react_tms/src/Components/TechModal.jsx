@@ -435,7 +435,7 @@ const TechModal = ({
                   <textarea
                     name=""
                     id=""
-                    rows={6}
+                    rows={8}
                     className="w-full bg-[#f6edff] text-gray-500 resize-none outline-none text-xs font-semibold scrollbar-hide"
                     value={request_desc}
                     readOnly={true}
