@@ -267,7 +267,7 @@ const Small = () => {
                 </p>
               </div>
 
-              <div className="flex flex-row justify-center py-4 items-center gap-2">
+              <div className="flex flex-row justify-center items-center gap-2">
                 <div className="flex items-center justify-center px-4 py-3 bg-[#FAF5FF] rounded-lg cursor-pointer ease-in-out duration-500 group">
                   <div
                     className="flex items-center justify-center group-hover:pr-2"
@@ -346,7 +346,6 @@ const Small = () => {
                     </div>
                   </div>
                 </div>
-                {/* end of add ticket button */}
               </div>
             </div>
             <div className="py-2 min-h-[50vh] w-full flex justify-center items-start">
@@ -459,7 +458,7 @@ const Small = () => {
                             </div>
                             <div className="h-1/45 flex justify-center items-center">
                               {role === "user" && data.ticket_status === "5" ? (
-                                <button className="bg-[#474747] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500 disabled">
+                                <button className="bg-[#595959] w-full text-white py-3 rounded-md ease-in-out duration-500 disabled">
                                   <p
                                     className="text-xs font-semibold "
                                     onClick={() => {
@@ -487,7 +486,7 @@ const Small = () => {
                                 </button>
                               ) : role === "user" &&
                                 data.ticket_status === "4" ? (
-                                <button className="bg-[#474747] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500 disabled">
+                                <button className="bg-[#595959] w-full text-white py-3 rounded-md ease-in-out duration-500 disabled">
                                   <p
                                     className="text-xs font-semibold "
                                     onClick={() => {
@@ -514,7 +513,7 @@ const Small = () => {
                                   </p>
                                 </button>
                               ) : role === "user" ? (
-                                <button className="bg-[#474747] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
                                     onClick={() => {
@@ -527,20 +526,20 @@ const Small = () => {
                                 </button>
                               ) : role === "admin" &&
                                 data.ticket_status === "5" ? (
-                                <button className="bg-white w-full text-474747 py-3 rounded-md hover:bg-white ease-in-out duration-500 border border-[#474747] disabled">
+                                <button className="bg-[#595959] w-full text-white py-3 rounded-md ease-in-out duration-500 disabled">
                                   <p className="text-xs font-semibold ">
                                     Assign
                                   </p>
                                 </button>
                               ) : role === "admin" &&
                                 data.ticket_status === "4" ? (
-                                <button className="bg-white w-full text-474747 py-3 rounded-md hover:bg-white ease-in-out duration-500 border border-[#474747] disabled">
+                                <button className="bg-[#595959] w-full text-white py-3 rounded-md ease-in-out duration-500 disabled">
                                   <p className="text-xs font-semibold ">
                                     Assign
                                   </p>
                                 </button>
                               ) : role === "admin" ? (
-                                <button className="bg-[#474747] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
                                     onClick={() => {
@@ -565,13 +564,13 @@ const Small = () => {
                                 </button>
                               ) : role === "technical" &&
                                 data.ticket_status === "5" ? (
-                                <button className="bg-white w-full text-474747 py-3 rounded-md hover:bg-white ease-in-out duration-500 border border-[#474747] disabled">
+                                <button className="bg-[#595959] w-full text-white py-3 rounded-md ease-in-out duration-500 disabled">
                                   <p className="text-xs font-semibold ">
                                     Update
                                   </p>
                                 </button>
                               ) : role === "technical" ? (
-                                <button className="bg-[#474747] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
                                     onClick={() => {
@@ -659,7 +658,7 @@ const Small = () => {
                             </div>
                             <div className="flex justify-center items-center">
                               {role === "user" && data.ticket_status === "5" ? (
-                                <button className="bg-[#474747] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500 disabled">
+                                <button className="bg-[#3d3d3d] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500 disabled">
                                   <p
                                     className="text-xs font-semibold "
                                     onClick={() => {
@@ -687,7 +686,7 @@ const Small = () => {
                                 </button>
                               ) : role === "user" &&
                                 data.ticket_status === "4" ? (
-                                <button className="bg-[#474747] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500 disabled">
+                                <button className="bg-[#3d3d3d] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500 disabled">
                                   <p
                                     className="text-xs font-semibold "
                                     onClick={() => {
@@ -714,7 +713,7 @@ const Small = () => {
                                   </p>
                                 </button>
                               ) : role === "user" ? (
-                                <button className="bg-[#474747] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
                                     onClick={() => {
@@ -727,20 +726,20 @@ const Small = () => {
                                 </button>
                               ) : role === "admin" &&
                                 data.ticket_status === "5" ? (
-                                <button className="bg-white w-full text-474747 py-3 rounded-md hover:bg-white ease-in-out duration-500 border border-[#474747] disabled">
+                                <button className="bg-[#595959] w-full text-white py-3 rounded-md ease-in-out duration-500 disabled">
                                   <p className="text-xs font-semibold ">
                                     Assign
                                   </p>
                                 </button>
                               ) : role === "admin" &&
                                 data.ticket_status === "4" ? (
-                                <button className="bg-white w-full text-474747 py-3 rounded-md hover:bg-white ease-in-out duration-500 border border-[#474747] disabled">
+                                <button className="bg-[#595959] w-full text-white py-3 rounded-md ease-in-out duration-500 disabled">
                                   <p className="text-xs font-semibold ">
                                     Assign
                                   </p>
                                 </button>
                               ) : role === "admin" ? (
-                                <button className="bg-[#474747] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
                                     onClick={() => {
@@ -768,13 +767,13 @@ const Small = () => {
                                 </button>
                               ) : role === "technical" &&
                                 data.ticket_status === "5" ? (
-                                <button className="bg-white w-full text-474747 py-3 rounded-md hover:bg-white ease-in-out duration-500 border border-[#474747] disabled">
+                                <button className="bg-[#595959] w-full text-white py-3 rounded-md ease-in-out duration-500 disabled">
                                   <p className="text-xs font-semibold ">
                                     Update
                                   </p>
                                 </button>
                               ) : role === "technical" ? (
-                                <button className="bg-[#474747] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
                                     onClick={() => {

@@ -419,7 +419,7 @@ const AdminModal = ({
                   <textarea
                     name=""
                     id=""
-                    rows={6}
+                    rows={12}
                     className="w-full bg-[#f6edff] resize-none outline-none text-xs font-semibold scrollbar-hide text-gray-500"
                     value={request_desc}
                     readOnly={true}
