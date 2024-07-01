@@ -94,7 +94,7 @@ function Navbar({ selectedRole, setShowUserForm }) {
 
             >
               <RiAddFill className="text-md" />
-              <p className="text-xs font-normal" >Create.</p>
+              <p className="text-xs font-normal" >Create</p>
             </div>
             {/* div for containing the profile picture */}
             <div className="flex flex-row gap-2 items-center justfy-center">
