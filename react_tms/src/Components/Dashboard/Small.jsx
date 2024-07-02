@@ -4,9 +4,6 @@ import { useState, useEffect } from "react";
 // importing json for tickets
 import ticketType from "../../JSON/Tickets.json";
 
-// importing json for roles
-import roles from "../../JSON/Roles.json";
-
 // importing icons
 import { BiTimer } from "react-icons/bi";
 import { TbCalendarTime } from "react-icons/tb";
@@ -104,13 +101,15 @@ const Small = () => {
   };
 
   useEffect(() => {
-    let url = ``
-    if(role === 'user'){
-        url = `user/`;
+    let url = ``;
+    if (role === "user") {
+      url = `user/`;
     }
-    axiosClient.get(`/${url}pending-ticket?page=${current_page}`).then((res) => {
-      setPendingTicket(res.data.Message.data);
-    });
+    axiosClient
+      .get(`/${url}pending-ticket?page=${current_page}`)
+      .then((res) => {
+        setPendingTicket(res.data.Message.data);
+      });
   }, [current_page]);
 
   const handleSearch = () => {
@@ -166,26 +165,26 @@ const Small = () => {
 
   // Fetch initial data on component mount
   useEffect(() => {
-    if(role === "user"){
+    if (role === "user") {
       axiosClient
-      .get("/ticket")
-      .then((res) => {
-        setData(res.data.Message);
-        setLoading(true);
-      })
-      .catch((err) => console.log(err));
+        .get("/ticket")
+        .then((res) => {
+          setData(res.data.Message);
+          setLoading(true);
+        })
+        .catch((err) => console.log(err));
     }
   }, []);
 
   // Filtering Pending Ticket
   useEffect(() => {
-    let url = ``
-    if(role === "admin"){
+    let url = ``;
+    if (role === "admin") {
       url = `/pending-ticket/${selectedType}`;
-    }else if(role === "technical"){
-      url = '/tech/pending-ticket';
-    }else if(role === "user"){
-      url = "/user/pending-ticket"
+    } else if (role === "technical") {
+      url = "/tech/pending-ticket";
+    } else if (role === "user") {
+      url = "/user/pending-ticket";
     }
     axiosClient
       .get(url)
@@ -202,11 +201,9 @@ const Small = () => {
       .catch((err) => {
         console.log(err);
       });
-    
   }, [selectedType]);
 
   const filteredSearch = (e) => {
-    
     e.preventDefault();
     axiosClient
       .get(`/pending-ticket/search/${search}`)
@@ -250,9 +247,7 @@ const Small = () => {
                     className="flex items-center justify-center group-hover:pr-2"
                     onClick={(e) => filteredSearch(e)}
                   >
-                    <BiSearch className="text-sm group-hover:rotate-[360deg] transition-all duration-500" 
-
-                    />
+                    <BiSearch className="text-sm group-hover:rotate-[360deg] transition-all duration-500" />
                   </div>
                   <input
                     type="text"
@@ -461,9 +456,7 @@ const Small = () => {
                                     }}
                                   >
                                     Details
-
                                   </p>
-                                
                                 </button>
                               ) : role === "user" &&
                                 data.ticket_status === "4" ? (
@@ -492,7 +485,6 @@ const Small = () => {
                                   >
                                     Review
                                   </p>
-                                
                                 </button>
                               ) : role === "user" ? (
                                 <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
@@ -790,45 +782,45 @@ const Small = () => {
           </div>
 
           {current_page && (
-                  <div className="flex flex-row gap-1 items-center justify-end w-full p-12">
-                    <button
-                      className="text-black p-1 rounded-md ease-in-out duration-500 cursor-pointer"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        prevPage();
-                      }}
-                      disabled={current_page === 1}
-                    >
-                      <FaAngleLeft className="text-xs" />
-                    </button>
-                    {pageNumbers.map((pageNumber) => (
-                      <button
-                        key={pageNumber}
-                        className={`p-1 ease-in-out duration-500  font-semibold ${
-                          pageNumber === current_page
-                            ? "text-sm text-black"
-                            : "text-xs text-black/50"
-                        }`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          set_current_page(pageNumber);
-                        }}
-                      >
-                        {pageNumber}
-                      </button>
-                    ))}
-                    <button
-                      className="text-black p-1 rounded-md ease-in-out duration-500 cursor-pointer"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        nextPage();
-                      }}
-                      disabled={current_page === pages}
-                    >
-                      <FaAngleRight className="text-xs" />
-                    </button>
-                  </div>
-                )}
+            <div className="flex flex-row gap-1 items-center justify-end w-full p-12">
+              <button
+                className="text-black p-1 rounded-md ease-in-out duration-500 cursor-pointer"
+                onClick={(e) => {
+                  e.preventDefault();
+                  prevPage();
+                }}
+                disabled={current_page === 1}
+              >
+                <FaAngleLeft className="text-xs" />
+              </button>
+              {pageNumbers.map((pageNumber) => (
+                <button
+                  key={pageNumber}
+                  className={`p-1 ease-in-out duration-500  font-semibold ${
+                    pageNumber === current_page
+                      ? "text-sm text-black"
+                      : "text-xs text-black/50"
+                  }`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    set_current_page(pageNumber);
+                  }}
+                >
+                  {pageNumber}
+                </button>
+              ))}
+              <button
+                className="text-black p-1 rounded-md ease-in-out duration-500 cursor-pointer"
+                onClick={(e) => {
+                  e.preventDefault();
+                  nextPage();
+                }}
+                disabled={current_page === pages}
+              >
+                <FaAngleRight className="text-xs" />
+              </button>
+            </div>
+          )}
         </div>
         <div className="fixed bottom-10 right-4 flex flex-col-reverse items-end gap-2"></div>
       </div>

@@ -40,12 +40,12 @@ const TechModal = ({
 
   const imgmodal = () => {
     setShowImageModal(!showImageModal);
-    console.log(showImageModal);
+    // console.log(showImageModal);
   };
 
   const handleAttachment = () => {
     setSmallAttach(!smallAttach);
-    console.log(smallAttach);
+    // console.log(smallAttach);
   };
 
   useEffect(() => {
@@ -176,7 +176,7 @@ const TechModal = ({
         try {
           const res = await axiosClient.get(`get_images/` + ticket_cde);
           setImages(res.data.images);
-          console.log(res.data.images);
+          // console.log(res.data.images);
         } catch (error) {
           console.error("Error fetching images:", error);
         }
@@ -185,7 +185,7 @@ const TechModal = ({
         try {
           const res = await axiosClient.get(`get_videos/` + ticket_cde);
           setVideos(res.data.videos);
-          console.log(res.data.videos);
+          // console.log(res.data.videos);
         } catch (error) {
           console.error("Error fetching videos:", error);
         }
@@ -194,7 +194,7 @@ const TechModal = ({
         try {
           const res = await axiosClient.get(`get_documents/` + ticket_cde);
           setDocuments(res.data.documents);
-          console.log(res.data.documents);
+          // console.log(res.data.documents);
         } catch (error) {
           console.error("Error fetching documents:", error);
         }
@@ -229,7 +229,7 @@ const TechModal = ({
         onClick={(e) => {
           if (e.target.id === "container") {
             onClose();
-            selected(null);
+            // selected(null);
             setActiveDetails(false);
           }
         }}

@@ -78,7 +78,7 @@ const verifyOTP = async () => {
   }
 };
   useEffect(() => {
-    console.log(one_time_pin);
+    // console.log(one_time_pin);
   }, [one_time_pin]);
 
   return (
