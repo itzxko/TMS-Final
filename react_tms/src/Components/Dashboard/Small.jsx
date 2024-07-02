@@ -50,11 +50,6 @@ const Small = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [id, setID] = useState("");
-
-  // use state for setting the selected role
-  const [selectedRole, setSelectedRole] = useState("user");
-  // const [role, setRole] = useState("");
-
   // use state for toggling role filter
   const [openRole, setOpenRole] = useState(false);
   const [pendingTicket, setPendingTicket] = useState([]);
@@ -72,12 +67,10 @@ const Small = () => {
   const [search, setSearch] = useState("");
   const [bumpCode, setBumpCode] = useState("");
   const [ticket_assigned_to_name, setTicket_assigned_to_name] = useState(null);
-
   // const [currentPage, setCurrentPage] = useState(1);
   const [current_page, set_current_page] = useState(null);
   const [pages, setPages] = useState(null);
-  const [name_requester, set_name_requester] = useState(null);
-  const [ticket_assigned_to_name, setTicket_assigned_to_name] = useState(null);
+
   const { role } = useRole();
   const generatePageNumbers = (current_page, total_pages) => {
     const pages = [];
@@ -446,10 +439,6 @@ const Small = () => {
                             <div className="h-1/45 flex justify-center items-center">
                               {role === "user" && data.ticket_status === "5" ? (
                                 <button className="bg-[#474747] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500 disabled">
-<<<<<<< HEAD
-                                  <p className="text-xs font-semibold ">
-                                    Follow Up
-=======
                                   <p
                                     className="text-xs font-semibold "
                                     onClick={() => {
@@ -473,7 +462,7 @@ const Small = () => {
                                     }}
                                   >
                                     Details
->>>>>>> main
+
                                   </p>
                                 
                                 </button>
@@ -538,27 +527,20 @@ const Small = () => {
                                     className="text-xs font-semibold "
                                     onClick={() => {
                                       setAdminForm(true);
-<<<<<<< HEAD
                                       // get_ticket_desc(data.ticket_type);
                                       set_request_desc(
                                         data.ticket_desc_concern
                                       );
-=======
->>>>>>> main
                                       set_name_requester(
                                         data.ticket_client_name
                                       );
                                       setTicket_assigned_to_name(
                                         data.ticket_assigned_to_name
                                       );
-<<<<<<< HEAD
-
-=======
                                       get_ticket_desc(data.ticket_type);
                                       set_request_desc(
                                         data.ticket_desc_concern
                                       );
->>>>>>> main
                                       set_request_type(data.ticket_type);
                                       setID(data.id);
                                       set_ticket_cde(data.ticket_cde);

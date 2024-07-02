@@ -28,7 +28,6 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axiosClient.get("/csrf-cookie");
     setLoading(true)
     if(!isLogged){
       LoginWithPassWord()
@@ -51,36 +50,33 @@ const Login = () => {
   }
   const sendOTP = async () => {
         try{
-          await axiosClient.get("/csrf-cookie");
-          await axiosClient.post('/send-otp', {email});
+          const res = await axiosClient.post('/send-otp', {email});
+          if(res){
+            setShowModal(true);
+          }
         }catch(err){
           console.log(err)
         }
     }
-  const verifyOTP = () => {
-    axiosClient.post("/verify-otp", {
-        email: email,
-        otp: password,
-      })
-      .then((response) => {
-        return response.data.user;
-      })
-      .then((res) => {
-          localStorage.setItem("username", res.username);        
-          setInvalid(false);
-          setRole(res.role);
-          localStorage.setItem("role", res.role);
-          setLoading(false);
-          navigate("/dashboard"); // Redirect to dashboard on successful login
-      })
-      .catch((error) => {
-        console.error(error);
-        setTimeout(() => {
-          setInvalid(true);
-          setLoading(false);
-        }, 2000);
-      });
+const verifyOTP = async () => {
+  try {
+    const res = await axiosClient.post("/verify-otp", {
+      email: email,
+      otp: password, // Assuming you're reusing the password field for OTP
+    });
+    const data = res.data.user;
+    localStorage.setItem("username", data.username);
+    localStorage.setItem("role", data.role);
+    setRole(data.role);
+    setInvalid(false);
+    navigate("/dashboard"); // Redirect to dashboard on successful login
+  } catch (error) {
+    console.error(error);
+    setInvalid(true);
+  } finally {
+    setLoading(false);
   }
+};
   useEffect(() => {
     console.log(one_time_pin);
   }, [one_time_pin]);
@@ -160,7 +156,6 @@ const Login = () => {
                         onClick={(e) => {
                           e.preventDefault();
                           sendOTP();
-                          setShowModal(true);
 
                         }}
                       >
