@@ -47,7 +47,7 @@ function Navbar({ selectedRole, setShowUserForm }) {
 
   //For Employee Job Count
   useEffect(() => {
-    if(role !== "user" || role !== "technical"){
+    if(selectedRole !== "user" || selectedRole !== "technical"){
       axiosClient
       .get("/getEmployeeJobs")
       .then((res) => {
@@ -68,7 +68,7 @@ function Navbar({ selectedRole, setShowUserForm }) {
         {/* positioning the title and menu in between each other */}
         <div
           className={
-            role !== "user"
+            selectedRole !== "user"
               ? "py-4 px-6 md:px-8 bg-[#FAF5FF]  flex justify-between items-center rounded-lg"
               : "py-3 px-6 md:px-8 bg-[#FAF5FF]  flex justify-between items-center rounded-lg"
           }
@@ -85,7 +85,7 @@ function Navbar({ selectedRole, setShowUserForm }) {
           <div className="flex items-center justify-center gap-3 md:gap-5">
             <div
               className={
-                role === "user"
+                selectedRole === "user"
                   ? "flex flex-row bg-[#2f2f2f] hover:bg-[#474747] transition-all duration-500 text-white px-3 py-2 rounded-md cursor-pointer gap-1"
                   : "hidden"
                   
