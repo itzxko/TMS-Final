@@ -1,8 +1,6 @@
 # TICKETING MANAGEMENT SYSTEM
 
-Overview:
-
-
+Overview
 The Ticketing Management System is a web-based application designed to streamline the process of managing tickets, requests, and inquiries from customers or users. It provides a centralized platform for ticket creation, assignment, tracking, and resolution, thereby enhancing communication and collaboration within the organization.
 
 ## FEATURES
