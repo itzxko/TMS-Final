@@ -28,7 +28,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
 
   const handleOpenType = () => {
     setOpenType(!openType);
-    console.log(openType);
+    // console.log(openType);
   };
 
   const handleFileRemove = (index, type) => {
@@ -222,7 +222,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
         onClick={(e) => {
           if (e.target.id === "container") {
             onClose();
-            selected(null);
+            // selected(null);
             setActiveDetails(false);
           }
         }}

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import ticketType from "../../JSON/Tickets.json"; // importing json for tickets
-import roles from "../../JSON/Roles.json"; // importing json for roles
 import Navbar from "../Navbar"; //Navbar
 import axiosClient from "../../axios"; //axios
 
@@ -154,18 +153,6 @@ const Large = () => {
         });
     }
   }, [search]);
-
-  // const fetchPendingTickets = async (url) =>{
-  //       try{
-  //         const res = await axiosClient.all(url);
-  //          setPendingTicket(res.Message.data);
-  //       set_current_page(res.Message.current_page);
-  //       setPages(res.Message.last_page);
-  //       }catch(err){
-  //         console.log("Error fetchPendingTickets: " + err);
-  //         throw new err;
-  //       }
-  // }
 
   // Filtering Pending Ticket
   useEffect(() => {
@@ -951,7 +938,7 @@ const Large = () => {
                   </table>
                 </div>
                 {current_page && (
-                  <div className="flex flex-row gap-1 items-center justify-end w-full p-12">
+                  <div className="flex flex-row gap-1 items-center justify-end w-full p-12" key={current_page}>
                     <button
                       className="text-black p-1 rounded-md ease-in-out duration-500 cursor-pointer"
                       onClick={(e) => {

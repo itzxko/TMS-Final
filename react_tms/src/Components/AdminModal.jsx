@@ -49,12 +49,12 @@ const AdminModal = ({
 
   const imgmodal = () => {
     setShowImageModal(!showImageModal);
-    console.log(setShowImageModal);
+    // console.log(setShowImageModal);
   };
 
   const handleAttachment = () => {
     setSmallAttach(!smallAttach);
-    console.log(smallAttach);
+    // console.log(smallAttach);
   };
 
   const handleNext = () => {
@@ -119,7 +119,7 @@ const AdminModal = ({
         try {
           const res = await axiosClient.get(`get_images/` + ticket_cde);
           setImages(res.data.images);
-          console.log(res.data.images);
+          // console.log(res.data.images);
         } catch (error) {
           console.error("Error fetching images:", error);
         }
@@ -128,7 +128,7 @@ const AdminModal = ({
         try {
           const res = await axiosClient.get(`get_videos/` + ticket_cde);
           setVideos(res.data.videos);
-          console.log(res.data.videos);
+          // console.log(res.data.videos);
         } catch (error) {
           console.error("Error fetching videos:", error);
         }
@@ -137,7 +137,7 @@ const AdminModal = ({
         try {
           const res = await axiosClient.get(`get_documents/` + ticket_cde);
           setDocuments(res.data.documents);
-          console.log(res.data.documents);
+          // console.log(res.data.documents);
         } catch (error) {
           console.error("Error fetching documents:", error);
         }
@@ -213,7 +213,7 @@ const AdminModal = ({
         onClick={(e) => {
           if (e.target.id === "container") {
             onClose();
-            selected(null);
+            // selected(null);
             setActiveDetails(false);
           }
         }}
