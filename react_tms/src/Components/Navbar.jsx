@@ -14,12 +14,13 @@ import { RiMenu4Fill, RiMenu5Fill } from "react-icons/ri";
 import { PiArrowDownRightBold } from "react-icons/pi";
 import { RiAddFill } from "react-icons/ri";
 import { IoMenuOutline } from "react-icons/io5";
+import useRole from "./customHooks/useRole";
 
 function Navbar({ selectedRole, setShowUserForm }) {
-  const [menu, setMenu] = React.useState(false); //Toggline Menu
+  const [menu, setMenu] = useState(false); //Toggline Menu
   const [name, setName] = useState([]); //Setting username
   const [logout, setLogout] = useState(false); //Logout
-  const role = selectedRole;
+  const role = useRole();
   const navigate = useNavigate();
 
   const handleMenu = () => {
@@ -46,7 +47,8 @@ function Navbar({ selectedRole, setShowUserForm }) {
 
   //For Employee Job Count
   useEffect(() => {
-    axiosClient
+    if(role !== "user" || role !== "technical"){
+      axiosClient
       .get("/getEmployeeJobs")
       .then((res) => {
         setName(res.data.data);
@@ -55,6 +57,7 @@ function Navbar({ selectedRole, setShowUserForm }) {
       .catch((err) => {
         console.log(err);
       });
+    }
   }, []);
 
   return (
