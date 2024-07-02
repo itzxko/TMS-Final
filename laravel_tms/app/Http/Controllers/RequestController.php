@@ -55,7 +55,7 @@ class RequestController extends Controller
         
         // Insert into ticketing_main table
         $ticketMainInsert = DB::table('ticketing_main')->insert([
-            "ticket_client" => Auth::id(),
+            "ticket_client" => Auth::user()->emp_no,
             "ticket_cde" => $ticketCode,
             "ticket_client_name" => $request->ticket_client_name,
             "ticket_client_office_cde" => Auth::user()->office_code,
@@ -192,7 +192,7 @@ class RequestController extends Controller
     }
     public function getTicketByUser(){
         $ticket = DB::table('ticketing_main')
-                ->where("ticket_assigned_to_id", Auth::user()->emp_no)
+                ->where("ticket_client", Auth::user()->emp_no)
                 ->orderBy("ticket_update_date", "desc")->paginate(10);
         return response()->json(["Message" => $ticket, "role" => Auth::user()->role], 200);
     }

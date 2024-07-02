@@ -56,8 +56,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('spec_ticket_type/{type}', [TicketController::class, 'getSpecificTicketType']);
 });
 Route::post('/register', [UserController::class, 'register']);
-Route::post('/verify-otp', [UserController::class, 'userLogin']);
-Route::post('/loginOTP', [UserController::class, 'userLoginWithOtp']);
+Route::post('/verify-otp', [UserController::class, 'verifyOTP']);
+Route::post('/login', [UserController::class, 'userLogin']);
+Route::post('/send-otp', [UserController::class, 'sendOTP']);
 Route::post('/techUpdate', [TechnicalController::class, 'updateTechnical']);
 Route::post('/acceptRequest', [TechnicalController::class, 'acceptRequest']);
 Route::get('/techShow/{id}', [TechnicalController::class, 'show']);
