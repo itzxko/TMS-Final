@@ -20,6 +20,7 @@ const Login = () => {
   const { role, setRole } = useRole();
   const [isLogged, setIsLogged] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [hasClicked, setHasClicked] = useState(false);
   // Function to handle form submission
 
   useEffect(() => {
@@ -156,11 +157,11 @@ const verifyOTP = async () => {
                         onClick={(e) => {
                           e.preventDefault();
                           sendOTP();
-
+                          setHasClicked(true);
                         }}
                       >
                         <p className="text-xs font-semibold text-white">
-                          Send
+                          {hasClicked ? "Resend" : "Send"}
                         </p>
                       </div>
                     </>
@@ -176,11 +177,6 @@ const verifyOTP = async () => {
                         }
                       >
                         Invalid Credentials!
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-black font-bold cursor-pointer">
-                        Forgot Password
                       </p>
                     </div>
                   </div>
