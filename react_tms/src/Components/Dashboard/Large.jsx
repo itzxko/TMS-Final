@@ -561,6 +561,7 @@ const Large = () => {
                                         set_ticket_desc_replacement(
                                           data.ticket_desc_replacement
                                         );
+                                        set_ticket_status(data.ticket_status);
                                       }}
                                     >
                                       <div className="flex flex-row gap-1 items-center justify-center w-full">
@@ -642,6 +643,7 @@ const Large = () => {
                                         set_ticket_desc_replacement(
                                           data.ticket_desc_replacement
                                         );
+                                        set_ticket_status(data.ticket_status);
                                       }}
                                     >
                                       <div className="flex flex-row gap-1 items-center justify-center w-full">
@@ -675,6 +677,7 @@ const Large = () => {
                                         set_ticket_desc_replacement(
                                           data.ticket_desc_replacement
                                         );
+                                        set_ticket_status(data.ticket_status);
                                       }}
                                     >
                                       <div className="flex flex-row gap-1 items-center justify-center w-full">
@@ -735,6 +738,7 @@ const Large = () => {
                                         set_ticket_desc_replacement(
                                           data.ticket_desc_replacement
                                         );
+                                        set_ticket_status(data.ticket_status);
                                       }}
                                     >
                                       <div className="flex flex-row gap-1 items-center justify-center w-full">
@@ -967,6 +971,7 @@ const Large = () => {
                                         set_ticket_desc_replacement(
                                           data.ticket_desc_replacement
                                         );
+                                        set_ticket_status(data.ticket_status);
                                       }}
                                     >
                                       <div className="flex flex-row gap-1 items-center justify-center w-full">
@@ -1000,6 +1005,7 @@ const Large = () => {
                                         set_ticket_desc_replacement(
                                           data.ticket_desc_replacement
                                         );
+                                        set_ticket_status(data.ticket_status);
                                       }}
                                     >
                                       <div className="flex flex-row gap-1 items-center justify-center w-full">
@@ -1038,7 +1044,7 @@ const Large = () => {
                                     </button>
                                   ) : role === "technical" &&
                                     data.ticket_status === "5" ? (
-                                    <button
+                                      <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
                                         setShowAcceptDenyModal(true);
@@ -1060,6 +1066,7 @@ const Large = () => {
                                         set_ticket_desc_replacement(
                                           data.ticket_desc_replacement
                                         );
+                                        set_ticket_status(data.ticket_status);
                                       }}
                                     >
                                       <div className="flex flex-row gap-1 items-center justify-center w-full">
@@ -1275,6 +1282,7 @@ const Large = () => {
         ticket_desc_findings={ticket_desc_findings}
         ticket_desc_replacement={ticket_desc_replacement}
         ticket_status={ticket_status}
+        selectedRole={role}
         onClose={() => setShowAcceptDenyModal(false)}
       />
     </>
