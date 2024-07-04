@@ -99,6 +99,7 @@ const Large = () => {
     // setOpenRole(false);
     // console.log(`type value below: ${openType}`);
   };
+
   const nextPage = () => {
     if (current_page === pages) {
       return;
