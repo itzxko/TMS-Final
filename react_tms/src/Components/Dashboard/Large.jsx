@@ -158,7 +158,7 @@ const Large = () => {
   useEffect(() => {
     let url = ``
     if(role === "admin"){
-      url = `/pending-ticket/${selectedType}`;
+      url = `/pending-ticket`;
     }else if(role === "technical"){
       url = '/tech/pending-ticket';
     }else if(role === "user"){
