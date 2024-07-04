@@ -112,24 +112,26 @@ const Large = () => {
     set_current_page(current_page - 1);
   };
   useEffect(() => {
-    let url = ``
-    if(role === 'user'){
-        url = `user/`;
+    let url = ``;
+    if (role === "user") {
+      url = `user/`;
     }
-    axiosClient.get(`/${url}pending-ticket?page=${current_page}`).then((res) => {
-      setPendingTicket(res.data.Message.data);
-    });
+    axiosClient
+      .get(`/${url}pending-ticket?page=${current_page}`)
+      .then((res) => {
+        setPendingTicket(res.data.Message.data);
+      });
   }, [current_page]);
 
   useEffect(() => {
-    if(role === "user"){
+    if (role === "user") {
       axiosClient
-      .get("/ticket")
-      .then((res) => {
-        setData(res.data.Message);
-        setLoading(true);
-      })
-      .catch((err) => console.log(err));
+        .get("/ticket")
+        .then((res) => {
+          setData(res.data.Message);
+          setLoading(true);
+        })
+        .catch((err) => console.log(err));
     }
   }, []);
 
@@ -156,13 +158,13 @@ const Large = () => {
 
   // Filtering Pending Ticket
   useEffect(() => {
-    let url = ``
-    if(role === "admin"){
+    let url = ``;
+    if (role === "admin") {
       url = `/pending-ticket/${selectedType}`;
-    }else if(role === "technical"){
-      url = '/tech/pending-ticket';
-    }else if(role === "user"){
-      url = "/user/pending-ticket"
+    } else if (role === "technical") {
+      url = "/tech/pending-ticket";
+    } else if (role === "user") {
+      url = "/user/pending-ticket";
     }
     axiosClient
       .get(url)
@@ -179,7 +181,6 @@ const Large = () => {
       .catch((err) => {
         console.log(err);
       });
-    
   }, [selectedType]);
 
   //For Employee Job Count
@@ -499,12 +500,13 @@ const Large = () => {
                                     {data.ticket_client_name}
                                   </p>
                                 </td>
-                                <td className={
-                                      !(role === "admin" || role === "user")
+                                <td
+                                  className={
+                                    !(role === "admin" || role === "user")
                                       ? "hidden"
                                       : "p-4"
-                                    } 
-                                    key={index.id}
+                                  }
+                                  key={index.id}
                                 >
                                   <p className="font-bold text-gray-600 w-full truncate">
                                     {data.ticket_assigned_to_name
@@ -620,7 +622,7 @@ const Large = () => {
                                     </button>
                                   ) : role === "admin" &&
                                     data.ticket_status === "5" ? (
-                                      <button
+                                    <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
                                         setShowAcceptDenyModal(true);
@@ -653,7 +655,7 @@ const Large = () => {
                                     </button>
                                   ) : role === "admin" &&
                                     data.ticket_status === "4" ? (
-                                      <button
+                                    <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
                                         setShowAcceptDenyModal(true);
@@ -713,7 +715,7 @@ const Large = () => {
                                     </button>
                                   ) : role === "technical" &&
                                     data.ticket_status === "5" ? (
-                                      <button
+                                    <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
                                         setShowAcceptDenyModal(true);
@@ -821,12 +823,13 @@ const Large = () => {
                                     {data.ticket_client_name}
                                   </p>
                                 </td>
-                                <td className={
-                                      !(role === "admin" || role === "user")
+                                <td
+                                  className={
+                                    !(role === "admin" || role === "user")
                                       ? "hidden"
                                       : "p-4"
-                                    } 
-                                    key={index.id}
+                                  }
+                                  key={index.id}
                                 >
                                   <p className="font-bold text-gray-600 w-full truncate">
                                     {data.ticket_assigned_to_name
@@ -945,7 +948,7 @@ const Large = () => {
                                     </button>
                                   ) : role === "admin" &&
                                     data.ticket_status === "5" ? (
-                                      <button
+                                    <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
                                         setShowAcceptDenyModal(true);
@@ -978,7 +981,7 @@ const Large = () => {
                                     </button>
                                   ) : role === "admin" &&
                                     data.ticket_status === "4" ? (
-                                      <button
+                                    <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
                                         setShowAcceptDenyModal(true);
@@ -1112,7 +1115,10 @@ const Large = () => {
                   </table>
                 </div>
                 {current_page && (
-                  <div className="flex flex-row gap-1 items-center justify-end w-full p-12" key={current_page}>
+                  <div
+                    className="flex flex-row gap-1 items-center justify-end w-full p-12"
+                    key={current_page}
+                  >
                     <button
                       className="text-black p-1 rounded-md ease-in-out duration-500 cursor-pointer"
                       onClick={(e) => {
