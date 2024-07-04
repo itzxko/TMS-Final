@@ -22,6 +22,8 @@ const Login = () => {
   const [isLogged, setIsLogged] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [hasClicked, setHasClicked] = useState(false);
+  const [canResend, setCanResend] = useState(true);
+  const [countdown, setCountdown] = useState(0);
   // Function to handle form submission
 
   useEffect(() => {
@@ -91,6 +93,28 @@ const Login = () => {
   useEffect(() => {
     // console.log(one_time_pin);
   }, [one_time_pin]);
+
+  useEffect(() => {
+    let interval = null;
+    if (!canResend && countdown > 0) {
+      interval = setInterval(() => {
+        setCountdown((currentCountdown) => currentCountdown - 1);
+      }, 1000);
+    } else if (countdown === 0) {
+      clearInterval(interval);
+      setCanResend(true);
+    }
+    return () => clearInterval(interval);
+  }, [canResend, countdown]);
+
+  const handleSendClick = (e) => {
+    e.preventDefault();
+    if (!canResend) return;
+    sendOTP();
+    setHasClicked(true);
+    setCanResend(false);
+    setCountdown(60); // Start countdown from 60 seconds
+  };
 
   return (
     <>
@@ -163,17 +187,18 @@ const Login = () => {
                         </div>
                       </div>
                       <div
-                        className="w-full flex items-center justify-center bg-[#2f2f2f] py-3 rounded-md cursor-pointer hover:bg-[#474747] transition-colors duration-700"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          sendOTP();
-                          setHasClicked(true);
-                        }}
+                        className={`w-full flex items-center justify-center bg-[#2f2f2f] py-3 rounded-md cursor-pointer hover:bg-[#474747] transition-colors duration-700 ${!canResend ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        onClick={handleSendClick}
                       >
                         <p className="text-xs font-semibold text-white">
                           {hasClicked ? "Resend" : "Send"}
                         </p>
                       </div>
+                      {!canResend && (
+                        <p className="text-xs font-semibold text-center mt-2">
+                          Please wait {countdown} seconds
+                        </p>
+                      )}
                     </>
                   )}
 
