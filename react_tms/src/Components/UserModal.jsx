@@ -28,7 +28,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
 
   const handleOpenType = () => {
     setOpenType(!openType);
-    // console.log(openType);
+    console.log(openType);
   };
 
   const handleFileRemove = (index, type) => {
@@ -125,12 +125,13 @@ const UserModal = ({ isVisible, onClose, data }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // if (ticket_desc_concern === "" || ticket_type === "Select Ticket Type") {
-    //   setIncompleteInput(true);
-    //   setTimeout(() => {
-    //     setIncompleteInput(false);
-    //   }, 3000);
-    // }
+    if (ticket_desc_concern === "" || ticket_type === "Select Ticket Type") {
+      setIncompleteInput(true);
+      setTimeout(() => {
+        setIncompleteInput(false);
+      }, 3000);
+      return;
+    }
 
     const formData = new FormData();
     for (let i = 0; i < file.length; i++) {
@@ -161,6 +162,9 @@ const UserModal = ({ isVisible, onClose, data }) => {
     } catch (error) {
       console.error(error);
       setLimitError(true);
+      setTimeout(() => {
+        setLimitError(false); 
+      }, 3000);
     }
   };
 
@@ -168,6 +172,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
     const handleEsc = (event) => {
       if (event.key === "Escape") {
         onClose();
+        setLimitError(false);
       }
     };
 
@@ -222,7 +227,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
         onClick={(e) => {
           if (e.target.id === "container") {
             onClose();
-            // selected(null);
+            selected(null);
             setActiveDetails(false);
           }
         }}
@@ -443,15 +448,18 @@ const UserModal = ({ isVisible, onClose, data }) => {
           </div>
           <div className="w-full flex flex-row items-center justify-between py-4">
             <div className="w-1/2 flex items-center justify-start">
-              <p
-                className={
-                  incompleteInput || limitError
-                    ? "text-xs font-semibold text-red-700 animate-shake"
-                    : "hidden"
-                }
-              >
-                {incompleteInput ? "Fill the Required Fields!" : ""}
-              </p>
+              <>
+                {incompleteInput && (
+                  <p className="text-xs font-semibold text-red-700 animate-shake">
+                    Fill the Required Fields!
+                  </p>
+                )}
+                {limitError && !incompleteInput && (
+                  <p className="text-xs font-semibold text-red-700 animate-shake">
+                    Attachment Limit Exceeded!
+                  </p>
+                )}
+              </>
             </div>
             <div className="w-1/2 flex flex-row gap-2 items-center justify-end">
               <div

@@ -1018,6 +1018,7 @@ const Small = () => {
         ticket_desc_findings={ticket_desc_findings}
         ticket_desc_replacement={ticket_desc_replacement}
         ticket_status={ticket_status}
+        selectedRole={role}
         onClose={() => setShowAcceptDenyModal(false)}
       />
     </>

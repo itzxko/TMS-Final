@@ -14,6 +14,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [invalid, setInvalid] = useState(true); // State variable for invalid credentials
   const [sendError, setSendError] = useState(false);
+  const [otpError, setOtpError] = useState(false);
   const [ready, setReady] = useState(false);
   const [toggleSubmit, setToggleSubmit] = useState(false);
   const [one_time_pin, setOneTimePin] = useState(0);
@@ -31,36 +32,41 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true)
+    setLoading(true);
     if (!isLogged) {
-      LoginWithPassWord()
+      LoginWithPassWord();
     } else {
-      verifyOTP()
+      verifyOTP();
     }
   };
 
   const LoginWithPassWord = async () => {
     try {
-      const response = await axiosClient.post('/login', { email, password });
+      const response = await axiosClient.post("/login", { email, password });
       if (response) {
         setLoading(false);
         setIsLogged(true);
         setInvalid(false);
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
+      setSendError(true);
+      setTimeout(() => {
+        setSendError(false);
+        setLoading(false);
+      }, 3000);
     }
-  }
+  };
   const sendOTP = async () => {
     try {
-      const res = await axiosClient.post('/send-otp', { email });
+      const res = await axiosClient.post("/send-otp", { email });
       if (res) {
         setShowModal(true);
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
   const verifyOTP = async () => {
     try {
       const res = await axiosClient.post("/verify-otp", {
@@ -76,6 +82,10 @@ const Login = () => {
     } catch (error) {
       console.error(error);
       setInvalid(true);
+      setOtpError(true);
+      setTimeout(() => {
+        setOtpError(false);
+      }, 3000);
     } finally {
       setLoading(false);
     }
@@ -196,12 +206,14 @@ const Login = () => {
                     <div>
                       <p
                         className={
-                          sendError === true
-                            ? "text-xs text-red-800 font-bold animate-shake"
+                          sendError || otpError
+                            ? "text-xs font-semibold text-red-700 animate-shake"
                             : "hidden"
                         }
                       >
-                        Invalid Credentials!
+                        {sendError
+                          ? "Please Check Your Credentials!"
+                          : "Invalid OTP!"}
                       </p>
                     </div>
                   </div>
