@@ -22,6 +22,7 @@ const AcceptDenyModal = ({
   ticket_desc_findings,
   ticket_desc_replacement,
   ticket_status,
+  selectedRole,
 }) => {
   const containerRef = useRef(null);
   const [activeDetails, setActiveDetails] = useState(false);
@@ -340,18 +341,62 @@ const AcceptDenyModal = ({
             </>
           ) : (
             <>
-              <div className="w-full flex flex-row items-center justify-center">
-                <div className="w-full flex flex-col items-center justify-center">
-                  <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
-                    <p className="text-xs font-normal">Ticket Type</p>
+              {selectedRole === "user" && ticket_status === "5" ? (
+                <>
+                  <div className="w-full flex flex-row items-center justify-center">
+                    <div className="w-full flex flex-col items-center justify-center">
+                      <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
+                        <p className="text-xs font-normal">Ticket Type</p>
+                      </div>
+                      <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
+                        <p className="text-xs font-semibold text-gray-500 truncate">
+                          {ticket_type}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
-                    <p className="text-xs font-semibold text-gray-500 truncate">
-                      {ticket_type}
-                    </p>
+                </>
+              ) : selectedRole === "user" && ticket_status === "4" ? (
+                <>
+                  <div className="w-full flex flex-row items-center justify-center">
+                    <div className="w-full flex flex-col items-center justify-center">
+                      <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
+                        <p className="text-xs font-normal">Ticket Type</p>
+                      </div>
+                      <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
+                        <p className="text-xs font-semibold text-gray-500 truncate">
+                          {ticket_type}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
+                </>
+              ) : (
+                <>
+                  <div className="w-full flex flex-row gap-6 items-center justify-center py-2">
+                    <div className="w-1/2 flex flex-col items-center justify-center">
+                      <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
+                        <p className="text-xs font-normal">Ticket Type</p>
+                      </div>
+                      <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
+                        <p className="text-xs font-semibold text-gray-500 truncate">
+                          {ticket_type}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="w-1/2 flex flex-col items-center justify-center">
+                      <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
+                        <p className="text-xs font-normal">Requester</p>
+                      </div>
+                      <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
+                        <p className="text-xs font-semibold text-gray-500 truncate">
+                          {requester_name}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
               <div className="py-2 w-full flex flex-col items-center justify-center">
                 <div className="flex items-center justify-start w-full py-2 px-1">
                   <p className="text-xs font-normal">Description</p>
@@ -413,20 +458,7 @@ const AcceptDenyModal = ({
           )}
           <div className="w-full flex flex-row gap-2 items-center justify-between py-4">
             <div className="flex flex-row gap-2 items-center justify-end w-full">
-              {ticket_status === "5" ? (
-                <div
-                  className="flex items-center justify-center py-2 px-4 bg-[#FFFFFF] hover:bg-[#f2f2f2] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
-                  onClick={() => {
-                    setShowImageModal(false);
-                    onClose();
-                    setActiveDetails(false);
-                  }}
-                >
-                  <p className="text-xs font-normal text-black truncate">
-                    Cancel
-                  </p>
-                </div>
-              ) : (
+              {selectedRole === "user" && ticket_status === "4" ? (
                 <>
                   <div
                     className="flex items-center justify-center py-2 px-4 bg-[#2f2f2f] hover:bg-[#474747] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
@@ -449,6 +481,19 @@ const AcceptDenyModal = ({
                     </p>
                   </div>
                 </>
+              ) : (
+                <div
+                  className="flex items-center justify-center py-2 px-4 bg-[#FFFFFF] hover:bg-[#f2f2f2] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
+                  onClick={() => {
+                    setShowImageModal(false);
+                    onClose();
+                    setActiveDetails(false);
+                  }}
+                >
+                  <p className="text-xs font-normal text-black truncate">
+                    Cancel
+                  </p>
+                </div>
               )}
             </div>
           </div>

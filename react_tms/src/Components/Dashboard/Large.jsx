@@ -161,7 +161,7 @@ const Large = () => {
   useEffect(() => {
     let url = ``;
     if (role === "admin") {
-      url = `/pending-ticket/${selectedType}`;
+      url = `/pending-ticket`;
     } else if (role === "technical") {
       url = "/tech/pending-ticket";
     } else if (role === "user") {
@@ -564,6 +564,7 @@ const Large = () => {
                                         set_ticket_desc_replacement(
                                           data.ticket_desc_replacement
                                         );
+                                        set_ticket_status(data.ticket_status);
                                       }}
                                     >
                                       <div className="flex flex-row gap-1 items-center justify-center w-full">
@@ -645,6 +646,7 @@ const Large = () => {
                                         set_ticket_desc_replacement(
                                           data.ticket_desc_replacement
                                         );
+                                        set_ticket_status(data.ticket_status);
                                       }}
                                     >
                                       <div className="flex flex-row gap-1 items-center justify-center w-full">
@@ -678,6 +680,7 @@ const Large = () => {
                                         set_ticket_desc_replacement(
                                           data.ticket_desc_replacement
                                         );
+                                        set_ticket_status(data.ticket_status);
                                       }}
                                     >
                                       <div className="flex flex-row gap-1 items-center justify-center w-full">
@@ -738,6 +741,7 @@ const Large = () => {
                                         set_ticket_desc_replacement(
                                           data.ticket_desc_replacement
                                         );
+                                        set_ticket_status(data.ticket_status);
                                       }}
                                     >
                                       <div className="flex flex-row gap-1 items-center justify-center w-full">
@@ -971,6 +975,7 @@ const Large = () => {
                                         set_ticket_desc_replacement(
                                           data.ticket_desc_replacement
                                         );
+                                        set_ticket_status(data.ticket_status);
                                       }}
                                     >
                                       <div className="flex flex-row gap-1 items-center justify-center w-full">
@@ -1004,6 +1009,7 @@ const Large = () => {
                                         set_ticket_desc_replacement(
                                           data.ticket_desc_replacement
                                         );
+                                        set_ticket_status(data.ticket_status);
                                       }}
                                     >
                                       <div className="flex flex-row gap-1 items-center justify-center w-full">
@@ -1064,6 +1070,7 @@ const Large = () => {
                                         set_ticket_desc_replacement(
                                           data.ticket_desc_replacement
                                         );
+                                        set_ticket_status(data.ticket_status);
                                       }}
                                     >
                                       <div className="flex flex-row gap-1 items-center justify-center w-full">
@@ -1282,6 +1289,7 @@ const Large = () => {
         ticket_desc_findings={ticket_desc_findings}
         ticket_desc_replacement={ticket_desc_replacement}
         ticket_status={ticket_status}
+        selectedRole={role}
         onClose={() => setShowAcceptDenyModal(false)}
       />
     </>
