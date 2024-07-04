@@ -14,6 +14,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [invalid, setInvalid] = useState(true); // State variable for invalid credentials
   const [sendError, setSendError] = useState(false);
+  const [otpError, setOtpError] = useState(false);
   const [ready, setReady] = useState(false);
   const [toggleSubmit, setToggleSubmit] = useState(false);
   const [one_time_pin, setOneTimePin] = useState(0);
@@ -29,55 +30,64 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true)
-    if(!isLogged){
-      LoginWithPassWord()
-    }else{
-      verifyOTP()
+    setLoading(true);
+    if (!isLogged) {
+      LoginWithPassWord();
+    } else {
+      verifyOTP();
     }
   };
 
   const LoginWithPassWord = async () => {
-      try{
-        const response = await axiosClient.post('/login', { email, password});
-        if(response){
-          setLoading(false);
-          setIsLogged(true);
-          setInvalid(false);
-        }
-      }catch(err){
-          console.log(err)
+    try {
+      const response = await axiosClient.post("/login", { email, password });
+      if (response) {
+        setLoading(false);
+        setIsLogged(true);
+        setInvalid(false);
       }
-  }
-  const sendOTP = async () => {
-        try{
-          const res = await axiosClient.post('/send-otp', {email});
-          if(res){
-            setShowModal(true);
-          }
-        }catch(err){
-          console.log(err)
-        }
+    } catch (err) {
+      console.log(err);
+      setSendError(true);
+      setTimeout(() => {
+        setSendError(false);
+        setLoading(false);
+      }, 3000);
     }
-const verifyOTP = async () => {
-  try {
-    const res = await axiosClient.post("/verify-otp", {
-      email: email,
-      otp: password, // Assuming you're reusing the password field for OTP
-    });
-    const data = res.data.user;
-    localStorage.setItem("username", data.username);
-    localStorage.setItem("role", data.role);
-    setRole(data.role);
-    setInvalid(false);
-    navigate("/dashboard"); // Redirect to dashboard on successful login
-  } catch (error) {
-    console.error(error);
-    setInvalid(true);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
+  const sendOTP = async () => {
+    try {
+      const res = await axiosClient.post("/send-otp", { email });
+      if (res) {
+        setShowModal(true);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const verifyOTP = async () => {
+    try {
+      const res = await axiosClient.post("/verify-otp", {
+        email: email,
+        otp: password, // Assuming you're reusing the password field for OTP
+      });
+      const data = res.data.user;
+      localStorage.setItem("username", data.username);
+      localStorage.setItem("role", data.role);
+      setRole(data.role);
+      setInvalid(false);
+      navigate("/dashboard"); // Redirect to dashboard on successful login
+    } catch (error) {
+      console.error(error);
+      setInvalid(true);
+      setOtpError(true);
+      setTimeout(() => {
+        setOtpError(false);
+      }, 3000);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
     // console.log(one_time_pin);
   }, [one_time_pin]);
@@ -171,12 +181,14 @@ const verifyOTP = async () => {
                     <div>
                       <p
                         className={
-                          sendError === true
-                            ? "text-xs text-red-800 font-bold animate-shake"
+                          sendError || otpError
+                            ? "text-xs font-semibold text-red-700 animate-shake"
                             : "hidden"
                         }
                       >
-                        Invalid Credentials!
+                        {sendError
+                          ? "Please Check Your Credentials!"
+                          : "Invalid OTP!"}
                       </p>
                     </div>
                   </div>
