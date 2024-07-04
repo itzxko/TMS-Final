@@ -19,6 +19,9 @@ const TechModal = ({
   ticketID,
   requester_name,
   ticket_cde,
+  ticket_desc_remarks,
+  ticket_desc_findings,
+  ticket_desc_replacement,
 }) => {
   const containerRef = useRef(null);
   const [activeDetails, setActiveDetails] = useState(false);
@@ -88,9 +91,9 @@ const TechModal = ({
         .get(`/techShow/${ticketID}`)
         .then((res) => {
           if (res.data) {
-            setFindings(res.data.data.ticket_desc_findings || "");
-            setActions(res.data.data.ticket_desc_remarks || "");
-            setReplacement(res.data.data.ticket_desc_replacement || "");
+            setFindings(ticket_desc_findings || "");
+            setActions(ticket_desc_remarks || "");
+            setReplacement(ticket_desc_replacement || "");
           } else {
             console.error("No data returned");
           }
