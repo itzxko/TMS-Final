@@ -130,7 +130,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
       setTimeout(() => {
         setIncompleteInput(false);
       }, 3000);
-      return; // Exit early if inputs are incomplete
+      return;
     }
 
     const formData = new FormData();
