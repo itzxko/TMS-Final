@@ -13,14 +13,9 @@ const FollowUp = ({ onClose, data, bumpCode, ticket_cde, isVisible }) => {
 
     const enableScroll = () => {
       document.body.style.overflow = "auto";
-    };
-
+    }
     if (isVisible) {
       disableScroll();
-      setLoading(true); // Set loading to true immediately
-      setTimeout(() => {
-        setLoading(false); // Set loading to false after a delay
-      }, 3000);
     } else {
       enableScroll();
     }

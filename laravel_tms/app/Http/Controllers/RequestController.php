@@ -199,7 +199,9 @@ class RequestController extends Controller
 
     public function filterPendingTicket($type)
     {
-        $query = DB::table('ticketing_main')->orderBy("ticket_update_date", "desc");
+        $query = DB::table('ticketing_main')
+                    ->where("ticket_client", Auth::user()->emp_no)
+                    ->orderBy("ticket_update_date", "desc");
         if ($type !== "All") {
             $filter = $query->where('ticket_type', $type)->paginate(10);
             return $this->success(["Message" => $filter], "Request success", 201);
@@ -210,7 +212,9 @@ class RequestController extends Controller
 
     public function filteredBySearch($search)
     {
-        $query = DB::table('ticketing_main')->orderBy('ticket_update_date', 'desc');
+        $query = DB::table('ticketing_main')
+        ->where("ticket_client", Auth::user()->emp_no)
+        ->orderBy("ticket_update_date", "desc");
         if ($search !== "" || $search != "") {
             $filter = $query->where('ticket_type', 'like', '%' . $search . '%')->paginate(10);
             return $this->success(["Message" => $filter], "Request success", 201);

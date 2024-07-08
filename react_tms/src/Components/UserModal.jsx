@@ -454,11 +454,6 @@ const UserModal = ({ isVisible, onClose, data }) => {
                     Fill the Required Fields!
                   </p>
                 )}
-                {limitError && !incompleteInput && (
-                  <p className="text-xs font-semibold text-red-700 animate-shake">
-                    Attachment Limit Exceeded!
-                  </p>
-                )}
               </>
             </div>
             <div className="w-1/2 flex flex-row gap-2 items-center justify-end">
