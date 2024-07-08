@@ -225,17 +225,29 @@ class RequestController extends Controller
             return response()->json(["Message" => "You are unauthorized!"], "Request Failed", 401);
         }
         $ticket = DB::table('ticketing_main')
-            ->where("ticket_client", Auth::user()->emp_no)
-            ->orderBy("ticket_update_date", "desc")->paginate(10);
+                ->where("ticket_client", Auth::user()->emp_no)
+                ->orderBy("ticket_update_date", "desc")->paginate(10);
         return response()->json(["Message" => $ticket, "role" => Auth::user()->role], 200);
     }
 
     public function filterPendingTicket($type)
     {
         // Filter pending tickets by type
-        $query = DB::table('ticketing_main')
+        if(Auth::user()->role === "admin"){
+            $query = DB::table('ticketing_main')
+            ->orderBy("ticket_update_date", "desc");
+        }
+        if(Auth::user()->role === "user"){
+            $query = DB::table('ticketing_main')
             ->where("ticket_client", Auth::user()->emp_no)
             ->orderBy("ticket_update_date", "desc");
+        }
+        if(Auth::user()->role === "technical"){
+            $query = DB::table('ticketing_main')
+            ->where("ticket_assigned_to_id", Auth::user()->emp_no)
+            ->orderBy("ticket_update_date", "desc");
+        }
+       
         if ($type !== "All") {
             $filter = $query->where('ticket_type', $type)->paginate(10);
             return $this->success(["Message" => $filter], "Request success", 201);
