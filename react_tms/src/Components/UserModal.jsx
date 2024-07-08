@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axiosClient from "../axios";
-import { IoIosRemoveCircle } from "react-icons/io";
-import { TbFaceIdError } from "react-icons/tb";
-import Swal from "sweetalert2"; // npm install sweetalert2
-// if you don't have it, then if there's error install npm legacy peer deps
-
 import { TiArrowLeft } from "react-icons/ti";
 import { RiArrowDropDownLine, RiArrowDropUpLine } from "react-icons/ri";
 import { RiFileVideoLine } from "react-icons/ri";
@@ -26,42 +21,15 @@ const UserModal = ({ isVisible, onClose, data }) => {
   const [incompleteInput, setIncompleteInput] = useState(false);
   const [limitError, setLimitError] = useState(false);
 
+  // Toggle open/close the dropdown for ticket types
   const handleOpenType = () => {
     setOpenType(!openType);
     console.log(openType);
   };
 
-  const handleFileRemove = (index, type) => {
-    let updatedFiles = [];
-    if (type === "image") {
-      updatedFiles = [...file];
-      updatedFiles.splice(index, 1);
-      setFile(updatedFiles);
-    } else if (type === "video") {
-      updatedFiles = [...video];
-      updatedFiles.splice(index, 1);
-      set_video(updatedFiles);
-    } else if (type === "document") {
-      updatedFiles = [..._document];
-      updatedFiles.splice(index, 1);
-      set_document(updatedFiles);
-    }
-  };
-
-  const renderSelectedFiles = (files, type) => {
-    return files.map((file, index) => (
-      <div key={index} className="flex items-center justify-between py-1">
-        <p className="truncate">{file.name}</p>
-        <button
-          className="text-white hover:text-red-800"
-          onClick={() => handleFileRemove(index, type)}
-        >
-          <IoIosRemoveCircle />
-        </button>
-      </div>
-    ));
-  };
-
+  /*This function handles the change event for file inputs. 
+  It's designed to process selected files by compressing them and 
+  then converting the compressed files into a new format with a unique filename.*/
   const handleFileChange = async (e) => {
     const selectedFiles = e.target.files;
     const compressedFiles = [];
@@ -95,6 +63,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
     setSelectedFiles(Array.from(selectedFiles));
   };
 
+  // Remove a selected image file
   const removeFile = (index) => {
     setFile((prevFiles) => prevFiles.filter((_, i) => i !== index));
     setSelectedFiles((prevSelected) =>
@@ -102,29 +71,35 @@ const UserModal = ({ isVisible, onClose, data }) => {
     );
   };
 
+  // Handle video file selection
   const handleVideoChange = (e) => {
     const files = e.target.files;
     set_video((prev) => [...prev, ...Array.from(files)]);
   };
 
+  // Handle video file removal
   const removeVideo = (index) => {
     set_video((prev) => prev.filter((_, i) => i !== index));
   };
 
+  // Handle document file selection
   const handleDocumentsChange = (e) => {
     const files = e.target.files;
     set_document((prev) => [...prev, ...Array.from(files)]);
   };
 
+  // Handle document file removal
   const removeDocument = (index) => {
     set_document((prevDocuments) =>
       prevDocuments.filter((_, i) => i !== index)
     );
   };
 
+  /* The purpose of the handleSubmit function is to handle the submission of a form 
+  within a user interface.c*/
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    // Validate required fields
     if (ticket_desc_concern === "" || ticket_type === "Select Ticket Type") {
       setIncompleteInput(true);
       setTimeout(() => {
@@ -133,6 +108,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
       return;
     }
 
+    // Prepare form data for submission
     const formData = new FormData();
     for (let i = 0; i < file.length; i++) {
       formData.append("file[]", file[i]);
@@ -150,11 +126,13 @@ const UserModal = ({ isVisible, onClose, data }) => {
     formData.append("ticket_desc_concern", ticket_desc_concern);
 
     try {
+      // Send form data to server
       await axiosClient.post("/add-request", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
+      // Clear input fields and reload page on success
       set_video([]);
       set_document([]);
       setFile([]);
@@ -163,11 +141,12 @@ const UserModal = ({ isVisible, onClose, data }) => {
       console.error(error);
       setLimitError(true);
       setTimeout(() => {
-        setLimitError(false); 
+        setLimitError(false);
       }, 3000);
     }
   };
 
+  // Handle Escape key press to close modal
   useEffect(() => {
     const handleEsc = (event) => {
       if (event.key === "Escape") {
@@ -182,6 +161,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
     };
   }, [onClose]);
 
+  // Handle modal visibility and scrolling
   useEffect(() => {
     setLoading(true);
     const disableScroll = () => {
@@ -206,6 +186,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
     };
   }, [isVisible]);
 
+  // Reset file selection when modal is closed
   useEffect(() => {
     if (!isVisible) {
       setFile([]);
@@ -215,15 +196,17 @@ const UserModal = ({ isVisible, onClose, data }) => {
 
   if (!isVisible) return null;
 
+  // Render loading spinner while waiting for data
   if (loading) {
     return <Loading />;
   }
-
+  // Render modal content
   return (
     <div className="fixed top-0 left-0 w-full h-[100svh] items-center justify-center bg-black/50 flex z-10 font-figtree">
       <div
         className="w-full min-h-[100svh] max-h-[100svh] py-12 px-4 overflow-auto flex justify-center items-start"
         id="container"
+        //Close modal when clicking outside the modal
         onClick={(e) => {
           if (e.target.id === "container") {
             onClose();
@@ -251,6 +234,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
               className="px-4 py-3 w-full bg-[#f6edff] rounded-md border border-gray-300 flex items-center justify-between"
               onClick={handleOpenType}
             >
+              {/* Display selected ticket type */}
               <p className="text-xs font-semibold text-gray-500">
                 {ticket_type}
               </p>
@@ -267,6 +251,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
                   : "hidden"
               }
             >
+              {/* Display ticket types */}
               {data.map((item) => (
                 <div
                   key={item.ID}
@@ -288,6 +273,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
             </div>
             <div className="bg-[#f6edff] w-full p-4 rounded-md border border-gray-300">
               <textarea
+                // Set the value of the textarea to the ticket_desc_concern state
                 name=""
                 id=""
                 className="w-full outline-none resize-none bg-[#f6edff] text-xs scrollbar-hide"
@@ -312,6 +298,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
                   <RiFileVideoLine />
                 </label>
                 <input
+                  // Set the id, type, accept, and onChange attributes of the input element
                   id="videoInput"
                   type="file"
                   accept="video/*"
@@ -327,6 +314,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
                   </p>
                 ) : (
                   <div className="flex flex-wrap gap-2">
+                    {/* Map through the video array and display the video name and a button to remove the video*/}
                     {video.map((video, index) => (
                       <div
                         key={index}
@@ -361,6 +349,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
                   <MdOutlineBrokenImage />
                 </label>
                 <input
+                  // Set the id, type, multiple, accept, and onChange attributes of the input element
                   id="fileInput"
                   type="file"
                   multiple
@@ -370,6 +359,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
                 />
               </div>
               <div className="w-full flex flex-col px-4 py-3 bg-[#f6edff] rounded-md border border-gray-300 max-h-[50px] overflow-auto scrollbar-hide">
+                {/* Check if the file array is empty and display a message */}
                 {file.length === 0 ? (
                   <p className="text-xs font-semibold text-gray-500 truncate">
                     No Images Selected
@@ -409,6 +399,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
                 >
                   <GrDocumentText />
                 </label>
+                {/* Set the id, type, multiple, accept, and onChange attributes of the input element */}
                 <input
                   id="documentInput"
                   type="file"
@@ -419,17 +410,20 @@ const UserModal = ({ isVisible, onClose, data }) => {
                 />
               </div>
               <div className="w-full flex flex-col px-4 py-3 bg-[#f6edff] rounded-md border border-gray-300 max-h-[50px] overflow-auto scrollbar-hide">
+                {/* Check if the document array is empty and display a message */}
                 {_document.length === 0 ? (
                   <p className="text-xs font-semibold text-gray-500 truncate">
                     No Documents Selected
                   </p>
                 ) : (
+                  // Map through the document array and display the document name and a button to remove the document
                   <div className="flex flex-wrap gap-2">
                     {_document.map((document, index) => (
                       <div
                         key={index}
                         className="flex items-center bg-[#FAF5FF] p-1 rounded-md shadow-lg"
                       >
+                        {/* Display the document name and a button to remove the document */}
                         <span className="text-xs font-normal mr-2">
                           {document.name}
                         </span>
@@ -448,12 +442,14 @@ const UserModal = ({ isVisible, onClose, data }) => {
           </div>
           <div className="w-full flex flex-row items-center justify-between py-4">
             <div className="w-1/2 flex items-center justify-start">
-            <>
+              <>
+                {/* Display error messages */}
                 {incompleteInput && (
                   <p className="text-xs font-semibold text-red-700 animate-shake">
                     Fill the Required Fields!
                   </p>
                 )}
+                {/* Display The error message */}
                 {limitError && !incompleteInput && (
                   <p className="text-xs font-semibold text-red-700 animate-shake">
                     Attachment Limit Exceeded!
@@ -466,6 +462,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
                 className="flex items-center justify-center py-2 px-4 bg-[#2f2f2f] hover:bg-[#474747] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
                 onClick={handleSubmit}
               >
+                {/* Display the text Proceed */}
                 <p className="text-xs font-normal text-white truncate">
                   Proceed
                 </p>
@@ -476,6 +473,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
                   onClose();
                 }}
               >
+                {/* Display the text Cancel */}
                 <p className="text-xs font-normal text-black truncate">
                   Cancel
                 </p>
