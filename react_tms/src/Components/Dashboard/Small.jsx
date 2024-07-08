@@ -385,16 +385,29 @@ const Small = () => {
                                     {data.ticket_type}
                                   </p>
                                   <p className="text-xs font-bold text-[#113e21] capitalize truncate">
-                                    {data.ticket_status === "1"
-                                      ? "Requested"
-                                      : data.ticket_status === "2"
-                                      ? "Assigned"
-                                      : data.ticket_status === "3"
-                                      ? "Ongoing"
-                                      : data.ticket_status === "4"
-                                      ? "For Checking"
-                                      : "Done"}
+                                    {data.ticket_status === "1" ? (
+                                      <span className="text-blue-500">
+                                        Requested
+                                      </span>
+                                    ) : data.ticket_status === "2" ? (
+                                      <span className="text-red-500">
+                                        Assigned
+                                      </span>
+                                    ) : data.ticket_status === "3" ? (
+                                      <span className="text-red-700">
+                                        Ongoing
+                                      </span>
+                                    ) : data.ticket_status === "4" ? (
+                                      <span className="text-yellow-400">
+                                        For Checking
+                                      </span>
+                                    ) : (
+                                      <span className="text-green-600">
+                                        Done
+                                      </span>
+                                    )}
                                   </p>
+
                                   <p className="text-xs font-normal truncate">
                                     {data.ticket_assigned_to_name
                                       ? data.ticket_assigned_to_name
@@ -500,7 +513,7 @@ const Small = () => {
                                 </button>
                               ) : role === "admin" &&
                                 data.ticket_status === "5" ? (
-                                  <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
                                     onClick={() => {
@@ -528,7 +541,7 @@ const Small = () => {
                                 </button>
                               ) : role === "admin" &&
                                 data.ticket_status === "4" ? (
-                                  <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
                                     onClick={() => {
@@ -584,7 +597,7 @@ const Small = () => {
                                 </button>
                               ) : role === "technical" &&
                                 data.ticket_status === "5" ? (
-                                  <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
                                     onClick={() => {
@@ -660,17 +673,30 @@ const Small = () => {
                                   <p className="text-xs font-bold truncate">
                                     {data.ticket_type}
                                   </p>
-                                  <p className="text-xs font-bold text-gray-500 capitalize truncate">
-                                    {data.ticket_status === "1"
-                                      ? "Requested"
-                                      : data.ticket_status === "2"
-                                      ? "Assigned"
-                                      : data.ticket_status === "3"
-                                      ? "Ongoing"
-                                      : data.ticket_status === "4"
-                                      ? "For Checking"
-                                      : "Done"}
+                                  <p className="text-xs font-bold text-[#113e21] capitalize truncate">
+                                    {data.ticket_status === "1" ? (
+                                      <span className="text-blue-500">
+                                        Requested
+                                      </span>
+                                    ) : data.ticket_status === "2" ? (
+                                      <span className="text-red-500">
+                                        Assigned
+                                      </span>
+                                    ) : data.ticket_status === "3" ? (
+                                      <span className="text-red-700">
+                                        Ongoing
+                                      </span>
+                                    ) : data.ticket_status === "4" ? (
+                                      <span className="text-yellow-400">
+                                        For Checking
+                                      </span>
+                                    ) : (
+                                      <span className="text-green-600">
+                                        Done
+                                      </span>
+                                    )}
                                   </p>
+
                                   <p className="text-xs font-semibold capitalize text-gray-500 truncate">
                                     {data.ticket_assigned_to_name
                                       ? data.ticket_assigned_to_name
@@ -776,7 +802,7 @@ const Small = () => {
                                 </button>
                               ) : role === "admin" &&
                                 data.ticket_status === "5" ? (
-                                  <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
                                     onClick={() => {
@@ -804,7 +830,7 @@ const Small = () => {
                                 </button>
                               ) : role === "admin" &&
                                 data.ticket_status === "4" ? (
-                                  <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
                                     onClick={() => {
@@ -859,7 +885,7 @@ const Small = () => {
                                 </button>
                               ) : role === "technical" &&
                                 data.ticket_status === "5" ? (
-                                  <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
                                     onClick={() => {
