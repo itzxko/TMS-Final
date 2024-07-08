@@ -43,7 +43,6 @@ const Large = () => {
   const [id, setID] = useState("");
   const [pages, setPages] = useState(null);
   const [search, setSearch] = useState(null);
-  const [selectedRole, setSelectedRole] = useState("user"); // use state for setting the selected role
   // const [role, setRole] = useState("");
   const [pendingTicket, setPendingTicket] = useState([]);
   const [request_type, set_request_type] = useState("");
@@ -76,9 +75,7 @@ const Large = () => {
   };
 
   // Check if there are tickets of the selected type
-  const hasTicketsOfType =
-    selectedType === "All" ||
-    pendingTicket.some((data) => data.ticket_type === selectedType);
+  const hasTicketsOfType = pendingTicket.length > 0;;
 
   // Function to handle filter use state
   const handleFilter = () => {
@@ -134,6 +131,22 @@ const Large = () => {
   }, []);
 
   useEffect(() => {
+    const filterType = async () => {
+        try{
+          const res = await axiosClient.get(`/pending-ticket/${selectedType}`);
+          const data1 = res.data;
+          const data2 = data1.data;
+          setPendingTicket(data2.Message.data);
+          set_current_page(data2.Message.current_page);
+          setPages(data2.Message.last_page);
+        }catch(err){
+          console.log(err);
+        }
+    }
+    filterType();
+  }, [selectedType]);
+
+  useEffect(() => {
     if (search === "" && role !== "technical") {
       axiosClient
         .get(`/pending-ticket/All`)
@@ -180,7 +193,10 @@ const Large = () => {
         console.log(err);
       });
     
-  }, [selectedType]);
+  }, [role]);
+
+ 
+
 
   //For Employee Job Count
   useEffect(() => {

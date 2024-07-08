@@ -24,6 +24,7 @@ const Login = () => {
   const [hasClicked, setHasClicked] = useState(false);
   const [canResend, setCanResend] = useState(true);
   const [countdown, setCountdown] = useState(0);
+  const [startTime, setStartTime] = useState(false);
   // Function to handle form submission
 
   useEffect(() => {
@@ -44,16 +45,14 @@ const Login = () => {
     try {
       const response = await axiosClient.post("/login", { email, password });
       if (response) {
-        setLoading(false);
-        setIsLogged(true);
-        setInvalid(false);
+        await sendOTP();
+
       }
     } catch (err) {
-      console.log(err);
       setSendError(true);
+      setLoading(false);
       setTimeout(() => {
-        setSendError(false);
-        setLoading(false);
+        setSendError(false);      
       }, 3000);
     }
   };
@@ -62,6 +61,12 @@ const Login = () => {
       const res = await axiosClient.post("/send-otp", { email });
       if (res) {
         setShowModal(true);
+        setHasClicked(true);
+        setCanResend(false);
+        setLoading(false);
+        setIsLogged(true);
+        setInvalid(false);
+        setCountdown(60); // Start countdown from 60 seconds
       }
     } catch (err) {
       console.log(err);
@@ -111,9 +116,7 @@ const Login = () => {
     e.preventDefault();
     if (!canResend) return;
     sendOTP();
-    setHasClicked(true);
-    setCanResend(false);
-    setCountdown(60); // Start countdown from 60 seconds
+
   };
 
   return (
@@ -191,6 +194,7 @@ const Login = () => {
                         onClick={handleSendClick}
                       >
                         <p className="text-xs font-semibold text-white">
+                          
                           {hasClicked ? "Resend" : "Send"}
                         </p>
                       </div>
