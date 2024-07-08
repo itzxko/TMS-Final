@@ -14,6 +14,11 @@ import { LuSettings2 } from "react-icons/lu";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { LiaExclamationSolid } from "react-icons/lia";
 import { FiLayers } from "react-icons/fi";
+import { BsSend } from "react-icons/bs";
+import { BsEnvelopePaper } from "react-icons/bs";
+import { TbProgressBolt } from "react-icons/tb";
+import { MdOutlineWorkOutline } from "react-icons/md";
+import { HiOutlineClipboardCheck } from "react-icons/hi";
 
 // importing popup modals
 import UserModal from "../UserModal";
@@ -229,6 +234,55 @@ const Small = () => {
         {/* for large screen and beyond */}
         <div className="block lg:hidden py-10"></div>
         <div className="flex flex-col w-full lg:hidden">
+          <div className="w-full overflow-hidden">
+            <div className="w-full flex flex-row gap-4 py-4 overflow-x-auto">
+              <div className="relative min-w-[180px] bg-gradient-to-l from-[#a10b00] via-[#d41c0f] to-[#ff3021] flex flex-col text-white p-4 rounded-lg overflow-hidden">
+                <p className="text-xs font-semibold">Requested</p>
+                <div className="w-full flex items-center justify-end">
+                  <p className="text-3xl font-extrabold text-white/75">20</p>
+                </div>
+                <div className="absolute right-28">
+                  <BsEnvelopePaper className="text-8xl text-white/15" />
+                </div>
+              </div>
+              <div className="relative min-w-[180px] bg-gradient-to-l from-[#c95b00] via-[#e0731a] to-[#ff8c2f] flex flex-col text-white p-4 rounded-lg overflow-hidden">
+                <p className="text-xs font-semibold">Assigned</p>
+                <div className="w-full flex items-center justify-end">
+                  <p className="text-3xl font-extrabold text-white/75">20</p>
+                </div>
+                <div className="absolute right-28">
+                  <BsSend className="text-8xl text-white/15" />
+                </div>
+              </div>
+              <div className="relative min-w-[180px] bg-gradient-to-l from-[#570075] via-[#a912db] to-[#cf3fff] flex flex-col text-white p-4 rounded-lg overflow-hidden">
+                <p className="text-xs font-semibold">Ongoing</p>
+                <div className="w-full flex items-center justify-end">
+                  <p className="text-3xl font-extrabold text-white/75">20</p>
+                </div>
+                <div className="absolute right-28">
+                  <MdOutlineWorkOutline className="text-8xl text-white/15" />
+                </div>
+              </div>
+              <div className="relative min-w-[180px] bg-gradient-to-l from-[#007a3f] via-[#17ce76] to-[#00c465] flex flex-col text-white p-4 rounded-lg overflow-hidden">
+                <p className="text-xs font-semibold">For Checking</p>
+                <div className="w-full flex items-center justify-end">
+                  <p className="text-3xl font-extrabold text-white/75">20</p>
+                </div>
+                <div className="absolute right-28">
+                  <TbProgressBolt className="text-8xl text-white/15" />
+                </div>
+              </div>
+              <div className="relative min-w-[180px] bg-gradient-to-l from-[#181818] via-[#464646] to-[#575050] flex flex-col text-white p-4 rounded-lg overflow-hidden">
+                <p className="text-xs font-semibold">Done</p>
+                <div className="w-full flex items-center justify-end">
+                  <p className="text-3xl font-extrabold text-white/75">20</p>
+                </div>
+                <div className="absolute right-28">
+                  <HiOutlineClipboardCheck className="text-8xl text-white/15" />
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="">
             {/* div for welcome note and filter, add and role buttons */}
             <div className="flex flex-row gap-2 justify-between items-center py-2">

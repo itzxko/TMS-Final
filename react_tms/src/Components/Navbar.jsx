@@ -78,8 +78,11 @@ function Navbar({ selectedRole, setShowUserForm }) {
           {/* Logo and system name */}
           <div className="flex justify-center items-center gap-2">
             <img src={Logo} alt="/" className="w-[26px]" />
-            <p className="font-extrabold text-sm uppercase text-[#113e21]">
+            <p className="hidden md:block font-extrabold text-sm uppercase text-[#113e21]">
               Ticketing Management System
+            </p>
+            <p className="block md:hidden font-extrabold text-sm uppercase text-[#113e21]">
+              TMS
             </p>
           </div>
           {/* Profile picture and menu toggle */}
