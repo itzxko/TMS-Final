@@ -11,12 +11,14 @@ class TicketController extends Controller
 {
      use HttpResponses;
 
+     // Show the ticket
      public function getTicketType()
      {
           return response()->json(["Message" => DB::table('ticket_type')->get()]);
      }
      public function getSpecificTicketType($ticket_type)
      {
+          // Fetch the ticket
           $office_code = DB::table('ticket_type')->where("TYPE_DESC", $ticket_type)->first();
           $users = DB::table('users')->where("office_code", $office_code->OFFICE_CDE)->get();
           return response()->json($users);
@@ -24,6 +26,7 @@ class TicketController extends Controller
 
      public function getEmployeeJobs()
      {
+          // Fetch the employee jobs
           $names = DB::table('users')
                ->leftJoin('ticketing_main', 'users.username', '=', 'ticketing_main.ticket_assigned_to_name')
                ->select(

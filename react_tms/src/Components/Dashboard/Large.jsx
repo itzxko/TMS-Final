@@ -66,7 +66,7 @@ const Large = () => {
 
   // Check if there are tickets of the selected type
   const hasTicketsOfType = pendingTicket.length > 0;
-
+  console.log(pendingTicket.length);
   // Function to handle filter use state
   const handleFilter = () => {
     setFilter(!filter);
@@ -118,6 +118,9 @@ const Large = () => {
   }, []);
 
   useEffect(() => {
+    if(role === "admin" || role === "technical") {
+      return;
+    }
     const filterType = async () => {
       try {
         const res = await axiosClient.get(`/pending-ticket/${selectedType}`);
