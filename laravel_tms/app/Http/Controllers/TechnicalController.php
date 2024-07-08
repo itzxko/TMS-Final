@@ -10,8 +10,11 @@ use Illuminate\Support\Facades\Auth;
 class TechnicalController extends Controller
 {
     use HttpResponses;
+
+    // Show the ticket
     public function show()
     {
+        // Fetch the ticket
         $ticket = DB::table('ticketing_main')->where('ticket_office_cde', Auth::user()->office_code)->where('ticket_assigned_to_name', Auth::user()->username)->get();  // Use first() instead of get() if you're expecting a single record
         if ($ticket) {
             return $this->success($ticket);  // Ensure proper JSON structure
@@ -20,8 +23,10 @@ class TechnicalController extends Controller
         }
     }
 
+    // Update the ticket
     public function updateTechnical(Request $request)
     {
+        // Validate the request
         $request->validate([
             'ticket_desc_findings' => 'nullable|string|max:255',
             'ticket_desc_remarks' => 'nullable|string|max:255',
@@ -40,6 +45,7 @@ class TechnicalController extends Controller
         return $this->success(['message' => 'Updated successfully']);
     }
 
+    // Accept the request
     public function acceptRequest(Request $request)
     {
         // Perform an update directly

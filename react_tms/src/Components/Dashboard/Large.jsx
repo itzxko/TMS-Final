@@ -67,10 +67,8 @@ const Large = () => {
   };
 
   // Check if there are tickets of the selected type
-  const hasTicketsOfType =
-    selectedType === "All" ||
-    pendingTicket.some((data) => data.ticket_type === selectedType);
-
+  const hasTicketsOfType = pendingTicket.length > 0;
+  console.log(pendingTicket.length);
   // Function to handle filter use state
   const handleFilter = () => {
     setFilter(!filter);
@@ -120,6 +118,25 @@ const Large = () => {
         .catch((err) => console.log(err));
     }
   }, []);
+
+  useEffect(() => {
+    if(role === "admin" || role === "technical") {
+      return;
+    }
+    const filterType = async () => {
+      try {
+        const res = await axiosClient.get(`/pending-ticket/${selectedType}`);
+        const data1 = res.data;
+        const data2 = data1.data;
+        setPendingTicket(data2.Message.data);
+        set_current_page(data2.Message.current_page);
+        setPages(data2.Message.last_page);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    filterType();
+  }, [selectedType]);
 
   useEffect(() => {
     if (search === "" && role !== "technical") {
