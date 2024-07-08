@@ -13,6 +13,7 @@ import { MdAttachment } from "react-icons/md";
 
 import Loading from "./Loading/Loading";
 
+// This part is for the Admin Modal
 const AdminModal = ({
   isVisible,
   onClose,
@@ -26,37 +27,38 @@ const AdminModal = ({
   ticket_cde,
 }) => {
   const containerRef = useRef(null);
-  const [openEmployee, setOpenEmployee] = useState(false);
-  const [activeDetails, setActiveDetails] = useState(false);
-  const [smallAttach, setSmallAttach] = useState(false);
-  const [ticket_assigned_to_name, setTicket_assigned_to_name] = useState("");
-  const [images, setImages] = useState([]);
-  const [videos, setVideos] = useState([]);
-  const [documents, setDocuments] = useState([]);
-  const [fileIndex, setFileIndex] = useState(0);
-  const [open, setOpen] = useState(0);
-  const [showImageModal, setShowImageModal] = useState(false);
-  const [Id, set_id] = useState("");
-  const [_office_code, set_office_code] = useState("");
-  const [selectedEmployee, setSelectedEmployee] = useState("Select Employee");
-  const [loading, setLoading] = useState(true);
-  const [incompleteInput, setIncompleteInput] = useState(false);
-  const allMedia = [...images, ...videos];
+  const [openEmployee, setOpenEmployee] = useState(false); // For the employee data
+  const [activeDetails, setActiveDetails] = useState(false); // For the ticket details
+  const [smallAttach, setSmallAttach] = useState(false); // For the attachment button
+  const [ticket_assigned_to_name, setTicket_assigned_to_name] = useState(""); // For the assigned employee name
+  const [images, setImages] = useState([]); // For the image attachments
+  const [videos, setVideos] = useState([]); // For the video attachments
+  const [documents, setDocuments] = useState([]); // For the document attachments
+  const [fileIndex, setFileIndex] = useState(0); // For the navigation of the images and videos
+  const [open, setOpen] = useState(0); // For the attachment button
+  const [showImageModal, setShowImageModal] = useState(false); // For the image modal
+  const [Id, set_id] = useState(""); // For the employee id
+  const [_office_code, set_office_code] = useState(""); // For the office code
+  const [selectedEmployee, setSelectedEmployee] = useState("Select Employee"); // For the selected employee
+  const [loading, setLoading] = useState(true); // For loading state
+  const [incompleteInput, setIncompleteInput] = useState(false); // For the incomplete input warning
+  const allMedia = [...images, ...videos]; // Combine images and videos
 
+  // This part is for the employee data
   const handleEmployee = () => {
     setOpenEmployee(!openEmployee);
   };
-
+  // This part is for the image modal
   const imgmodal = () => {
     setShowImageModal(!showImageModal);
-    // console.log(setShowImageModal);
   };
 
+  // This part is for the attachment button
   const handleAttachment = () => {
     setSmallAttach(!smallAttach);
-    // console.log(smallAttach);
   };
 
+  // This part is for the navigation of the images and videos
   const handleNext = () => {
     let newIndex = fileIndex + 1;
     if (newIndex >= allMedia.length) {
@@ -64,19 +66,12 @@ const AdminModal = ({
     }
     setFileIndex(newIndex);
   };
-
   const handlePrevious = () => {
     let newIndex = fileIndex - 1;
     if (newIndex < 0) {
       newIndex = allMedia.length - 1; // Loop back to the last file
     }
     setFileIndex(newIndex);
-  };
-
-  const handleOpen = (value) => {
-    setOpen(value);
-    setFileIndex(0);
-    setShowImageModal(true);
   };
 
   useEffect(() => {
@@ -87,6 +82,7 @@ const AdminModal = ({
     }
   }, [assigned_name]);
 
+  // This part is for the fetching of the employee data
   const updateTicket = () => {
     if (!selectedEmployee || selectedEmployee === "Select Employee") {
       setIncompleteInput(true);
@@ -95,7 +91,6 @@ const AdminModal = ({
       }, 3000);
       return;
     }
-
     axiosClient
       .post("assign_request/" + id, {
         ticket_assigned_to_id: Id,
@@ -110,16 +105,18 @@ const AdminModal = ({
       });
   };
 
+  // This part is for the fetching of the employee data
   useEffect(() => {}, [Id, ticket_assigned_to_name, _office_code]);
 
+  // This part is for the fetching of the images, videos, and documents
   useEffect(() => {
     setLoading(true);
     if (isVisible) {
+      // Fetch images, videos, and documents
       const fetchImages = async () => {
         try {
           const res = await axiosClient.get(`get_images/` + ticket_cde);
           setImages(res.data.images);
-          // console.log(res.data.images);
         } catch (error) {
           console.error("Error fetching images:", error);
         }
@@ -128,7 +125,6 @@ const AdminModal = ({
         try {
           const res = await axiosClient.get(`get_videos/` + ticket_cde);
           setVideos(res.data.videos);
-          // console.log(res.data.videos);
         } catch (error) {
           console.error("Error fetching videos:", error);
         }
@@ -137,7 +133,6 @@ const AdminModal = ({
         try {
           const res = await axiosClient.get(`get_documents/` + ticket_cde);
           setDocuments(res.data.documents);
-          // console.log(res.data.documents);
         } catch (error) {
           console.error("Error fetching documents:", error);
         }
@@ -149,6 +144,7 @@ const AdminModal = ({
     }
   }, [isVisible]);
 
+  // This part is for the escape key to close the modal
   useEffect(() => {
     const handleEsc = (event) => {
       if (event.key === "Escape") {
@@ -166,6 +162,7 @@ const AdminModal = ({
     };
   }, [onClose]);
 
+  // This part is for the scrolling of the document attachments
   useEffect(() => {
     const disableScroll = () => {
       document.body.style.overflow = "hidden";
@@ -189,6 +186,7 @@ const AdminModal = ({
 
   if (!isVisible) return null;
 
+  //This part is for the navigation of the document attachments
   const handleScrollLeft = (scrollOffset) => {
     if (containerRef.current) {
       containerRef.current.scrollLeft -= scrollOffset;
@@ -213,7 +211,6 @@ const AdminModal = ({
         onClick={(e) => {
           if (e.target.id === "container") {
             onClose();
-            // selected(null);
             setActiveDetails(false);
           }
         }}
@@ -222,6 +219,7 @@ const AdminModal = ({
           <div className="relative w-full flex items-center justify-center pb-2 md:pb-12">
             <p className="text-xs font-semibold">Ticket Details</p>
             <div
+              // This part is for the attachment button
               className={
                 !activeDetails
                   ? "absolute right-0 bg-[FAF5FF] p-2 cursor-pointer text-black"
@@ -238,29 +236,35 @@ const AdminModal = ({
               <TiArrowLeft className="text-xl" />
             </div>
           </div>
-          {/* insert the argument here */}
-
           {activeDetails ? (
             <>
+            {/** This part is for the ticket details */}
               <div className="w-full flex flex-col items-center justify-center py-4">
                 <div className=" flex item-center justify-start w-full py-2 px-1">
                   <p className="text-xs font-normal">Images and Videos</p>
                 </div>
+                {/*  This part is for the images and videos*/}
                 {images.length > 0 || videos.length > 0 ? (
                   <div className="relative w-full h-full flex flex-col items-center justify-center">
                     {(() => {
+                      {
+                        /* If there are images or videos, render and mapped the media file */
+                      }
                       const allMedia = [
                         ...images.map((file) => ({ type: "image", file })),
                         ...videos.map((file) => ({ type: "video", file })),
                       ];
                       const mediaFile = allMedia[fileIndex];
-
+                      {
+                        /* If the media file is an image, render the image */
+                      }
                       if (mediaFile?.type === "image") {
                         return (
                           <div
                             className="w-full h-[260px] rounded-md overflow-hidden cursor-pointer"
                             onClick={imgmodal}
                           >
+                            {/* Render the image file */}
                             <img
                               src={`http://localhost:8000/storage/${mediaFile.file}`}
                               className="w-full h-full object-cover object-center hover:scale-105 ease-in-out duration-500"
@@ -269,7 +273,9 @@ const AdminModal = ({
                           </div>
                         );
                       }
-
+                      {
+                        /* If the media file is a video, render the video */
+                      }
                       if (mediaFile?.type === "video") {
                         return (
                           <div className="w-full h-[260px] rounded-md overflow-hidden cursor-pointer">
@@ -277,6 +283,7 @@ const AdminModal = ({
                               controls
                               className="w-full h-full object-cover object-center"
                             >
+                              {/** Render the video file */}
                               <source
                                 src={`http://localhost:8000/storage/${mediaFile.file}`}
                                 type="video/mp4"
@@ -327,12 +334,11 @@ const AdminModal = ({
                       className="flex flex-row gap-2 items-center py-2 overflow-x-auto scrollbar-hide w-full"
                       ref={containerRef}
                     >
+                      {/* for mapping the documents such as PDF & DOCX*/}
                       {documents.length > 0 ? (
                         documents.map((file, index) => {
                           const fileName = file.split("/").pop();
-
                           const isDocument = /\.(pdf|docx|doc)$/i.test(file);
-
                           if (isDocument) {
                             return (
                               <div
@@ -349,6 +355,7 @@ const AdminModal = ({
                                     target="_blank"
                                     rel="noopener noreferrer"
                                   >
+                                    {/* Download the attached Documents */}
                                     <LiaDownloadSolid
                                       className="text-sm"
                                       onClick={(e) => {
@@ -360,7 +367,6 @@ const AdminModal = ({
                               </div>
                             );
                           }
-
                           // If the file is not a document, return null to not render anything
                           return null;
                         })
@@ -376,6 +382,7 @@ const AdminModal = ({
                     className="absolute right-[-16px] bg-gray-200/0 hover:bg-gray-200 rounded-md p-2 cursor-pointer ease-in-out duration-500"
                     onClick={() => handleScrollRight(160)}
                   >
+                    {/* This part is for the Left and Right buttons to navigate through through the document attachments*/}
                     <FaAngleRight className="text-black/0 group-hover:text-black ease-in-out duration-500" />
                   </div>
                   <div
@@ -389,6 +396,7 @@ const AdminModal = ({
             </>
           ) : (
             <>
+            {/** This part is for the ticket details */}
               <div className="w-full flex flex-row gap-6 items-center justify-center py-2">
                 <div className="w-1/2 flex flex-col items-center justify-center">
                   <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
@@ -416,6 +424,7 @@ const AdminModal = ({
                   <p className="text-xs font-normal">Description</p>
                 </div>
                 <div className="w-full flex items-center justify-center p-4 bg-[#f6edff] rounded-md border border-gray-300">
+                  {/* This part is for the description */}
                   <textarea
                     name=""
                     id=""
@@ -435,9 +444,11 @@ const AdminModal = ({
                   className="relative w-full flex items-center justify-between px-4 py-3 bg-[#f6edff] rounded-md border border-gray-300"
                   onClick={handleEmployee}
                 >
+                  {/* This part is for the employee data */}
                   <p className="text-xs font-semibold text-gray-500">
                     {selectedEmployee}
                   </p>
+                  {/* This part is for the selecting employee*/}
                   {!openEmployee ? (
                     <RiArrowDropDownLine className="text-xl" />
                   ) : (
@@ -451,6 +462,7 @@ const AdminModal = ({
                       : "absolute top-[100px] w-full bg-[#f6edff] rounded-md border border-gray-300 overflow-hidden shadow-xl z-10"
                   }
                 >
+                  {/* This part is for the setting the data */}
                   {data.map((data) => (
                     <div
                       className="py-2 px-4 w-full border-b border-gray-300 cursor-pointer"
@@ -475,6 +487,7 @@ const AdminModal = ({
           <div className="w-full flex flex-row gap-2 items-center justify-between py-4">
             <div className="flex items-center justify-start w-1/2">
               <p
+              // This part is for the incomplete input warning
                 className={
                   incompleteInput
                     ? "text-xs font-semibold text-red-700 animate-shake line-clamp-1"
@@ -510,7 +523,7 @@ const AdminModal = ({
           </div>
         </div>
       </div>
-
+      {/* This part is for the image modal */}
       {showImageModal && (
         <ImageModal
           isVisible={showImageModal}
