@@ -530,23 +530,23 @@ const Large = () => {
                                 </td>
                                 <td className="p-4" key={index.id}>
                                   {data.ticket_status === "1" ? (
-                                    <p className="text-[#113e21] w-full font-bold truncate">
+                                    <p className="text-[#113e21] w-full font-bold truncate text-blue-500">
                                       Requested
                                     </p>
                                   ) : data.ticket_status === "2" ? (
-                                    <p className="text-[#113e21] w-full truncate font-bold ">
+                                    <p className="text-[#113e21] w-full truncate font-bold text-red-500">
                                       Assigned
                                     </p>
                                   ) : data.ticket_status === "3" ? (
-                                    <p className="text-[#113e21] w-full truncate font-bold ">
+                                    <p className="text-[#113e21] w-full truncate font-bold text-red-700">
                                       Ongoing
                                     </p>
                                   ) : data.ticket_status === "4" ? (
-                                    <p className="text-[#113e21] w-full truncate font-bold">
+                                    <p className="text-[#113e21] w-full truncate font-bold text-yellow-400">
                                       For Checking
                                     </p>
                                   ) : (
-                                    <p className="text-[#113e21] w-full truncate font-bold">
+                                    <p className="text-[#113e21] w-full truncate font-bold text-green-600">
                                       Done
                                     </p>
                                   )}
@@ -857,23 +857,23 @@ const Large = () => {
 
                                 <td className="p-4" key={index.id}>
                                   {data.ticket_status === "1" ? (
-                                    <p className="text-[#113e21] w-full font-bold truncate">
+                                    <p className="text-[#113e21] w-full font-bold truncate text-blue-500">
                                       Requested
                                     </p>
                                   ) : data.ticket_status === "2" ? (
-                                    <p className="text-[#113e21] w-full truncate font-bold ">
+                                    <p className="text-[#113e21] w-full truncate font-bold text-red-500">
                                       Assigned
                                     </p>
                                   ) : data.ticket_status === "3" ? (
-                                    <p className="text-[#113e21] w-full truncate font-bold ">
+                                    <p className="text-[#113e21] w-full truncate font-bold text-red-700">
                                       Ongoing
                                     </p>
                                   ) : data.ticket_status === "4" ? (
-                                    <p className="text-[#113e21] w-full truncate font-bold">
+                                    <p className="text-[#113e21] w-full truncate font-bold text-yellow-400">
                                       For Checking
                                     </p>
                                   ) : (
-                                    <p className="text-[#113e21] w-full truncate font-bold">
+                                    <p className="text-[#113e21] w-full truncate font-bold text-green-600">
                                       Done
                                     </p>
                                   )}
