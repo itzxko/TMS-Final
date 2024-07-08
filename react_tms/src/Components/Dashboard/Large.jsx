@@ -65,9 +65,7 @@ const Large = () => {
   };
 
   // Check if there are tickets of the selected type
-  const hasTicketsOfType =
-    selectedType === "All" ||
-    pendingTicket.some((data) => data.ticket_type === selectedType);
+  const hasTicketsOfType = pendingTicket.length > 0;
 
   // Function to handle filter use state
   const handleFilter = () => {
@@ -79,6 +77,7 @@ const Large = () => {
   const handleOpenType = () => {
     setOpenType(!openType);
   };
+
   const nextPage = () => {
     if (current_page === pages) {
       return;
@@ -94,27 +93,45 @@ const Large = () => {
 
   // Fetch pending ticket data
   useEffect(() => {
-    let url = ``
-    if(role === 'user'){
-        url = `user/`;
+    let url = ``;
+    if (role === "user") {
+      url = `user/`;
     }
-    axiosClient.get(`/${url}pending-ticket?page=${current_page}`).then((res) => {
-      setPendingTicket(res.data.Message.data);
-    });
+    axiosClient
+      .get(`/${url}pending-ticket?page=${current_page}`)
+      .then((res) => {
+        setPendingTicket(res.data.Message.data);
+      });
   }, [current_page]);
 
   // Fetch initial data on component mount
   useEffect(() => {
-    if(role === "user"){
+    if (role === "user") {
       axiosClient
-      .get("/ticket")
-      .then((res) => {
-        setData(res.data.Message);
-        setLoading(true);
-      })
-      .catch((err) => console.log(err));
+        .get("/ticket")
+        .then((res) => {
+          setData(res.data.Message);
+          setLoading(true);
+        })
+        .catch((err) => console.log(err));
     }
   }, []);
+
+  useEffect(() => {
+    const filterType = async () => {
+      try {
+        const res = await axiosClient.get(`/pending-ticket/${selectedType}`);
+        const data1 = res.data;
+        const data2 = data1.data;
+        setPendingTicket(data2.Message.data);
+        set_current_page(data2.Message.current_page);
+        setPages(data2.Message.last_page);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    filterType();
+  }, [selectedType]);
 
   useEffect(() => {
     if (search === "" && role !== "technical") {
@@ -139,13 +156,13 @@ const Large = () => {
 
   // Filtering Pending Ticket
   useEffect(() => {
-    let url = ``
-    if(role === "admin"){
-      url = `/pending-ticket/${selectedType}`;
-    }else if(role === "technical"){
-      url = '/tech/pending-ticket';
-    }else if(role === "user"){
-      url = "/user/pending-ticket"
+    let url = ``;
+    if (role === "admin") {
+      url = `/pending-ticket`;
+    } else if (role === "technical") {
+      url = "/tech/pending-ticket";
+    } else if (role === "user") {
+      url = "/user/pending-ticket";
     }
     axiosClient
       .get(url)
@@ -160,8 +177,7 @@ const Large = () => {
       .catch((err) => {
         console.log(err);
       });
-    
-  }, [selectedType]);
+  }, [role]);
 
   //For Employee Job Count
   useEffect(() => {
@@ -381,7 +397,7 @@ const Large = () => {
                           className={
                             !(role === "admin" || role === "user")
                               ? "hidden"
-                              : "text-start p-4 truncate"
+                              : "text-center p-4 truncate"
                           }
                         >
                           Action
@@ -481,12 +497,13 @@ const Large = () => {
                                     {data.ticket_client_name}
                                   </p>
                                 </td>
-                                <td className={
-                                      !(role === "admin" || role === "user")
+                                <td
+                                  className={
+                                    !(role === "admin" || role === "user")
                                       ? "hidden"
                                       : "p-4"
-                                    } 
-                                    key={index.id}
+                                  }
+                                  key={index.id}
                                 >
                                   <p className="font-bold text-gray-600 w-full truncate">
                                     {data.ticket_assigned_to_name
@@ -497,23 +514,23 @@ const Large = () => {
                                 {/* condition for ticket status */}
                                 <td className="p-4" key={index.id}>
                                   {data.ticket_status === "1" ? (
-                                    <p className="text-[#113e21] w-full font-bold truncate">
+                                    <p className="w-full font-bold truncate text-[#a10b00]">
                                       Requested
                                     </p>
                                   ) : data.ticket_status === "2" ? (
-                                    <p className="text-[#113e21] w-full truncate font-bold ">
+                                    <p className="w-full truncate font-extrabold text-[#806800]">
                                       Assigned
                                     </p>
                                   ) : data.ticket_status === "3" ? (
-                                    <p className="text-[#113e21] w-full truncate font-bold ">
+                                    <p className="w-full truncate font-extrabold text-[##570075]">
                                       Ongoing
                                     </p>
                                   ) : data.ticket_status === "4" ? (
-                                    <p className="text-[#113e21] w-full truncate font-bold">
+                                    <p className="w-full truncate font-extrabold text-[#007a3f]">
                                       For Checking
                                     </p>
                                   ) : (
-                                    <p className="text-[#113e21] w-full truncate font-bold">
+                                    <p className="w-full truncate font-bold text-[#363636]">
                                       Done
                                     </p>
                                   )}
@@ -815,12 +832,13 @@ const Large = () => {
                                     {data.ticket_client_name}
                                   </p>
                                 </td>
-                                <td className={
-                                      !(role === "admin" || role === "user")
+                                <td
+                                  className={
+                                    !(role === "admin" || role === "user")
                                       ? "hidden"
                                       : "p-4"
-                                    } 
-                                    key={index.id}
+                                  }
+                                  key={index.id}
                                 >
                                   <p className="font-bold text-gray-600 w-full truncate">
                                     {data.ticket_assigned_to_name
@@ -831,23 +849,23 @@ const Large = () => {
 
                                 <td className="p-4" key={index.id}>
                                   {data.ticket_status === "1" ? (
-                                    <p className="text-[#113e21] w-full font-bold truncate">
+                                    <p className="w-full font-bold truncate text-[#a10b00]">
                                       Requested
                                     </p>
                                   ) : data.ticket_status === "2" ? (
-                                    <p className="text-[#113e21] w-full truncate font-bold ">
+                                    <p className="w-full truncate font-extrabold text-[#806800]">
                                       Assigned
                                     </p>
                                   ) : data.ticket_status === "3" ? (
-                                    <p className="text-[#113e21] w-full truncate font-bold ">
+                                    <p className="w-full truncate font-extrabold text-[##570075]">
                                       Ongoing
                                     </p>
                                   ) : data.ticket_status === "4" ? (
-                                    <p className="text-[#113e21] w-full truncate font-bold">
+                                    <p className="w-full truncate font-extrabold text-[#007a3f]">
                                       For Checking
                                     </p>
                                   ) : (
-                                    <p className="text-[#113e21] w-full truncate font-bold">
+                                    <p className="w-full truncate font-bold text-[#363636]">
                                       Done
                                     </p>
                                   )}
@@ -1117,7 +1135,10 @@ const Large = () => {
                 </div>
                 {/* div for pagination */}
                 {current_page && (
-                  <div className="flex flex-row gap-1 items-center justify-end w-full p-12" key={current_page}>
+                  <div
+                    className="flex flex-row gap-1 items-center justify-end w-full p-12"
+                    key={current_page}
+                  >
                     <button
                       className="text-black p-1 rounded-md ease-in-out duration-500 cursor-pointer"
                       onClick={(e) => {

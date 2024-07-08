@@ -9,6 +9,7 @@ const ImageModal = ({ onClose, images, fileIndex }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(fileIndex);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Simulate loading delay for better user experience
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -17,8 +18,8 @@ const ImageModal = ({ onClose, images, fileIndex }) => {
     return () => clearTimeout(timer); // Clear the timer when the component unmounts
   }, []);
 
+  // Ensure initial fileIndex points to a valid image
   useEffect(() => {
-    // Ensure the initial index points to a valid image
     if (!/\.(jpg|jpeg|png|gif)$/i.test(images[fileIndex])) {
       const firstImageIndex = images.findIndex(image =>
         /\.(jpg|jpeg|png|gif)$/i.test(image)
@@ -29,6 +30,7 @@ const ImageModal = ({ onClose, images, fileIndex }) => {
     }
   }, [fileIndex, images]);
 
+  // Handle next image button click
   const handleNext = () => {
     let newIndex = currentImageIndex + 1;
     if (newIndex >= images.length) {
@@ -49,6 +51,7 @@ const ImageModal = ({ onClose, images, fileIndex }) => {
     setCurrentImageIndex(newIndex);
   };
 
+  // Handle previous image button click
   const handlePrevious = () => {
     let newIndex = currentImageIndex - 1;
     if (newIndex < 0) {
@@ -69,6 +72,7 @@ const ImageModal = ({ onClose, images, fileIndex }) => {
     setCurrentImageIndex(newIndex);
   };
 
+  // Handle keyboard navigation for next and previous images
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.keyCode === 39) {
@@ -85,6 +89,7 @@ const ImageModal = ({ onClose, images, fileIndex }) => {
     };
   }, [handleNext, handlePrevious]);
 
+  // Close modal when clicking outside the modal content
   const handleClickOutside = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
       onClose();
@@ -98,6 +103,7 @@ const ImageModal = ({ onClose, images, fileIndex }) => {
     };
   }, []);
 
+  // Determine if current image is an image file
   const currentImage = images[currentImageIndex];
   const isImage = /\.(jpg|jpeg|png|gif)$/i.test(currentImage);
   

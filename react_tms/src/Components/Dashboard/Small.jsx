@@ -162,7 +162,7 @@ const Small = () => {
   useEffect(() => {
     let url = ``;
     if (role === "admin") {
-      url = `/pending-ticket/${selectedType}`;
+      url = `/pending-ticket`;
     } else if (role === "technical") {
       url = "/tech/pending-ticket";
     } else if (role === "user") {
@@ -181,6 +181,23 @@ const Small = () => {
       .catch((err) => {
         console.log(err);
       });
+  }, []);
+
+  useEffect(() => {
+    const filterType = async () => {
+      try {
+        const res = await axiosClient.get(`/pending-ticket/${selectedType}`);
+        const data1 = res.data;
+        const data2 = data1.data;
+        setPendingTicket(data2.Message.data);
+        set_current_page(data2.Message.current_page);
+        setPages(data2.Message.last_page);
+      } catch (err) {
+        // alert(err.message);
+        console.log(err);
+      }
+    };
+    filterType();
   }, [selectedType]);
 
   const filteredSearch = (e) => {
@@ -361,17 +378,30 @@ const Small = () => {
                                     {data.ticket_type}
                                   </p>
                                   {/* Display ticket status */}
-                                  <p className="text-xs font-bold text-[#113e21] capitalize truncate">
-                                    {data.ticket_status === "1"
-                                      ? "Requested"
-                                      : data.ticket_status === "2"
-                                      ? "Assigned"
-                                      : data.ticket_status === "3"
-                                      ? "Ongoing"
-                                      : data.ticket_status === "4"
-                                      ? "For Checking"
-                                      : "Done"}
+                                  <p className="text-xs font-extrabold capitalize truncate">
+                                    {data.ticket_status === "1" ? (
+                                      <span className="text-[#a10b00]">
+                                        Requested
+                                      </span>
+                                    ) : data.ticket_status === "2" ? (
+                                      <span className="text-[#806800]">
+                                        Assigned
+                                      </span>
+                                    ) : data.ticket_status === "3" ? (
+                                      <span className="text-[#570075]">
+                                        Ongoing
+                                      </span>
+                                    ) : data.ticket_status === "4" ? (
+                                      <span className="text-[#007a3f]">
+                                        For Checking
+                                      </span>
+                                    ) : (
+                                      <span className="text-[#363636]">
+                                        Done
+                                      </span>
+                                    )}
                                   </p>
+
                                   <p className="text-xs font-normal truncate">
                                     {data.ticket_assigned_to_name
                                       ? data.ticket_assigned_to_name
@@ -482,7 +512,7 @@ const Small = () => {
                               ) : role === "admin" &&
                                 data.ticket_status === "5" ? (
                                   // when ticket status is 5 or done
-                                  <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
                                     onClick={() => {
@@ -511,7 +541,7 @@ const Small = () => {
                               ) : role === "admin" &&
                                 data.ticket_status === "4" ? (
                                   // when ticket status is 4 or for checking
-                                  <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
                                     onClick={() => {
@@ -569,7 +599,7 @@ const Small = () => {
                               ) : role === "technical" &&
                                 data.ticket_status === "5" ? (
                                   // when ticket status is 5 or done
-                                  <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
                                     onClick={() => {
@@ -646,17 +676,30 @@ const Small = () => {
                                   <p className="text-xs font-bold truncate">
                                     {data.ticket_type}
                                   </p>
-                                  <p className="text-xs font-bold text-gray-500 capitalize truncate">
-                                    {data.ticket_status === "1"
-                                      ? "Requested"
-                                      : data.ticket_status === "2"
-                                      ? "Assigned"
-                                      : data.ticket_status === "3"
-                                      ? "Ongoing"
-                                      : data.ticket_status === "4"
-                                      ? "For Checking"
-                                      : "Done"}
+                                  <p className="text-xs font-bold text-[#113e21] capitalize truncate">
+                                    {data.ticket_status === "1" ? (
+                                      <span className="text-[#a10b00]">
+                                        Requested
+                                      </span>
+                                    ) : data.ticket_status === "2" ? (
+                                      <span className="text-[#806800]">
+                                        Assigned
+                                      </span>
+                                    ) : data.ticket_status === "3" ? (
+                                      <span className="text-[#570075]">
+                                        Ongoing
+                                      </span>
+                                    ) : data.ticket_status === "4" ? (
+                                      <span className="text-[#007a3f]">
+                                        For Checking
+                                      </span>
+                                    ) : (
+                                      <span className="text-[#363636]">
+                                        Done
+                                      </span>
+                                    )}
                                   </p>
+
                                   <p className="text-xs font-semibold capitalize text-gray-500 truncate">
                                     {data.ticket_assigned_to_name
                                       ? data.ticket_assigned_to_name
@@ -767,7 +810,7 @@ const Small = () => {
                               ) : role === "admin" &&
                                 data.ticket_status === "5" ? (
                                   // when ticket status is 5 or done
-                                  <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
                                     onClick={() => {
@@ -796,7 +839,7 @@ const Small = () => {
                               ) : role === "admin" &&
                                 data.ticket_status === "4" ? (
                                   // when ticket status is 4 or for checking
-                                  <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
                                     onClick={() => {
@@ -853,7 +896,7 @@ const Small = () => {
                               ) : role === "technical" &&
                                 data.ticket_status === "5" ? (
                                   // when ticket status is 5 or done
-                                  <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
                                     onClick={() => {
