@@ -47,7 +47,7 @@ function Navbar({ selectedRole, setShowUserForm }) {
 
   //For Employee Job Count
   useEffect(() => {
-    if(selectedRole !== "user" || selectedRole !== "technical"){
+    if(role !== "user" || role !== "technical"){
       axiosClient
       .get("/getEmployeeJobs")
       .then((res) => {
@@ -248,7 +248,7 @@ function Navbar({ selectedRole, setShowUserForm }) {
         </div>
         <div className="absolute bottom-0 w-full flex items-end justify-end p-4">
           <div
-            className="bg-[#2f2f2f] text-white py-3 rounded-md ease-in-out duration-500 flex flex-row gap-1 items-center justify-center w-full"
+            className="bg-[#2f2f2f] text-white py-3 rounded-md ease-in-out duration-500 flex flex-row gap-1 items-center justify-center cursor-pointer w-full"
             onClick={handleLogout}
           >
             <PiArrowDownRightBold className="text-md" />
