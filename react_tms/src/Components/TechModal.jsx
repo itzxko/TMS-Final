@@ -25,8 +25,6 @@ const TechModal = ({
 }) => {
   const containerRef = useRef(null);
   const [activeDetails, setActiveDetails] = useState(false);
-  const [smallAttach, setSmallAttach] = useState(false);
-  const [data, setData] = useState("");
   const [findings, setFindings] = useState("");
   const [actions, setActions] = useState("");
   const [replacement, setReplacement] = useState("");
@@ -34,23 +32,17 @@ const TechModal = ({
   const [videos, setVideos] = useState([]);
   const [documents, setDocuments] = useState([]);
   const [fileIndex, setFileIndex] = useState(0);
-  const [open, setOpen] = useState(0);
   const [showImageModal, setShowImageModal] = useState(false);
-  const handleOpen = (value) => setOpen(open === value ? 0 : value);
   const [loading, setLoading] = useState(true);
   const [incompleteInput, setIncompleteInput] = useState(false);
   const allMedia = [...images, ...videos];
 
+  // Function to toggle image modal visibility
   const imgmodal = () => {
     setShowImageModal(!showImageModal);
-    // console.log(showImageModal);
   };
-
-  const handleAttachment = () => {
-    setSmallAttach(!smallAttach);
-    // console.log(smallAttach);
-  };
-
+	
+  // Effect to handle Escape key press for closing modal
   useEffect(() => {
     const handleEsc = (event) => {
       if (event.key === "Escape") {
@@ -65,6 +57,7 @@ const TechModal = ({
     };
   }, [onClose]);
 
+  // Effect to disable/enable scrolling when modal is visible/hidden
   useEffect(() => {
     const disableScroll = () => {
       document.body.style.overflow = "hidden";
@@ -84,7 +77,8 @@ const TechModal = ({
       enableScroll();
     };
   }, [isVisible]);
-
+	
+  // Effect to fetch ticket details when ticketID changes
   useEffect(() => {
     if (ticketID) {
       axiosClient
@@ -103,7 +97,8 @@ const TechModal = ({
         });
     }
   }, [ticketID]);
-
+	
+  // Function to handle form submission
   const handleSubmit = async (e) => {
     if (replacement === "" || findings === "" || actions === "") {
       setIncompleteInput(true);
@@ -114,32 +109,6 @@ const TechModal = ({
     }
 
     e.preventDefault();
-
-    if (!findings || !actions || !replacement) {
-      Swal.fire({
-        title: '<span class="text-red-500">Error!</span>',
-        html: `
-        <style> 
-          .swal2-content {
-            color: black !important;
-          }
-          .swal2-confirm {
-            background-color: black !important;
-            color: white !important;
-            border: none !important;
-            box-shadow: none !important;
-          }
-          .swal2-icon.swal2-error .swal2-icon-content {
-            color: black !important;
-          }
-        </style>
-        Please fill in all fields!
-      `,
-        icon: "error",
-        confirmButtonText: "OKAY",
-      });
-      return;
-    }
 
     const formData = new FormData();
     formData.append("id", ticketID);
@@ -155,7 +124,8 @@ const TechModal = ({
       console.error(error);
     }
   };
-
+	
+  // Function to handle next media file
   const handleNext = () => {
     let newIndex = fileIndex + 1;
     if (newIndex >= allMedia.length) {
@@ -163,7 +133,8 @@ const TechModal = ({
     }
     setFileIndex(newIndex);
   };
-
+	
+  // Function to handle previous media file
   const handlePrevious = () => {
     let newIndex = fileIndex - 1;
     if (newIndex < 0) {
@@ -171,7 +142,8 @@ const TechModal = ({
     }
     setFileIndex(newIndex);
   };
-
+	
+  // Effect to fetch images, videos, and documents when modal is visible
   useEffect(() => {
     setLoading(true);
     if (isVisible) {
@@ -179,7 +151,6 @@ const TechModal = ({
         try {
           const res = await axiosClient.get(`get_images/` + ticket_cde);
           setImages(res.data.images);
-          // console.log(res.data.images);
         } catch (error) {
           console.error("Error fetching images:", error);
         }
@@ -188,7 +159,6 @@ const TechModal = ({
         try {
           const res = await axiosClient.get(`get_videos/` + ticket_cde);
           setVideos(res.data.videos);
-          // console.log(res.data.videos);
         } catch (error) {
           console.error("Error fetching videos:", error);
         }
@@ -197,7 +167,6 @@ const TechModal = ({
         try {
           const res = await axiosClient.get(`get_documents/` + ticket_cde);
           setDocuments(res.data.documents);
-          // console.log(res.data.documents);
         } catch (error) {
           console.error("Error fetching documents:", error);
         }
@@ -209,22 +178,14 @@ const TechModal = ({
     }
   }, [isVisible]);
 
-  if (!isVisible) return null;
-
-  const hasImages = images.some((image) => {
-    const extension = image.split(".").pop();
-    return /\.(jpg|jpeg|png|gif)$/i.test(extension);
-  });
-  const hasVideos = images.some((video) => {
-    const extension = video.split(".").pop();
-    return /\.(mp4|mov|avi|mkv)$/i.test(extension);
-  });
+  if (!isVisible) return null; // Return null if modal is not visible
 
   if (loading) {
-    return <Loading />;
+    return <Loading />; // Show loading component while fetching data
   }
 
   return (
+    // Modal Container
     <div className="fixed top-0 left-0 w-full h-[100svh] items-center justify-center bg-black/50 flex z-10 font-figtree">
       <div
         className="w-full min-h-[100svh] max-h-[100svh] py-12 px-4 overflow-auto flex justify-center items-start"
@@ -232,11 +193,11 @@ const TechModal = ({
         onClick={(e) => {
           if (e.target.id === "container") {
             onClose();
-            // selected(null);
             setActiveDetails(false);
           }
         }}
       >
+        {/* Modal Content */}
         <div className="w-full md:w-2/3 lg:w-1/3 bg-[#FAF5FF] flex flex-col items-center justify-center p-8 md:p-10 rounded-xl shadow-xl">
           <div className="relative w-full flex items-center justify-center pb-2 md:pb-12">
             <p className="text-xs font-semibold">Ticket Details</p>
@@ -257,14 +218,15 @@ const TechModal = ({
               <TiArrowLeft className="text-xl" />
             </div>
           </div>
-          {/* insert the argument here */}
 
+          {/* if activeDetails is false, render the ticket type, requester, and description */}
           {activeDetails ? (
             <>
               <div className="w-full flex flex-col items-center justify-center py-4">
                 <div className=" flex item-center justify-start w-full py-2 px-1">
                   <p className="text-xs font-normal">Images and Videos</p>
                 </div>
+                {/* If there are images or videos, render the media file */}
                 {images.length > 0 || videos.length > 0 ? (
                   <div className="relative w-full h-full flex flex-col items-center justify-center">
                     {(() => {
@@ -408,6 +370,7 @@ const TechModal = ({
             </>
           ) : (
             <>
+            {/* Render ticket type, requester, and description */}
               <div className="w-full flex flex-row gap-6 items-center justify-center py-2">
                 <div className="w-1/2 flex flex-col items-center justify-center">
                   <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
@@ -445,6 +408,7 @@ const TechModal = ({
                   ></textarea>
                 </div>
               </div>
+              {/* Render the findings, actions, and replacement fields */}
               <div className="py-2 w-full flex flex-col items-center justify-center">
                 <div className="flex flex-row items-center justify-start w-full py-2 px-1">
                   <p className="text-xs font-normal">Findings</p>
@@ -500,6 +464,7 @@ const TechModal = ({
               </div>
             </>
           )}
+          {/* Render the Proceed and Cancel buttons */}
           <div className="w-full flex flex-row gap-2 items-center justify-between py-4">
             <div className="flex items-center justify-start w-1/2">
               {incompleteInput === true ? (
@@ -534,6 +499,7 @@ const TechModal = ({
         </div>
       </div>
 
+      {/* condition and props for the ImageModal */}
       {showImageModal && (
         <ImageModal
           isVisible={showImageModal}

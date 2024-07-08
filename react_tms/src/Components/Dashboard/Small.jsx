@@ -8,10 +8,7 @@ import ticketType from "../../JSON/Tickets.json";
 import { BiTimer } from "react-icons/bi";
 import { TbCalendarTime } from "react-icons/tb";
 import { MdClose } from "react-icons/md";
-import { CgMathPlus } from "react-icons/cg";
 import { BiSearch } from "react-icons/bi";
-import { RiUserSettingsLine } from "react-icons/ri";
-import { HiOutlineTicket } from "react-icons/hi2";
 import { FaCodeMerge } from "react-icons/fa6";
 import { LuSettings2 } from "react-icons/lu";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
@@ -29,15 +26,9 @@ import FollowUp from "../Popups/FollowUp";
 import useRole from "../customHooks/useRole";
 
 const Small = () => {
-  const [ticketID, setTicketID] = useState(false);
-
-  // use state for toggling filter
-  const [filter, setFilter] = useState(false);
-
-  // use state for toggling type filter
+  const [ticketID, setTicketID] = useState(false); // use state for toggling filter
+  const [filter, setFilter] = useState(false); // use state for toggling type filter
   const [openType, setOpenType] = useState(false);
-
-  // use state for setting the selected type
   const [selectedType, setSelectedType] = useState("All");
   const [showUserForm, setShowUserForm] = useState(false);
   const [showTechForm, setShowTechForm] = useState(false);
@@ -46,8 +37,7 @@ const Small = () => {
   const [showAcceptDenyModal, setShowAcceptDenyModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-  const [id, setID] = useState("");
-  // use state for toggling role filter
+  const [id, setID] = useState("");  // use state for toggling role filter
   const [openRole, setOpenRole] = useState(false);
   const [pendingTicket, setPendingTicket] = useState([]);
   const [request_type, set_request_type] = useState("");
@@ -59,29 +49,25 @@ const Small = () => {
   const [ticket_desc_replacement, set_ticket_desc_replacement] = useState("");
   const [ticket_status, set_ticket_status] = useState("");
   const [ticket_cde, set_ticket_cde] = useState([]);
-  const [userName, setUserName] = useState("");
   const [openSearch, setOpenSearch] = useState(false);
   const [search, setSearch] = useState("");
   const [bumpCode, setBumpCode] = useState("");
   const [ticket_assigned_to_name, setTicket_assigned_to_name] = useState(null);
-  // const [currentPage, setCurrentPage] = useState(1);
   const [current_page, set_current_page] = useState(null);
   const [pages, setPages] = useState(null);
 
   const { role } = useRole();
+
+  // Generate Page Numbers
   const generatePageNumbers = (current_page, total_pages) => {
     const pages = [];
-
     if (current_page > 1) {
       pages.push(current_page - 1); // Previous page
     }
-
     pages.push(current_page); // Current page
-
     if (current_page < total_pages) {
       pages.push(current_page + 1); // Next page
     }
-
     return pages;
   };
 
@@ -100,6 +86,7 @@ const Small = () => {
     set_current_page(current_page - 1);
   };
 
+  // Fetch initial data on component mount
   useEffect(() => {
     let url = ``;
     if (role === "user") {
@@ -112,11 +99,6 @@ const Small = () => {
       });
   }, [current_page]);
 
-  const handleSearch = () => {
-    setOpenSearch(!openSearch);
-    // console.log(openSearch);
-    setFilter(false);
-  };
   useEffect(() => {
     if (search === "" && role !== "technical" && role !== "user") {
       axiosClient
@@ -137,6 +119,7 @@ const Small = () => {
         });
     }
   }, [search]);
+  
   // Check if there are tickets of the selected type
   const hasTicketsOfType =
     selectedType === "All" ||
@@ -154,7 +137,6 @@ const Small = () => {
   const handleOpenType = () => {
     setOpenType(!openType);
     setOpenRole(false);
-    // console.log(`type value below: ${openType}`);
   };
 
   // Toggle selected ticket type filter
@@ -192,8 +174,6 @@ const Small = () => {
         return res.data;
       })
       .then((res) => {
-        // console.log(res.Message.last_page);
-        // console.log(res.Message.current_page)
         setPendingTicket(res.Message.data);
         set_current_page(res.Message.current_page);
         setPages(res.Message.last_page);
@@ -339,6 +319,7 @@ const Small = () => {
                 </div>
               </div>
             </div>
+            {/* div for ticket cards */}
             <div className="py-2 min-h-[50vh] w-full flex justify-center items-start">
               {pendingTicket.length === 0 ? (
                 <div className=" flex items-center justify-center w-full h-[70vh]">
@@ -361,14 +342,7 @@ const Small = () => {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-3 h-full gap-6 w-full">
                   {pendingTicket
-                    // .filter((data) => {
-                    //   return search.toLowerCase() === ""
-                    //     ? data
-                    //     : data.ticket_type.toLowerCase().includes(search) ||
-                    //         data.ticket_desc_concern
-                    //           .toLowerCase()
-                    //           .includes(search);
-                    // })
+                    // Filter tickets based on role
                     .filter((data) => {
                       if (role === "technical") {
                         return (
@@ -383,8 +357,10 @@ const Small = () => {
                       }
                       return true;
                     })
+                    // Mapping the ticket card
                     .map((data, index) =>
                       data.ticket_type === selectedType ? (
+                        // data mapping if there is a specific selected type and its conditions
                         <div
                           key={index}
                           className="bg-[#FAF5FF] min-h-[250px] rounded-lg overflow-hidden px-6 py-6"
@@ -401,6 +377,7 @@ const Small = () => {
                                   <p className="text-xs font-bold truncate">
                                     {data.ticket_type}
                                   </p>
+                                  {/* Display ticket status */}
                                   <p className="text-xs font-extrabold capitalize truncate">
                                     {data.ticket_status === "1" ? (
                                       <span className="text-[#a10b00]">
@@ -461,7 +438,9 @@ const Small = () => {
                               </div>
                             </div>
                             <div className="h-1/45 flex justify-center items-center">
+                            {/* button if role is user and its conditions */}
                               {role === "user" && data.ticket_status === "5" ? (
+                                // when ticket status is 5 or done
                                 <button className="bg-[#595959] w-full text-white py-3 rounded-md ease-in-out duration-500 disabled">
                                   <p
                                     className="text-xs font-semibold "
@@ -490,6 +469,7 @@ const Small = () => {
                                 </button>
                               ) : role === "user" &&
                                 data.ticket_status === "4" ? (
+                                // when ticket status is 4 or for checking
                                 <button className="bg-[#595959] w-full text-white py-3 rounded-md ease-in-out duration-500 disabled">
                                   <p
                                     className="text-xs font-semibold "
@@ -528,8 +508,10 @@ const Small = () => {
                                     Follow Up
                                   </p>
                                 </button>
+                              // button if role is admin and its conditions 
                               ) : role === "admin" &&
                                 data.ticket_status === "5" ? (
+                                  // when ticket status is 5 or done
                                 <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
@@ -558,6 +540,7 @@ const Small = () => {
                                 </button>
                               ) : role === "admin" &&
                                 data.ticket_status === "4" ? (
+                                  // when ticket status is 4 or for checking
                                 <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
@@ -612,8 +595,10 @@ const Small = () => {
                                     Assign
                                   </p>
                                 </button>
+                              // button if role is technical and its conditions 
                               ) : role === "technical" &&
                                 data.ticket_status === "5" ? (
+                                  // when ticket status is 5 or done
                                 <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
@@ -673,6 +658,7 @@ const Small = () => {
                             </div>
                           </div>
                         </div>
+                      // data mapping if selected type is all
                       ) : selectedType === "All" ? (
                         <div
                           key={index}
@@ -750,7 +736,9 @@ const Small = () => {
                               </div>
                             </div>
                             <div className="flex justify-center items-center">
+                              {/* button if role is user and its conditions */}
                               {role === "user" && data.ticket_status === "5" ? (
+                                // when ticket status is 5 or done
                                 <button className="bg-[#3d3d3d] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500 disabled">
                                   <p
                                     className="text-xs font-semibold "
@@ -779,6 +767,7 @@ const Small = () => {
                                 </button>
                               ) : role === "user" &&
                                 data.ticket_status === "4" ? (
+                                // when ticket status is 4 or for checking
                                 <button className="bg-[#3d3d3d] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500 disabled">
                                   <p
                                     className="text-xs font-semibold "
@@ -817,8 +806,10 @@ const Small = () => {
                                     Follow Up
                                   </p>
                                 </button>
+                              // button if role is admin and its conditions 
                               ) : role === "admin" &&
                                 data.ticket_status === "5" ? (
+                                  // when ticket status is 5 or done
                                 <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
@@ -847,6 +838,7 @@ const Small = () => {
                                 </button>
                               ) : role === "admin" &&
                                 data.ticket_status === "4" ? (
+                                  // when ticket status is 4 or for checking
                                 <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
@@ -900,8 +892,10 @@ const Small = () => {
                                     Assign
                                   </p>
                                 </button>
+                              // button if role is technical and its conditions 
                               ) : role === "technical" &&
                                 data.ticket_status === "5" ? (
+                                  // when ticket status is 5 or done
                                 <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
@@ -915,6 +909,9 @@ const Small = () => {
                                       set_request_type(data.ticket_type);
                                       set_tickec_desc_remarks(
                                         data.ticket_desc_remarks
+                                      );
+                                      set_name_requester(
+                                        data.ticket_client_name
                                       );
                                       set_ticket_desc_findings(
                                         data.ticket_desc_findings
@@ -1057,6 +1054,7 @@ const Small = () => {
         ticket_type={request_type}
         request_desc={request_desc}
         ticket_cde={ticket_cde}
+        requester_name={name_requester}
         ticket_desc_remarks={ticket_desc_remarks}
         ticket_desc_findings={ticket_desc_findings}
         ticket_desc_replacement={ticket_desc_replacement}
