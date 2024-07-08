@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('username', 100)->nullable();
             $table->string('password', 255)->nullable();
             $table->string('email', 255)->nullable();
-            $table->string('agency_id', 2 )->nullable();
+            $table->string('agency_id', 2)->nullable();
             $table->string('agency_desc', 120)->nullable();
             $table->string('region_id', 2)->nullable();
             $table->string('region_desc', 120)->nullable();
@@ -41,7 +41,7 @@ return new class extends Migration
             $table->string('OFFICE_CDE', 10)->nullable();
             $table->text('TYPE_DESC', 255)->nullable();
             $table->dateTime('DATE_ADDED')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
-        });        
+        });
         // Insert data into the table
         DB::table('ticket_type')->insert([
             ['ID' => 1, 'TYPE_CODE' => 1, 'OFFICE_CDE' => '1111111111', 'TYPE_DESC' => 'Installation', 'DATE_ADDED' => '2023-04-27 10:03:13'],

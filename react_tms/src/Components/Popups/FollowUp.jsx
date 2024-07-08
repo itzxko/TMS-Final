@@ -6,6 +6,7 @@ import Loading from "../Loading/Loading"; // Ensure correct path
 const FollowUp = ({ onClose, data, bumpCode, ticket_cde, isVisible }) => {
   const [loading, setLoading] = useState(false);
 
+  // Disable scrolling when the modal is visible
   useEffect(() => {
     const disableScroll = () => {
       document.body.style.overflow = "hidden";
@@ -30,6 +31,7 @@ const FollowUp = ({ onClose, data, bumpCode, ticket_cde, isVisible }) => {
     };
   }, [isVisible]);
 
+  // Close the modal when the Esc key is pressed
   useEffect(() => {
     const handleEsc = (event) => {
       if (event.key === "Escape") {
@@ -51,6 +53,7 @@ const FollowUp = ({ onClose, data, bumpCode, ticket_cde, isVisible }) => {
     return <Loading />; // Show loading component when loading is true
   }
 
+  // Function to bump the ticket
   const bump = (code) => {
     axiosClient
       .post("/follow-up", {
@@ -64,7 +67,9 @@ const FollowUp = ({ onClose, data, bumpCode, ticket_cde, isVisible }) => {
       });
   };
 
+  // Render the modal
   return (
+    // Modal container
     <div
       className="fixed top-0 left-0 flex items-center justify-center min-h-[100svh] w-full z-30 bg-black/50 font-figtree"
       id="container"
@@ -72,6 +77,7 @@ const FollowUp = ({ onClose, data, bumpCode, ticket_cde, isVisible }) => {
         if (e.target.id === "container") onClose();
       }}
     >
+      {/* Modal content */}
       <div className="flex flex-col gap-6 items-center justify-center p-8 bg-[#FAF5FF] rounded-xl shadow-xl">
         <div className="flex flex-col gap-4 items-center justify-center">
           <div className="flex items-center justify-center p-2 bg-[#f6edff] rounded-md">
