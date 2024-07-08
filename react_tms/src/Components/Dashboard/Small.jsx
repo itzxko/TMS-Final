@@ -55,10 +55,10 @@ const Small = () => {
   const [ticket_status, set_ticket_status] = useState("");
   const [ticket_cde, set_ticket_cde] = useState([]);
   const [openSearch, setOpenSearch] = useState(false);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(null);
   const [bumpCode, setBumpCode] = useState("");
   const [ticket_assigned_to_name, setTicket_assigned_to_name] = useState(null);
-  const [current_page, set_current_page] = useState(null);
+  const [current_page, set_current_page] = useState(1);
   const [pages, setPages] = useState(null);
 
   const { role } = useRole();
@@ -91,18 +91,26 @@ const Small = () => {
     set_current_page(current_page - 1);
   };
 
-  // Fetch initial data on component mount
-  useEffect(() => {
-    let url = ``;
-    if (role === "user") {
-      url = `user/`;
-    }
-    axiosClient
-      .get(`/${url}pending-ticket?page=${current_page}`)
-      .then((res) => {
-        setPendingTicket(res.data.Message.data);
-      });
-  }, [current_page]);
+ // Fetch pending ticket data
+ useEffect(() => {
+  let url = ``;
+  switch(role){
+    case "user":
+      url = "user/"
+      break;
+    case "technical":
+      url = "tech/"
+      break;
+    case "admin":
+      url = ``
+      break;
+  }
+  axiosClient
+    .get(`/${url}pending-ticket?page=${current_page}`)
+    .then((res) => {
+      setPendingTicket(res.data.Message.data);
+    });
+}, [current_page]);
 
   useEffect(() => {
     if (search === "" && role !== "technical" && role !== "user") {
@@ -126,9 +134,7 @@ const Small = () => {
   }, [search]);
 
   // Check if there are tickets of the selected type
-  const hasTicketsOfType =
-    selectedType === "All" ||
-    pendingTicket.some((data) => data.ticket_type === selectedType);
+  const hasTicketsOfType = pendingTicket.length > 0;
 
   // Function to handle filter use state
   const handleFilter = () => {
@@ -189,6 +195,9 @@ const Small = () => {
   }, []);
 
   useEffect(() => {
+    if (role === "admin" || role === "technical") {
+      return;
+    }
     const filterType = async () => {
       try {
         const res = await axiosClient.get(`/pending-ticket/${selectedType}`);
@@ -198,12 +207,12 @@ const Small = () => {
         set_current_page(data2.Message.current_page);
         setPages(data2.Message.last_page);
       } catch (err) {
-        // alert(err.message);
         console.log(err);
       }
     };
     filterType();
   }, [selectedType]);
+
 
   const filteredSearch = (e) => {
     e.preventDefault();

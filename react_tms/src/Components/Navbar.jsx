@@ -50,7 +50,9 @@ function Navbar({ selectedRole, setShowUserForm }) {
 
   // Fetch employee job count on component mount
   useEffect(() => {
-    if (role !== "user" || role !== "technical") {
+    if (role !== "admin") {
+        return;
+    }
       axiosClient
         .get("/getEmployeeJobs")
         .then((res) => {
@@ -59,7 +61,7 @@ function Navbar({ selectedRole, setShowUserForm }) {
         .catch((err) => {
           console.log(err);
         });
-    }
+    
   }, []); // Empty dependency array ensures this effect runs once on mount
 
   return (

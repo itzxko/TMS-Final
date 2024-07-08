@@ -47,21 +47,6 @@ const Login = () => {
       // Send login request
       const response = await axiosClient.post("/login", { email, password });
       if (response) {
-        await sendOTP();
-      }
-    } catch (err) {
-      setSendError(true);
-      setLoading(false);
-      setTimeout(() => {
-        setSendError(false);
-      }, 3000);
-    }
-  };
-  const sendOTP = async () => {
-    try {
-      // Send OTP request
-      const res = await axiosClient.post("/send-otp", { email });
-      if (res) {
         setShowModal(true);
         setHasClicked(true);
         setCanResend(false);
@@ -71,9 +56,14 @@ const Login = () => {
         setCountdown(60); // Start countdown from 60 seconds
       }
     } catch (err) {
-      console.log(err);
+      setSendError(true);
+      setLoading(false);
+      setTimeout(() => {
+        setSendError(false);
+      }, 3000);
     }
   };
+
   const verifyOTP = async () => {
     try {
       // Send OTP verification request
