@@ -417,7 +417,7 @@ const Large = () => {
                           className={
                             !(role === "admin" || role === "user")
                               ? "hidden"
-                              : "text-start p-4 truncate"
+                              : "text-center p-4 truncate"
                           }
                         >
                           Action
@@ -530,23 +530,23 @@ const Large = () => {
                                 </td>
                                 <td className="p-4" key={index.id}>
                                   {data.ticket_status === "1" ? (
-                                    <p className="text-[#113e21] w-full font-bold truncate text-blue-500">
+                                    <p className="w-full font-bold truncate text-[#a10b00]">
                                       Requested
                                     </p>
                                   ) : data.ticket_status === "2" ? (
-                                    <p className="text-[#113e21] w-full truncate font-bold text-red-500">
+                                    <p className="w-full truncate font-extrabold text-[#806800]">
                                       Assigned
                                     </p>
                                   ) : data.ticket_status === "3" ? (
-                                    <p className="text-[#113e21] w-full truncate font-bold text-red-700">
+                                    <p className="w-full truncate font-extrabold text-[##570075]">
                                       Ongoing
                                     </p>
                                   ) : data.ticket_status === "4" ? (
-                                    <p className="text-[#113e21] w-full truncate font-bold text-yellow-400">
+                                    <p className="w-full truncate font-extrabold text-[#007a3f]">
                                       For Checking
                                     </p>
                                   ) : (
-                                    <p className="text-[#113e21] w-full truncate font-bold text-green-600">
+                                    <p className="w-full truncate font-bold text-[#363636]">
                                       Done
                                     </p>
                                   )}
@@ -858,23 +858,23 @@ const Large = () => {
 
                                 <td className="p-4" key={index.id}>
                                   {data.ticket_status === "1" ? (
-                                    <p className="text-[#113e21] w-full font-bold truncate text-blue-500">
+                                    <p className="w-full font-bold truncate text-[#a10b00]">
                                       Requested
                                     </p>
                                   ) : data.ticket_status === "2" ? (
-                                    <p className="text-[#113e21] w-full truncate font-bold text-red-500">
+                                    <p className="w-full truncate font-extrabold text-[#806800]">
                                       Assigned
                                     </p>
                                   ) : data.ticket_status === "3" ? (
-                                    <p className="text-[#113e21] w-full truncate font-bold text-red-700">
+                                    <p className="w-full truncate font-extrabold text-[##570075]">
                                       Ongoing
                                     </p>
                                   ) : data.ticket_status === "4" ? (
-                                    <p className="text-[#113e21] w-full truncate font-bold text-yellow-400">
+                                    <p className="w-full truncate font-extrabold text-[#007a3f]">
                                       For Checking
                                     </p>
                                   ) : (
-                                    <p className="text-[#113e21] w-full truncate font-bold text-green-600">
+                                    <p className="w-full truncate font-bold text-[#363636]">
                                       Done
                                     </p>
                                   )}

@@ -205,21 +205,20 @@ const Small = () => {
 
   useEffect(() => {
     const filterType = async () => {
-        try{
-          const res = await axiosClient.get(`/pending-ticket/${selectedType}`);
-          const data1 = res.data;
-          const data2 = data1.data;
-          setPendingTicket(data2.Message.data);
-          set_current_page(data2.Message.current_page);
-          setPages(data2.Message.last_page);
-        }catch(err){
-          // alert(err.message);
-          console.log(err);
-        }
-    }
+      try {
+        const res = await axiosClient.get(`/pending-ticket/${selectedType}`);
+        const data1 = res.data;
+        const data2 = data1.data;
+        setPendingTicket(data2.Message.data);
+        set_current_page(data2.Message.current_page);
+        setPages(data2.Message.last_page);
+      } catch (err) {
+        // alert(err.message);
+        console.log(err);
+      }
+    };
     filterType();
   }, [selectedType]);
-
 
   const filteredSearch = (e) => {
     e.preventDefault();
@@ -402,25 +401,25 @@ const Small = () => {
                                   <p className="text-xs font-bold truncate">
                                     {data.ticket_type}
                                   </p>
-                                  <p className="text-xs font-bold text-[#113e21] capitalize truncate">
+                                  <p className="text-xs font-extrabold capitalize truncate">
                                     {data.ticket_status === "1" ? (
-                                      <span className="text-blue-500">
+                                      <span className="text-[#a10b00]">
                                         Requested
                                       </span>
                                     ) : data.ticket_status === "2" ? (
-                                      <span className="text-red-500">
+                                      <span className="text-[#806800]">
                                         Assigned
                                       </span>
                                     ) : data.ticket_status === "3" ? (
-                                      <span className="text-red-700">
+                                      <span className="text-[#570075]">
                                         Ongoing
                                       </span>
                                     ) : data.ticket_status === "4" ? (
-                                      <span className="text-yellow-400">
+                                      <span className="text-[#007a3f]">
                                         For Checking
                                       </span>
                                     ) : (
-                                      <span className="text-green-600">
+                                      <span className="text-[#363636]">
                                         Done
                                       </span>
                                     )}
@@ -693,23 +692,23 @@ const Small = () => {
                                   </p>
                                   <p className="text-xs font-bold text-[#113e21] capitalize truncate">
                                     {data.ticket_status === "1" ? (
-                                      <span className="text-blue-500">
+                                      <span className="text-[#a10b00]">
                                         Requested
                                       </span>
                                     ) : data.ticket_status === "2" ? (
-                                      <span className="text-red-500">
+                                      <span className="text-[#806800]">
                                         Assigned
                                       </span>
                                     ) : data.ticket_status === "3" ? (
-                                      <span className="text-red-700">
+                                      <span className="text-[#570075]">
                                         Ongoing
                                       </span>
                                     ) : data.ticket_status === "4" ? (
-                                      <span className="text-yellow-400">
+                                      <span className="text-[#007a3f]">
                                         For Checking
                                       </span>
                                     ) : (
-                                      <span className="text-green-600">
+                                      <span className="text-[#363636]">
                                         Done
                                       </span>
                                     )}
