@@ -7,12 +7,10 @@ import axiosClient from "../../axios"; //axios
 import { LuSettings2 } from "react-icons/lu";
 import { MdClose } from "react-icons/md";
 import { BiSearch } from "react-icons/bi";
-import { MdWorkOutline } from "react-icons/md";
 import { FiLayers } from "react-icons/fi";
 import { RiUserSharedLine } from "react-icons/ri";
 import { TbTransfer } from "react-icons/tb";
 import { RiEditLine } from "react-icons/ri";
-import { CgMathPlus } from "react-icons/cg";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { LiaExclamationSolid } from "react-icons/lia";
 import { RxInfoCircled } from "react-icons/rx";
@@ -30,7 +28,6 @@ const Large = () => {
   const [ticketID, setTicketID] = useState(false);
   const [name_requester, set_name_requester] = useState(null);
   const [filter, setFilter] = useState(false); // use state for toggling filter
-  const [openRole, setOpenRole] = useState(false); // use state for toggling role filter
   const [openType, setOpenType] = useState(false); // use state for toggling type filter
   const [selectedType, setSelectedType] = useState("All"); // use state for setting the selected type
   const [showUserForm, setShowUserForm] = useState(false);
@@ -54,7 +51,6 @@ const Large = () => {
   const [ticket_desc_remarks, set_tickec_desc_remarks] = useState("");
   const [ticket_desc_replacement, set_ticket_desc_replacement] = useState("");
   const [ticket_status, set_ticket_status] = useState("");
-  const [userName, setUserName] = useState("");
   const [current_page, set_current_page] = useState(1);
   const [name, setName] = useState([]);
   const [bumpCode, setBumpCode] = useState("");
@@ -62,13 +58,8 @@ const Large = () => {
 
   const containerRef = useRef(null); //scrolling
   const { role } = useRole();
+
   //handling scrolling
-  const handleScrollUp = (scrollOffset) => {
-    if (containerRef.current) {
-      containerRef.current.scrollTop -= scrollOffset;
-    }
-  };
-  // console.log(role);
   const handleScrollDown = (scrollOffset) => {
     if (containerRef.current) {
       containerRef.current.scrollTop += scrollOffset;
@@ -84,21 +75,13 @@ const Large = () => {
   const handleFilter = () => {
     setFilter(!filter);
     setOpenType(false);
-    // setOpenRole(false);
-  };
-
-  // Toggle role dropdown
-  const handleOpenRole = () => {
-    // setOpenRole(!openRole);
-    setOpenType(false);
   };
 
   // Function to toggle the type filter
   const handleOpenType = () => {
     setOpenType(!openType);
-    // setOpenRole(false);
-    // console.log(`type value below: ${openType}`);
   };
+
   const nextPage = () => {
     if (current_page === pages) {
       return;
@@ -111,25 +94,30 @@ const Large = () => {
     }
     set_current_page(current_page - 1);
   };
+
+  // Fetch pending ticket data
   useEffect(() => {
-    let url = ``
-    if(role === 'user'){
-        url = `user/`;
+    let url = ``;
+    if (role === "user") {
+      url = `user/`;
     }
-    axiosClient.get(`/${url}pending-ticket?page=${current_page}`).then((res) => {
-      setPendingTicket(res.data.Message.data);
-    });
+    axiosClient
+      .get(`/${url}pending-ticket?page=${current_page}`)
+      .then((res) => {
+        setPendingTicket(res.data.Message.data);
+      });
   }, [current_page]);
 
+  // Fetch initial data on component mount
   useEffect(() => {
-    if(role === "user"){
+    if (role === "user") {
       axiosClient
-      .get("/ticket")
-      .then((res) => {
-        setData(res.data.Message);
-        setLoading(true);
-      })
-      .catch((err) => console.log(err));
+        .get("/ticket")
+        .then((res) => {
+          setData(res.data.Message);
+          setLoading(true);
+        })
+        .catch((err) => console.log(err));
     }
   }, []);
 
@@ -156,13 +144,13 @@ const Large = () => {
 
   // Filtering Pending Ticket
   useEffect(() => {
-    let url = ``
-    if(role === "admin"){
+    let url = ``;
+    if (role === "admin") {
       url = `/pending-ticket`;
-    }else if(role === "technical"){
-      url = '/tech/pending-ticket';
-    }else if(role === "user"){
-      url = "/user/pending-ticket"
+    } else if (role === "technical") {
+      url = "/tech/pending-ticket";
+    } else if (role === "user") {
+      url = "/user/pending-ticket";
     }
     axiosClient
       .get(url)
@@ -170,8 +158,6 @@ const Large = () => {
         return res.data;
       })
       .then((res) => {
-        // console.log(res.Message.last_page);
-        // console.log(res.Message.current_page)
         setPendingTicket(res.Message.data);
         set_current_page(res.Message.current_page);
         setPages(res.Message.last_page);
@@ -189,7 +175,6 @@ const Large = () => {
         .get("/getEmployeeJobs")
         .then((res) => {
           setName(res.data.data);
-          // console.log(res.data.data);
         })
         .catch((err) => {
           console.log(err);
@@ -212,23 +197,21 @@ const Large = () => {
     setOpenType(false);
   };
 
+  // Generate Page Numbers
   const generatePageNumbers = (current_page, total_pages) => {
     const pages = [];
-
     if (current_page > 1) {
       pages.push(current_page - 1); // Previous page
     }
-
     pages.push(current_page); // Current page
-
     if (current_page < total_pages) {
       pages.push(current_page + 1); // Next page
     }
-
     return pages;
   };
 
   const pageNumbers = generatePageNumbers(current_page, pages);
+  
   // Fetch initial data on component mount
   const filteredSearch = (e) => {
     e.preventDefault();
@@ -366,6 +349,7 @@ const Large = () => {
                     </p>
                   </div>
                 </div>
+                {/* div for table header*/}
                 <div className="px-12 py-8 h-full">
                   <table className="w-full table-fixed">
                     <thead className="text-xs font-bold text-gray-500">
@@ -402,14 +386,14 @@ const Large = () => {
                           className={
                             !(role === "admin" || role === "user")
                               ? "hidden"
-                              : "text-start p-4 truncate"
+                              : "text-center p-4 truncate"
                           }
                         >
                           Action
                         </th>
                       </tr>
                     </thead>
-
+                    {/* condition if there are no tickets for the selected type */}
                     {pendingTicket.length === 0 ? (
                       <tbody className="h-[40vh]">
                         <tr>
@@ -443,6 +427,7 @@ const Large = () => {
                         </tr>
                       </tbody>
                     ) : (
+                      // condition if there are tickets for the selected type
                       pendingTicket
                         .filter((data) => {
                           if (role === "technical") {
@@ -458,8 +443,10 @@ const Large = () => {
                           }
                           return true;
                         })
+                        // mapping the data to the table
                         .map((data, index) =>
                           data.ticket_type === selectedType ? (
+                            // data mapping if there is a specific selected type and its conditions
                             <tbody>
                               <tr
                                 className="text-xs font-normal hover:bg-[#f6edff] ease-in-out duration-500 cursor-pointer border-b"
@@ -499,12 +486,13 @@ const Large = () => {
                                     {data.ticket_client_name}
                                   </p>
                                 </td>
-                                <td className={
-                                      !(role === "admin" || role === "user")
+                                <td
+                                  className={
+                                    !(role === "admin" || role === "user")
                                       ? "hidden"
                                       : "p-4"
-                                    } 
-                                    key={index.id}
+                                  }
+                                  key={index.id}
                                 >
                                   <p className="font-bold text-gray-600 w-full truncate">
                                     {data.ticket_assigned_to_name
@@ -512,6 +500,7 @@ const Large = () => {
                                       : "Not Assigned"}
                                   </p>
                                 </td>
+                                {/* condition for ticket status */}
                                 <td className="p-4" key={index.id}>
                                   {data.ticket_status === "1" ? (
                                     <p className="] w-full font-bold truncate text-blue-500">
@@ -536,9 +525,10 @@ const Large = () => {
                                   )}
                                 </td>
                                 <td className="p-4 text-center" key={index.id}>
-                                  {/* button if role is user */}
+                                  {/* button if role is user and its conditions */}
                                   {role === "user" &&
                                   data.ticket_status === "5" ? (
+                                    // when ticket status is 5 or done
                                     <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
@@ -573,6 +563,7 @@ const Large = () => {
                                     </button>
                                   ) : role === "user" &&
                                     data.ticket_status === "4" ? (
+                                      // when ticket status is 4 or for checking
                                     <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
@@ -619,8 +610,10 @@ const Large = () => {
                                         </p>
                                       </div>
                                     </button>
+                                  // button if role is admin and its conditions and its conditions
                                   ) : role === "admin" &&
                                     data.ticket_status === "5" ? (
+                                      // when ticket status is 5 or done
                                       <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
@@ -655,6 +648,7 @@ const Large = () => {
                                     </button>
                                   ) : role === "admin" &&
                                     data.ticket_status === "4" ? (
+                                      // when ticket status is 4 or for checking
                                       <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
@@ -714,8 +708,10 @@ const Large = () => {
                                         </p>
                                       </div>
                                     </button>
+                                  // button if role is technical and its conditions
                                   ) : role === "technical" &&
                                     data.ticket_status === "5" ? (
+                                      // when ticket status is 5 or done
                                       <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
@@ -749,7 +745,6 @@ const Large = () => {
                                       </div>
                                     </button>
                                   ) : (
-                                    // button if role is technical
                                     <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
@@ -785,6 +780,7 @@ const Large = () => {
                                 </td>
                               </tr>
                             </tbody>
+                            // data mapping if selected type is all
                           ) : selectedType === "All" ? (
                             <tbody>
                               <tr
@@ -825,12 +821,13 @@ const Large = () => {
                                     {data.ticket_client_name}
                                   </p>
                                 </td>
-                                <td className={
-                                      !(role === "admin" || role === "user")
+                                <td
+                                  className={
+                                    !(role === "admin" || role === "user")
                                       ? "hidden"
                                       : "p-4"
-                                    } 
-                                    key={index.id}
+                                  }
+                                  key={index.id}
                                 >
                                   <p className="font-bold text-gray-600 w-full truncate">
                                     {data.ticket_assigned_to_name
@@ -863,9 +860,10 @@ const Large = () => {
                                   )}
                                 </td>
                                 <td className="p-4 text-center" key={index.id}>
-                                  {/* button if role is user */}
+                                  {/* button if role is user and its */}
                                   {role === "user" &&
                                   data.ticket_status === "5" ? (
+                                    // when ticket status is 5 or done
                                     <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
@@ -900,6 +898,7 @@ const Large = () => {
                                     </button>
                                   ) : role === "user" &&
                                     data.ticket_status === "4" ? (
+                                    // when ticket status is 4 or for checking
                                     <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
@@ -947,8 +946,10 @@ const Large = () => {
                                         </p>
                                       </div>
                                     </button>
+                                  // button if role is admin and its conditions
                                   ) : role === "admin" &&
                                     data.ticket_status === "5" ? (
+                                      // when ticket status is 5 or done
                                       <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
@@ -983,6 +984,7 @@ const Large = () => {
                                     </button>
                                   ) : role === "admin" &&
                                     data.ticket_status === "4" ? (
+                                      // when ticket status is 4 or for checking
                                       <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
@@ -1042,8 +1044,10 @@ const Large = () => {
                                         </p>
                                       </div>
                                     </button>
+                                  // button if role is technical and its conditions
                                   ) : role === "technical" &&
                                     data.ticket_status === "5" ? (
+                                      // when ticket status is 5 or done
                                       <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
@@ -1077,7 +1081,6 @@ const Large = () => {
                                       </div>
                                     </button>
                                   ) : (
-                                    // button if role is technical
                                     <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
@@ -1115,11 +1118,16 @@ const Large = () => {
                             </tbody>
                           ) : null
                         )
+                        // end of mapping
                     )}
                   </table>
                 </div>
+                {/* div for pagination */}
                 {current_page && (
-                  <div className="flex flex-row gap-1 items-center justify-end w-full p-12" key={current_page}>
+                  <div
+                    className="flex flex-row gap-1 items-center justify-end w-full p-12"
+                    key={current_page}
+                  >
                     <button
                       className="text-black p-1 rounded-md ease-in-out duration-500 cursor-pointer"
                       onClick={(e) => {
@@ -1162,7 +1170,7 @@ const Large = () => {
               </div>
             </div>
           </div>
-          {/* start of div for staff overview */}
+          {/* start of div for staff overview when role is admin */}
           <div
             className={
               role === "user"
@@ -1195,6 +1203,7 @@ const Large = () => {
                       className="w-full h-full overflow-auto scrollbar-hide"
                       ref={containerRef}
                     >
+                      {/* mapping the data for the staff overview */}
                       {name.map((names, index) => (
                         <div
                           className="flex flex-row justify-between py-2 px-4 hover:bg-[#f6edff] ease-in-out duration-500 border-b"

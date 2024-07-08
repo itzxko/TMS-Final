@@ -26,7 +26,6 @@ const AcceptDenyModal = ({
 }) => {
   const containerRef = useRef(null);
   const [activeDetails, setActiveDetails] = useState(false);
-  const [smallAttach, setSmallAttach] = useState(false);
   const [images, setImages] = useState([]);
   const [videos, setVideos] = useState([]);
   const [documents, setDocuments] = useState([]);
@@ -35,16 +34,12 @@ const AcceptDenyModal = ({
   const [loading, setLoading] = useState(true);
   const allMedia = [...images, ...videos];
 
+  // Function to toggle image modal visibility
   const imgmodal = () => {
     setShowImageModal(!showImageModal);
-    // console.log(showImageModal);
   };
 
-  const handleAttachment = () => {
-    setSmallAttach(!smallAttach);
-    // console.log(smallAttach);
-  };
-
+  // Effect to handle Escape key press for closing modal
   useEffect(() => {
     const handleEsc = (event) => {
       if (event.key === "Escape") {
@@ -59,6 +54,7 @@ const AcceptDenyModal = ({
     };
   }, [onClose]);
 
+  // Effect to disable/enable scrolling when modal is visible/hidden
   useEffect(() => {
     const disableScroll = () => {
       document.body.style.overflow = "hidden";
@@ -79,6 +75,7 @@ const AcceptDenyModal = ({
     };
   }, [isVisible]);
 
+  // Function to handle form submission
   const handleSubmit = async (e) => {
     try {
       const response = await axiosClient.post("/acceptRequest", { ticket_cde });
@@ -89,6 +86,7 @@ const AcceptDenyModal = ({
     }
   };
 
+  // Function to handle next media file
   const handleNext = () => {
     let newIndex = fileIndex + 1;
     if (newIndex >= allMedia.length) {
@@ -97,6 +95,7 @@ const AcceptDenyModal = ({
     setFileIndex(newIndex);
   };
 
+  // Function to handle previous media file
   const handlePrevious = () => {
     let newIndex = fileIndex - 1;
     if (newIndex < 0) {
@@ -105,6 +104,7 @@ const AcceptDenyModal = ({
     setFileIndex(newIndex);
   };
 
+  // Effect to fetch images, videos, and documents when modal is visible
   useEffect(() => {
     setLoading(true);
     if (isVisible) {
@@ -112,7 +112,6 @@ const AcceptDenyModal = ({
         try {
           const res = await axiosClient.get(`get_images/` + ticket_cde);
           setImages(res.data.images);
-          // console.log(res.data.images);
         } catch (error) {
           console.error("Error fetching images:", error);
         }
@@ -121,7 +120,6 @@ const AcceptDenyModal = ({
         try {
           const res = await axiosClient.get(`get_videos/` + ticket_cde);
           setVideos(res.data.videos);
-          // console.log(res.data.videos);
         } catch (error) {
           console.error("Error fetching videos:", error);
         }
@@ -130,7 +128,6 @@ const AcceptDenyModal = ({
         try {
           const res = await axiosClient.get(`get_documents/` + ticket_cde);
           setDocuments(res.data.documents);
-          // console.log(res.data.documents);
         } catch (error) {
           console.error("Error fetching documents:", error);
         }
@@ -142,22 +139,14 @@ const AcceptDenyModal = ({
     }
   }, [isVisible]);
 
-  if (!isVisible) return null;
-
-  const hasImages = images.some((image) => {
-    const extension = image.split(".").pop();
-    return /\.(jpg|jpeg|png|gif)$/i.test(extension);
-  });
-  const hasVideos = images.some((video) => {
-    const extension = video.split(".").pop();
-    return /\.(mp4|mov|avi|mkv)$/i.test(extension);
-  });
+  if (!isVisible) return null; // Return null if modal is not visible
 
   if (loading) {
-    return <Loading />;
+    return <Loading />; // Show loading component while fetching data
   }
 
   return (
+    // Modal container
     <div className="fixed top-0 left-0 w-full h-[100svh] items-center justify-center bg-black/50 flex z-10 font-figtree">
       <div
         className="w-full min-h-[100svh] max-h-[100svh] py-12 px-4 overflow-auto flex justify-center items-start"
@@ -165,11 +154,11 @@ const AcceptDenyModal = ({
         onClick={(e) => {
           if (e.target.id === "container") {
             onClose();
-            // selected(null);
             setActiveDetails(false);
           }
         }}
       >
+        {/* Modal content */}
         <div className="w-full md:w-2/3 lg:w-1/3 bg-[#FAF5FF] flex flex-col items-center justify-center p-8 md:p-10 rounded-xl shadow-xl">
           <div className="relative w-full flex items-center justify-center pb-2 md:pb-12">
             <p className="text-xs font-semibold">Ticket Details</p>
@@ -190,14 +179,15 @@ const AcceptDenyModal = ({
               <TiArrowLeft className="text-xl" />
             </div>
           </div>
-          {/* insert the argument here */}
 
+          {/* if activeDetails is false, render the ticket type, requester, and description */}
           {activeDetails ? (
             <>
               <div className="w-full flex flex-col items-center justify-center py-4">
                 <div className=" flex item-center justify-start w-full py-2 px-1">
                   <p className="text-xs font-normal">Images and Videos</p>
                 </div>
+                {/* If there are images or videos, render the media file */}
                 {images.length > 0 || videos.length > 0 ? (
                   <div className="relative w-full h-full flex flex-col items-center justify-center">
                     {(() => {
@@ -341,8 +331,10 @@ const AcceptDenyModal = ({
             </>
           ) : (
             <>
+            {/* Render ticket type, requester, and description */}
               {selectedRole === "user" && ticket_status === "5" ? (
                 <>
+                {/* If the selected role is user and the ticket status is 5 or done, render the ticket type */}
                   <div className="w-full flex flex-row items-center justify-center">
                     <div className="w-full flex flex-col items-center justify-center">
                       <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
@@ -358,6 +350,7 @@ const AcceptDenyModal = ({
                 </>
               ) : selectedRole === "user" && ticket_status === "4" ? (
                 <>
+                 {/* If the selected role is user and the ticket status is 4 or for checking, render the ticket type and requester */}
                   <div className="w-full flex flex-row items-center justify-center">
                     <div className="w-full flex flex-col items-center justify-center">
                       <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
@@ -410,6 +403,7 @@ const AcceptDenyModal = ({
                   ></textarea>
                 </div>
               </div>
+              {/* Render the findings, actions, and replacement fields */}
               <div className="py-2 w-full flex flex-col items-center justify-center">
                 <div className="flex flex-row items-center justify-start w-full py-2 px-1">
                   <p className="text-xs font-normal">Findings</p>
@@ -460,6 +454,7 @@ const AcceptDenyModal = ({
             <div className="flex flex-row gap-2 items-center justify-end w-full">
               {selectedRole === "user" && ticket_status === "4" ? (
                 <>
+                {/* If the selected role is user and the ticket status is 4 or for checking, render the accept and deny buttons */}
                   <div
                     className="flex items-center justify-center py-2 px-4 bg-[#2f2f2f] hover:bg-[#474747] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
                     onClick={handleSubmit}
@@ -482,6 +477,7 @@ const AcceptDenyModal = ({
                   </div>
                 </>
               ) : (
+                // If the selected role is not user or the ticket status is not 4, render the cancel button
                 <div
                   className="flex items-center justify-center py-2 px-4 bg-[#FFFFFF] hover:bg-[#f2f2f2] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
                   onClick={() => {
