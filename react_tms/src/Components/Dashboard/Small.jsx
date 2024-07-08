@@ -19,6 +19,8 @@ import { BsEnvelopePaper } from "react-icons/bs";
 import { TbProgressBolt } from "react-icons/tb";
 import { MdOutlineWorkOutline } from "react-icons/md";
 import { HiOutlineClipboardCheck } from "react-icons/hi";
+import { LiaUser } from "react-icons/lia";
+import { RiStickyNoteAddLine } from "react-icons/ri";
 
 // importing popup modals
 import UserModal from "../UserModal";
@@ -241,8 +243,8 @@ const Small = () => {
                 <div className="w-full flex items-center justify-end">
                   <p className="text-3xl font-extrabold text-white/75">20</p>
                 </div>
-                <div className="absolute right-28">
-                  <BsEnvelopePaper className="text-8xl text-white/15" />
+                <div className="absolute top-4 left-0">
+                  <RiStickyNoteAddLine className="text-8xl text-white/15" />
                 </div>
               </div>
               <div className="relative min-w-[180px] bg-gradient-to-l from-[#c95b00] via-[#e0731a] to-[#ff8c2f] flex flex-col text-white p-4 rounded-lg overflow-hidden">
@@ -250,8 +252,8 @@ const Small = () => {
                 <div className="w-full flex items-center justify-end">
                   <p className="text-3xl font-extrabold text-white/75">20</p>
                 </div>
-                <div className="absolute right-28">
-                  <BsSend className="text-8xl text-white/15" />
+                <div className="absolute top-4 left-0">
+                  <LiaUser className="text-8xl text-white/15" />
                 </div>
               </div>
               <div className="relative min-w-[180px] bg-gradient-to-l from-[#570075] via-[#a912db] to-[#cf3fff] flex flex-col text-white p-4 rounded-lg overflow-hidden">
@@ -259,7 +261,7 @@ const Small = () => {
                 <div className="w-full flex items-center justify-end">
                   <p className="text-3xl font-extrabold text-white/75">20</p>
                 </div>
-                <div className="absolute right-28">
+                <div className="absolute top-4 left-0">
                   <MdOutlineWorkOutline className="text-8xl text-white/15" />
                 </div>
               </div>
@@ -268,7 +270,7 @@ const Small = () => {
                 <div className="w-full flex items-center justify-end">
                   <p className="text-3xl font-extrabold text-white/75">20</p>
                 </div>
-                <div className="absolute right-28">
+                <div className="absolute top-4 left-0">
                   <TbProgressBolt className="text-8xl text-white/15" />
                 </div>
               </div>
@@ -277,7 +279,7 @@ const Small = () => {
                 <div className="w-full flex items-center justify-end">
                   <p className="text-3xl font-extrabold text-white/75">20</p>
                 </div>
-                <div className="absolute right-28">
+                <div className="absolute top-4 left-0">
                   <HiOutlineClipboardCheck className="text-8xl text-white/15" />
                 </div>
               </div>
