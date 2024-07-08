@@ -40,6 +40,8 @@ const Large = () => {
   const [id, setID] = useState("");
   const [pages, setPages] = useState(null);
   const [search, setSearch] = useState(null);
+  const [selectedRole, setSelectedRole] = useState("user"); // use state for setting the selected role
+  // const [role, setRole] = useState("");
   const [pendingTicket, setPendingTicket] = useState([]);
   const [request_type, set_request_type] = useState("");
   const [request_desc, set_request_desc] = useState("");
@@ -65,7 +67,9 @@ const Large = () => {
   };
 
   // Check if there are tickets of the selected type
-  const hasTicketsOfType = pendingTicket.length > 0;
+  const hasTicketsOfType =
+    selectedType === "All" ||
+    pendingTicket.some((data) => data.ticket_type === selectedType);
 
   // Function to handle filter use state
   const handleFilter = () => {
@@ -118,22 +122,6 @@ const Large = () => {
   }, []);
 
   useEffect(() => {
-    const filterType = async () => {
-      try {
-        const res = await axiosClient.get(`/pending-ticket/${selectedType}`);
-        const data1 = res.data;
-        const data2 = data1.data;
-        setPendingTicket(data2.Message.data);
-        set_current_page(data2.Message.current_page);
-        setPages(data2.Message.last_page);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    filterType();
-  }, [selectedType]);
-
-  useEffect(() => {
     if (search === "" && role !== "technical") {
       axiosClient
         .get(`/pending-ticket/All`)
@@ -177,7 +165,8 @@ const Large = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [role]);
+    
+  }, [selectedType]);
 
   //For Employee Job Count
   useEffect(() => {
@@ -514,23 +503,23 @@ const Large = () => {
                                 {/* condition for ticket status */}
                                 <td className="p-4" key={index.id}>
                                   {data.ticket_status === "1" ? (
-                                    <p className="w-full font-bold truncate text-[#a10b00]">
+                                    <p className="] w-full font-bold truncate text-blue-500">
                                       Requested
                                     </p>
                                   ) : data.ticket_status === "2" ? (
-                                    <p className="w-full truncate font-extrabold text-[#806800]">
+                                    <p className=" w-full truncate font-bold text-red-500">
                                       Assigned
                                     </p>
                                   ) : data.ticket_status === "3" ? (
-                                    <p className="w-full truncate font-extrabold text-[##570075]">
+                                    <p className="w-full truncate font-bold text-red-700">
                                       Ongoing
                                     </p>
                                   ) : data.ticket_status === "4" ? (
-                                    <p className="w-full truncate font-extrabold text-[#007a3f]">
+                                    <p className="w-full truncate font-bold text-yellow-400">
                                       For Checking
                                     </p>
                                   ) : (
-                                    <p className="w-full truncate font-bold text-[#363636]">
+                                    <p className="w-full truncate font-bold text-green-600">
                                       Done
                                     </p>
                                   )}
@@ -849,23 +838,23 @@ const Large = () => {
 
                                 <td className="p-4" key={index.id}>
                                   {data.ticket_status === "1" ? (
-                                    <p className="w-full font-bold truncate text-[#a10b00]">
+                                    <p className=" w-full font-bold truncate text-blue-500">
                                       Requested
                                     </p>
                                   ) : data.ticket_status === "2" ? (
-                                    <p className="w-full truncate font-extrabold text-[#806800]">
+                                    <p className=" w-full truncate font-bold text-red-500">
                                       Assigned
                                     </p>
                                   ) : data.ticket_status === "3" ? (
-                                    <p className="w-full truncate font-extrabold text-[##570075]">
+                                    <p className="w-full truncate font-bold text-red-700">
                                       Ongoing
                                     </p>
                                   ) : data.ticket_status === "4" ? (
-                                    <p className="w-full truncate font-extrabold text-[#007a3f]">
+                                    <p className=" w-full truncate font-bold text-yellow-400">
                                       For Checking
                                     </p>
                                   ) : (
-                                    <p className="w-full truncate font-bold text-[#363636]">
+                                    <p className="w-full truncate font-bold text-green-600">
                                       Done
                                     </p>
                                   )}
