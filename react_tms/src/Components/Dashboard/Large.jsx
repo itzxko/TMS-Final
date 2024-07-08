@@ -116,6 +116,8 @@ const Large = () => {
       .get(`/${url}pending-ticket?page=${current_page}`)
       .then((res) => {
         setPendingTicket(res.data.Message.data);
+        set_current_page(res.data.Message.current_page)
+        setPages(res.data.Message.last_page)
       });
   }, [current_page]);
 
@@ -173,30 +175,30 @@ const Large = () => {
   }, [search]);
 
   // Filtering Pending Ticket
-  useEffect(() => {
-    let url = ``;
-    if (role === "admin") {
-      url = `/pending-ticket`;
-    } else if (role === "technical") {
-      url = "/tech/pending-ticket";
-    } else if (role === "user") {
-      url = "/user/pending-ticket";
-    }
-    axiosClient
-      .get(url)
-      .then((res) => {
-        return res.data;
-      })
-      .then((res) => {
-        localStorage.setItem('request_count', res.count);
-        setPendingTicket(res.Message.data);
-        set_current_page(res.Message.current_page);
-        setPages(res.Message.last_page);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [selectedType]);
+  // useEffect(() => {
+  //   let url = ``;
+  //   if (role === "admin") {
+  //     url = `/pending-ticket`;
+  //   } else if (role === "technical") {
+  //     url = "/tech/pending-ticket";
+  //   } else if (role === "user") {
+  //     url = "/user/pending-ticket";
+  //   }
+  //   axiosClient
+  //     .get(url)
+  //     .then((res) => {
+  //       return res.data;
+  //     })
+  //     .then((res) => {
+  //       localStorage.setItem('request_count', res.count);
+  //       setPendingTicket(res.Message.data);
+  //       set_current_page(res.Message.current_page);
+  //       setPages(res.Message.last_page);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, [role]);
 
   //For Employee Job Count
   useEffect(() => {

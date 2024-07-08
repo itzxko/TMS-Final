@@ -20,7 +20,7 @@ function Navbar({ selectedRole, setShowUserForm }) {
   const [menu, setMenu] = useState(false); // Toggle Menu state
   const [name, setName] = useState([]); // State to store employee names
   const [logout, setLogout] = useState(false); // Logout state
-  const role = useRole(); // Custom hook to get user role
+  const {role} = useRole();
   const navigate = useNavigate(); // Navigate function from react-router-dom
 
   // Function to toggle the menu

@@ -109,6 +109,8 @@ const Small = () => {
     .get(`/${url}pending-ticket?page=${current_page}`)
     .then((res) => {
       setPendingTicket(res.data.Message.data);
+      set_current_page(res.data.Message.current_page);
+      setPages(res.data.Message.last_page);
     });
 }, [current_page]);
 
@@ -132,6 +134,16 @@ const Small = () => {
         });
     }
   }, [search]);
+
+  const get_ticket_desc = (ticket_type_param) => {
+    axiosClient
+      .get("spec_ticket_type/" + ticket_type_param)
+      .then((res) => {
+        set_tech_name(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
 
   // Check if there are tickets of the selected type
   const hasTicketsOfType = pendingTicket.length > 0;
@@ -170,29 +182,29 @@ const Small = () => {
   }, []);
 
   // Filtering Pending Ticket
-  useEffect(() => {
-    let url = ``;
-    if (role === "admin") {
-      url = `/pending-ticket`;
-    } else if (role === "technical") {
-      url = "/tech/pending-ticket";
-    } else if (role === "user") {
-      url = "/user/pending-ticket";
-    }
-    axiosClient
-      .get(url)
-      .then((res) => {
-        return res.data;
-      })
-      .then((res) => {
-        setPendingTicket(res.Message.data);
-        set_current_page(res.Message.current_page);
-        setPages(res.Message.last_page);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  // useEffect(() => {
+  //   let url = ``;
+  //   if (role === "admin") {
+  //     url = `/pending-ticket`;
+  //   } else if (role === "technical") {
+  //     url = "/tech/pending-ticket";
+  //   } else if (role === "user") {
+  //     url = "/user/pending-ticket";
+  //   }
+  //   axiosClient
+  //     .get(url)
+  //     .then((res) => {
+  //       return res.data;
+  //     })
+  //     .then((res) => {
+  //       setPendingTicket(res.Message.data);
+  //       set_current_page(res.Message.current_page);
+  //       setPages(res.Message.last_page);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   useEffect(() => {
     if (role === "admin" || role === "technical") {
@@ -642,6 +654,7 @@ const Small = () => {
                                       set_name_requester(
                                         data.ticket_client_name
                                       );
+                                      
                                       setTicket_assigned_to_name(
                                         data.ticket_assigned_to_name
                                       );
@@ -942,6 +955,8 @@ const Small = () => {
                                       setTicket_assigned_to_name(
                                         data.ticket_assigned_to_name
                                       );
+                                      get_ticket_desc(data.ticket_type);
+                                      
                                       set_request_type(data.ticket_type);
                                       setID(data.id);
                                       set_ticket_cde(data.ticket_cde);
@@ -1085,6 +1100,18 @@ const Small = () => {
         onClose={() => setShowUserForm(false)}
       />
 
+      {/* <AdminModal
+        isVisible={showAdminForm}
+        ticket_type={request_type}
+        request_desc={request_desc}
+        data={tech_name}
+        ticket_cde={ticket_cde}
+        id={id}
+        selected={setTicket_assigned_to_name}
+        name_requester={name_requester}
+        assigned_name={ticket_assigned_to_name}
+        onClose={() => setAdminForm(false)}
+      /> */}
       <AdminModal
         isVisible={showAdminForm}
         ticket_type={request_type}
