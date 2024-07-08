@@ -13,17 +13,6 @@ const axiosClient = axios.create({
     withXSRFToken: true,
 });
 
-// Function to fetch CSRF token
-// const fetchCSRFToken = async () => {
-//     try {
-//         // Fetch CSRF token
-//         const response = await axios.get('http://localhost:8000/sanctum/csrf-cookie');
-//         return response.data.csrf_token;
-//     } catch (error) {
-//         console.error('Error fetching CSRF token:', error);
-//         throw error; 
-//     }
-// };
 
 // Interceptor to add CSRF token to requests
 axiosClient.interceptors.request.use(async config => {

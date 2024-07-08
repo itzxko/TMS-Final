@@ -180,7 +180,7 @@ const Small = () => {
   useEffect(() => {
     let url = ``;
     if (role === "admin") {
-      url = `/pending-ticket/${selectedType}`;
+      url = `/pending-ticket`;
     } else if (role === "technical") {
       url = "/tech/pending-ticket";
     } else if (role === "user") {
@@ -201,7 +201,25 @@ const Small = () => {
       .catch((err) => {
         console.log(err);
       });
+  }, []);
+
+  useEffect(() => {
+    const filterType = async () => {
+        try{
+          const res = await axiosClient.get(`/pending-ticket/${selectedType}`);
+          const data1 = res.data;
+          const data2 = data1.data;
+          setPendingTicket(data2.Message.data);
+          set_current_page(data2.Message.current_page);
+          setPages(data2.Message.last_page);
+        }catch(err){
+          // alert(err.message);
+          console.log(err);
+        }
+    }
+    filterType();
   }, [selectedType]);
+
 
   const filteredSearch = (e) => {
     e.preventDefault();
