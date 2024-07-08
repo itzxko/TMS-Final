@@ -37,7 +37,7 @@ const Small = () => {
   const [showAcceptDenyModal, setShowAcceptDenyModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-  const [id, setID] = useState("");  // use state for toggling role filter
+  const [id, setID] = useState(""); // use state for toggling role filter
   const [openRole, setOpenRole] = useState(false);
   const [pendingTicket, setPendingTicket] = useState([]);
   const [request_type, set_request_type] = useState("");
@@ -119,7 +119,7 @@ const Small = () => {
         });
     }
   }, [search]);
-  
+
   // Check if there are tickets of the selected type
   const hasTicketsOfType =
     selectedType === "All" ||
@@ -384,7 +384,7 @@ const Small = () => {
                                         Requested
                                       </span>
                                     ) : data.ticket_status === "2" ? (
-                                      <span className="text-[#806800]">
+                                      <span className="text-[#c95b00]">
                                         Assigned
                                       </span>
                                     ) : data.ticket_status === "3" ? (
@@ -438,7 +438,7 @@ const Small = () => {
                               </div>
                             </div>
                             <div className="h-1/45 flex justify-center items-center">
-                            {/* button if role is user and its conditions */}
+                              {/* button if role is user and its conditions */}
                               {role === "user" && data.ticket_status === "5" ? (
                                 // when ticket status is 5 or done
                                 <button className="bg-[#595959] w-full text-white py-3 rounded-md ease-in-out duration-500 disabled">
@@ -508,10 +508,9 @@ const Small = () => {
                                     Follow Up
                                   </p>
                                 </button>
-                              // button if role is admin and its conditions 
-                              ) : role === "admin" &&
-                                data.ticket_status === "5" ? (
-                                  // when ticket status is 5 or done
+                              ) : // button if role is admin and its conditions
+                              role === "admin" && data.ticket_status === "5" ? (
+                                // when ticket status is 5 or done
                                 <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
@@ -540,7 +539,7 @@ const Small = () => {
                                 </button>
                               ) : role === "admin" &&
                                 data.ticket_status === "4" ? (
-                                  // when ticket status is 4 or for checking
+                                // when ticket status is 4 or for checking
                                 <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
@@ -595,10 +594,10 @@ const Small = () => {
                                     Assign
                                   </p>
                                 </button>
-                              // button if role is technical and its conditions 
-                              ) : role === "technical" &&
+                              ) : // button if role is technical and its conditions
+                              role === "technical" &&
                                 data.ticket_status === "5" ? (
-                                  // when ticket status is 5 or done
+                                // when ticket status is 5 or done
                                 <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
@@ -658,8 +657,8 @@ const Small = () => {
                             </div>
                           </div>
                         </div>
-                      // data mapping if selected type is all
-                      ) : selectedType === "All" ? (
+                      ) : // data mapping if selected type is all
+                      selectedType === "All" ? (
                         <div
                           key={index}
                           className="bg-[#FAF5FF] min-h-[250px] rounded-lg overflow-hidden px-6 py-6"
@@ -682,7 +681,7 @@ const Small = () => {
                                         Requested
                                       </span>
                                     ) : data.ticket_status === "2" ? (
-                                      <span className="text-[#806800]">
+                                      <span className="text-[#c95b00]">
                                         Assigned
                                       </span>
                                     ) : data.ticket_status === "3" ? (
@@ -806,10 +805,9 @@ const Small = () => {
                                     Follow Up
                                   </p>
                                 </button>
-                              // button if role is admin and its conditions 
-                              ) : role === "admin" &&
-                                data.ticket_status === "5" ? (
-                                  // when ticket status is 5 or done
+                              ) : // button if role is admin and its conditions
+                              role === "admin" && data.ticket_status === "5" ? (
+                                // when ticket status is 5 or done
                                 <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
@@ -838,7 +836,7 @@ const Small = () => {
                                 </button>
                               ) : role === "admin" &&
                                 data.ticket_status === "4" ? (
-                                  // when ticket status is 4 or for checking
+                                // when ticket status is 4 or for checking
                                 <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
@@ -892,10 +890,10 @@ const Small = () => {
                                     Assign
                                   </p>
                                 </button>
-                              // button if role is technical and its conditions 
-                              ) : role === "technical" &&
+                              ) : // button if role is technical and its conditions
+                              role === "technical" &&
                                 data.ticket_status === "5" ? (
-                                  // when ticket status is 5 or done
+                                // when ticket status is 5 or done
                                 <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
@@ -966,7 +964,7 @@ const Small = () => {
           </div>
 
           {current_page && (
-            <div className="flex flex-row gap-1 items-center justify-end w-full p-12">
+            <div className="flex flex-row gap-1 items-center justify-center w-full p-12">
               <button
                 className="text-black p-1 rounded-md ease-in-out duration-500 cursor-pointer"
                 onClick={(e) => {

@@ -15,6 +15,11 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { LiaExclamationSolid } from "react-icons/lia";
 import { RxInfoCircled } from "react-icons/rx";
 import { FiCheckSquare } from "react-icons/fi";
+import { BsSend } from "react-icons/bs";
+import { BsEnvelopePaper } from "react-icons/bs";
+import { TbProgressBolt } from "react-icons/tb";
+import { MdOutlineWorkOutline } from "react-icons/md";
+import { HiOutlineClipboardCheck } from "react-icons/hi";
 
 // importing popup modals
 import UserModal from "../UserModal";
@@ -120,7 +125,7 @@ const Large = () => {
   }, []);
 
   useEffect(() => {
-    if(role === "admin" || role === "technical") {
+    if (role === "admin" || role === "technical") {
       return;
     }
     const filterType = async () => {
@@ -182,7 +187,6 @@ const Large = () => {
       .catch((err) => {
         console.log(err);
       });
-    
   }, [selectedType]);
 
   //For Employee Job Count
@@ -228,7 +232,7 @@ const Large = () => {
   };
 
   const pageNumbers = generatePageNumbers(current_page, pages);
-  
+
   // Fetch initial data on component mount
   const filteredSearch = (e) => {
     e.preventDefault();
@@ -271,6 +275,64 @@ const Large = () => {
               role === "admin" ? "flex flex-col w-4/5" : "flex flex-col w-full"
             }
           >
+            <div className="w-full grid grid-cols-5 gap-6 py-6">
+              <div className="relative w-full flex flex-col items-center justify-center p-4 bg-gradient-to-l from-[#a10b00] via-[#d41c0f] to-[#ff3021] rounded-lg shadow-xl text-white overflow-hidden">
+                <div className="w-full">
+                  <p className="text-xs font-semibold">Requested</p>
+                </div>
+                <div className="flex items-center justify-end w-full px-4">
+                  <p className="text-6xl font-extrabold text-white/75">12</p>
+                </div>
+                <div className="absolute top-4 right-40">
+                  <BsEnvelopePaper className="text-9xl text-white/15" />
+                </div>
+              </div>
+              <div className="relative w-full flex flex-col items-center justify-center p-4 bg-gradient-to-l from-[#c95b00] via-[#e0731a] to-[#ff8c2f] rounded-xl shadow-xl text-white overflow-hidden">
+                <div className="w-full">
+                  <p className="text-xs font-semibold">Assigned</p>
+                </div>
+                <div className="flex items-center justify-end w-full px-4">
+                  <p className="text-6xl font-extrabold text-white/75">14</p>
+                </div>
+                <div className="absolute top-4 right-40">
+                  <BsSend className="text-9xl text-white/15" />
+                </div>
+              </div>
+              <div className="relative w-full flex flex-col items-center justify-center p-4 bg-gradient-to-l from-[#570075] via-[#a912db] to-[#cf3fff] rounded-xl shadow-xl text-white overflow-hidden">
+                <div className="w-full">
+                  <p className="text-xs font-semibold">Ongoing</p>
+                </div>
+                <div className="flex items-center justify-end w-full px-4">
+                  <p className="text-6xl font-extrabold text-white/75">16</p>
+                </div>
+                <div className="absolute top-4 right-36">
+                  <MdOutlineWorkOutline className="text-9xl text-white/15" />
+                </div>
+              </div>
+              <div className="relative w-full flex flex-col items-center justify-center p-4 bg-gradient-to-l from-[#007a3f] via-[#17ce76] to-[#00c465] rounded-xl shadow-xl text-white overflow-hidden">
+                <div className="w-full">
+                  <p className="text-xs font-semibold">For Checking</p>
+                </div>
+                <div className="flex items-center justify-end w-full px-4">
+                  <p className="text-6xl font-extrabold text-white/75">18</p>
+                </div>
+                <div className="absolute top-4 right-40">
+                  <TbProgressBolt className="text-9xl text-white/15" />
+                </div>
+              </div>
+              <div className="relative w-full flex flex-col items-center justify-center p-4 bg-gradient-to-l from-[#181818] via-[#464646] to-[#575050] rounded-xl shadow-xl text-white overflow-hidden">
+                <div className="w-full">
+                  <p className="text-xs font-semibold">Done</p>
+                </div>
+                <div className="flex items-center justify-end w-full px-4">
+                  <p className="text-6xl font-extrabold text-white/75">20</p>
+                </div>
+                <div className="absolute top-4 right-40">
+                  <HiOutlineClipboardCheck className="text-9xl text-white/15" />
+                </div>
+              </div>
+            </div>
+
             {/* div for welcome note and filter, add and role buttons */}
             <div className="flex flex-row justify-between items-center">
               <p className="text-sm font-bold text-[#113e21]">
@@ -520,23 +582,23 @@ const Large = () => {
                                 {/* condition for ticket status */}
                                 <td className="p-4" key={index.id}>
                                   {data.ticket_status === "1" ? (
-                                    <p className="] w-full font-bold truncate text-blue-500">
+                                    <p className=" w-full font-bold truncate text-[#a10b00]">
                                       Requested
                                     </p>
                                   ) : data.ticket_status === "2" ? (
-                                    <p className=" w-full truncate font-bold text-red-500">
+                                    <p className=" w-full truncate font-bold text-[#c95b00]">
                                       Assigned
                                     </p>
                                   ) : data.ticket_status === "3" ? (
-                                    <p className="w-full truncate font-bold text-red-700">
+                                    <p className="w-full truncate font-bold text-[#570075]">
                                       Ongoing
                                     </p>
                                   ) : data.ticket_status === "4" ? (
-                                    <p className="w-full truncate font-bold text-yellow-400">
+                                    <p className=" w-full truncate font-bold text-[#007a3f]">
                                       For Checking
                                     </p>
                                   ) : (
-                                    <p className="w-full truncate font-bold text-green-600">
+                                    <p className="w-full truncate font-bold text-[#363636]">
                                       Done
                                     </p>
                                   )}
@@ -580,7 +642,7 @@ const Large = () => {
                                     </button>
                                   ) : role === "user" &&
                                     data.ticket_status === "4" ? (
-                                      // when ticket status is 4 or for checking
+                                    // when ticket status is 4 or for checking
                                     <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
@@ -627,11 +689,11 @@ const Large = () => {
                                         </p>
                                       </div>
                                     </button>
-                                  // button if role is admin and its conditions and its conditions
-                                  ) : role === "admin" &&
+                                  ) : // button if role is admin and its conditions and its conditions
+                                  role === "admin" &&
                                     data.ticket_status === "5" ? (
-                                      // when ticket status is 5 or done
-                                      <button
+                                    // when ticket status is 5 or done
+                                    <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
                                         setShowAcceptDenyModal(true);
@@ -665,8 +727,8 @@ const Large = () => {
                                     </button>
                                   ) : role === "admin" &&
                                     data.ticket_status === "4" ? (
-                                      // when ticket status is 4 or for checking
-                                      <button
+                                    // when ticket status is 4 or for checking
+                                    <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
                                         setShowAcceptDenyModal(true);
@@ -725,11 +787,11 @@ const Large = () => {
                                         </p>
                                       </div>
                                     </button>
-                                  // button if role is technical and its conditions
-                                  ) : role === "technical" &&
+                                  ) : // button if role is technical and its conditions
+                                  role === "technical" &&
                                     data.ticket_status === "5" ? (
-                                      // when ticket status is 5 or done
-                                      <button
+                                    // when ticket status is 5 or done
+                                    <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
                                         setShowAcceptDenyModal(true);
@@ -797,8 +859,8 @@ const Large = () => {
                                 </td>
                               </tr>
                             </tbody>
-                            // data mapping if selected type is all
-                          ) : selectedType === "All" ? (
+                          ) : // data mapping if selected type is all
+                          selectedType === "All" ? (
                             <tbody>
                               <tr
                                 className="text-xs font-normal even:bg-red-300 hover:bg-[#f6edff] ease-in-out duration-500 cursor-pointer border-b"
@@ -855,23 +917,23 @@ const Large = () => {
 
                                 <td className="p-4" key={index.id}>
                                   {data.ticket_status === "1" ? (
-                                    <p className=" w-full font-bold truncate text-blue-500">
+                                    <p className=" w-full font-bold truncate text-[#a10b00]">
                                       Requested
                                     </p>
                                   ) : data.ticket_status === "2" ? (
-                                    <p className=" w-full truncate font-bold text-red-500">
+                                    <p className=" w-full truncate font-bold text-[#c95b00]">
                                       Assigned
                                     </p>
                                   ) : data.ticket_status === "3" ? (
-                                    <p className="w-full truncate font-bold text-red-700">
+                                    <p className="w-full truncate font-bold text-[#570075]">
                                       Ongoing
                                     </p>
                                   ) : data.ticket_status === "4" ? (
-                                    <p className=" w-full truncate font-bold text-yellow-400">
+                                    <p className=" w-full truncate font-bold text-[#007a3f]">
                                       For Checking
                                     </p>
                                   ) : (
-                                    <p className="w-full truncate font-bold text-green-600">
+                                    <p className="w-full truncate font-bold text-[#363636]">
                                       Done
                                     </p>
                                   )}
@@ -963,11 +1025,11 @@ const Large = () => {
                                         </p>
                                       </div>
                                     </button>
-                                  // button if role is admin and its conditions
-                                  ) : role === "admin" &&
+                                  ) : // button if role is admin and its conditions
+                                  role === "admin" &&
                                     data.ticket_status === "5" ? (
-                                      // when ticket status is 5 or done
-                                      <button
+                                    // when ticket status is 5 or done
+                                    <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
                                         setShowAcceptDenyModal(true);
@@ -1001,8 +1063,8 @@ const Large = () => {
                                     </button>
                                   ) : role === "admin" &&
                                     data.ticket_status === "4" ? (
-                                      // when ticket status is 4 or for checking
-                                      <button
+                                    // when ticket status is 4 or for checking
+                                    <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
                                         setShowAcceptDenyModal(true);
@@ -1061,11 +1123,11 @@ const Large = () => {
                                         </p>
                                       </div>
                                     </button>
-                                  // button if role is technical and its conditions
-                                  ) : role === "technical" &&
+                                  ) : // button if role is technical and its conditions
+                                  role === "technical" &&
                                     data.ticket_status === "5" ? (
-                                      // when ticket status is 5 or done
-                                      <button
+                                    // when ticket status is 5 or done
+                                    <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
                                         setShowAcceptDenyModal(true);
@@ -1135,7 +1197,7 @@ const Large = () => {
                             </tbody>
                           ) : null
                         )
-                        // end of mapping
+                      // end of mapping
                     )}
                   </table>
                 </div>
