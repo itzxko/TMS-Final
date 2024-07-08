@@ -75,7 +75,7 @@ const Large = () => {
   };
 
   // Check if there are tickets of the selected type
-  const hasTicketsOfType = pendingTicket.length > 0;;
+  const hasTicketsOfType = pendingTicket.length > 0;
 
   // Function to handle filter use state
   const handleFilter = () => {
@@ -96,6 +96,7 @@ const Large = () => {
     // setOpenRole(false);
     // console.log(`type value below: ${openType}`);
   };
+
   const nextPage = () => {
     if (current_page === pages) {
       return;
@@ -109,40 +110,42 @@ const Large = () => {
     set_current_page(current_page - 1);
   };
   useEffect(() => {
-    let url = ``
-    if(role === 'user'){
-        url = `user/`;
+    let url = ``;
+    if (role === "user") {
+      url = `user/`;
     }
-    axiosClient.get(`/${url}pending-ticket?page=${current_page}`).then((res) => {
-      setPendingTicket(res.data.Message.data);
-    });
+    axiosClient
+      .get(`/${url}pending-ticket?page=${current_page}`)
+      .then((res) => {
+        setPendingTicket(res.data.Message.data);
+      });
   }, [current_page]);
 
   useEffect(() => {
-    if(role === "user"){
+    if (role === "user") {
       axiosClient
-      .get("/ticket")
-      .then((res) => {
-        setData(res.data.Message);
-        setLoading(true);
-      })
-      .catch((err) => console.log(err));
+        .get("/ticket")
+        .then((res) => {
+          setData(res.data.Message);
+          setLoading(true);
+        })
+        .catch((err) => console.log(err));
     }
   }, []);
 
   useEffect(() => {
     const filterType = async () => {
-        try{
-          const res = await axiosClient.get(`/pending-ticket/${selectedType}`);
-          const data1 = res.data;
-          const data2 = data1.data;
-          setPendingTicket(data2.Message.data);
-          set_current_page(data2.Message.current_page);
-          setPages(data2.Message.last_page);
-        }catch(err){
-          console.log(err);
-        }
-    }
+      try {
+        const res = await axiosClient.get(`/pending-ticket/${selectedType}`);
+        const data1 = res.data;
+        const data2 = data1.data;
+        setPendingTicket(data2.Message.data);
+        set_current_page(data2.Message.current_page);
+        setPages(data2.Message.last_page);
+      } catch (err) {
+        console.log(err);
+      }
+    };
     filterType();
   }, [selectedType]);
 
@@ -169,13 +172,13 @@ const Large = () => {
 
   // Filtering Pending Ticket
   useEffect(() => {
-    let url = ``
-    if(role === "admin"){
+    let url = ``;
+    if (role === "admin") {
       url = `/pending-ticket`;
-    }else if(role === "technical"){
-      url = '/tech/pending-ticket';
-    }else if(role === "user"){
-      url = "/user/pending-ticket"
+    } else if (role === "technical") {
+      url = "/tech/pending-ticket";
+    } else if (role === "user") {
+      url = "/user/pending-ticket";
     }
     axiosClient
       .get(url)
@@ -192,11 +195,7 @@ const Large = () => {
       .catch((err) => {
         console.log(err);
       });
-    
   }, [role]);
-
- 
-
 
   //For Employee Job Count
   useEffect(() => {
@@ -418,7 +417,7 @@ const Large = () => {
                           className={
                             !(role === "admin" || role === "user")
                               ? "hidden"
-                              : "text-start p-4 truncate"
+                              : "text-center p-4 truncate"
                           }
                         >
                           Action
@@ -515,12 +514,13 @@ const Large = () => {
                                     {data.ticket_client_name}
                                   </p>
                                 </td>
-                                <td className={
-                                      !(role === "admin" || role === "user")
+                                <td
+                                  className={
+                                    !(role === "admin" || role === "user")
                                       ? "hidden"
                                       : "p-4"
-                                    } 
-                                    key={index.id}
+                                  }
+                                  key={index.id}
                                 >
                                   <p className="font-bold text-gray-600 w-full truncate">
                                     {data.ticket_assigned_to_name
@@ -530,23 +530,23 @@ const Large = () => {
                                 </td>
                                 <td className="p-4" key={index.id}>
                                   {data.ticket_status === "1" ? (
-                                    <p className="text-[#113e21] w-full font-bold truncate text-blue-500">
+                                    <p className="w-full font-bold truncate text-[#a10b00]">
                                       Requested
                                     </p>
                                   ) : data.ticket_status === "2" ? (
-                                    <p className="text-[#113e21] w-full truncate font-bold text-red-500">
+                                    <p className="w-full truncate font-extrabold text-[#806800]">
                                       Assigned
                                     </p>
                                   ) : data.ticket_status === "3" ? (
-                                    <p className="text-[#113e21] w-full truncate font-bold text-red-700">
+                                    <p className="w-full truncate font-extrabold text-[##570075]">
                                       Ongoing
                                     </p>
                                   ) : data.ticket_status === "4" ? (
-                                    <p className="text-[#113e21] w-full truncate font-bold text-yellow-400">
+                                    <p className="w-full truncate font-extrabold text-[#007a3f]">
                                       For Checking
                                     </p>
                                   ) : (
-                                    <p className="text-[#113e21] w-full truncate font-bold text-green-600">
+                                    <p className="w-full truncate font-bold text-[#363636]">
                                       Done
                                     </p>
                                   )}
@@ -637,7 +637,7 @@ const Large = () => {
                                     </button>
                                   ) : role === "admin" &&
                                     data.ticket_status === "5" ? (
-                                      <button
+                                    <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
                                         setShowAcceptDenyModal(true);
@@ -671,7 +671,7 @@ const Large = () => {
                                     </button>
                                   ) : role === "admin" &&
                                     data.ticket_status === "4" ? (
-                                      <button
+                                    <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
                                         setShowAcceptDenyModal(true);
@@ -732,7 +732,7 @@ const Large = () => {
                                     </button>
                                   ) : role === "technical" &&
                                     data.ticket_status === "5" ? (
-                                      <button
+                                    <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
                                         setShowAcceptDenyModal(true);
@@ -841,12 +841,13 @@ const Large = () => {
                                     {data.ticket_client_name}
                                   </p>
                                 </td>
-                                <td className={
-                                      !(role === "admin" || role === "user")
+                                <td
+                                  className={
+                                    !(role === "admin" || role === "user")
                                       ? "hidden"
                                       : "p-4"
-                                    } 
-                                    key={index.id}
+                                  }
+                                  key={index.id}
                                 >
                                   <p className="font-bold text-gray-600 w-full truncate">
                                     {data.ticket_assigned_to_name
@@ -857,23 +858,23 @@ const Large = () => {
 
                                 <td className="p-4" key={index.id}>
                                   {data.ticket_status === "1" ? (
-                                    <p className="text-[#113e21] w-full font-bold truncate text-blue-500">
+                                    <p className="w-full font-bold truncate text-[#a10b00]">
                                       Requested
                                     </p>
                                   ) : data.ticket_status === "2" ? (
-                                    <p className="text-[#113e21] w-full truncate font-bold text-red-500">
+                                    <p className="w-full truncate font-extrabold text-[#806800]">
                                       Assigned
                                     </p>
                                   ) : data.ticket_status === "3" ? (
-                                    <p className="text-[#113e21] w-full truncate font-bold text-red-700">
+                                    <p className="w-full truncate font-extrabold text-[##570075]">
                                       Ongoing
                                     </p>
                                   ) : data.ticket_status === "4" ? (
-                                    <p className="text-[#113e21] w-full truncate font-bold text-yellow-400">
+                                    <p className="w-full truncate font-extrabold text-[#007a3f]">
                                       For Checking
                                     </p>
                                   ) : (
-                                    <p className="text-[#113e21] w-full truncate font-bold text-green-600">
+                                    <p className="w-full truncate font-bold text-[#363636]">
                                       Done
                                     </p>
                                   )}
@@ -965,7 +966,7 @@ const Large = () => {
                                     </button>
                                   ) : role === "admin" &&
                                     data.ticket_status === "5" ? (
-                                      <button
+                                    <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
                                         setShowAcceptDenyModal(true);
@@ -999,7 +1000,7 @@ const Large = () => {
                                     </button>
                                   ) : role === "admin" &&
                                     data.ticket_status === "4" ? (
-                                      <button
+                                    <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
                                         setShowAcceptDenyModal(true);
@@ -1060,7 +1061,7 @@ const Large = () => {
                                     </button>
                                   ) : role === "technical" &&
                                     data.ticket_status === "5" ? (
-                                      <button
+                                    <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
                                         setShowAcceptDenyModal(true);
@@ -1135,7 +1136,10 @@ const Large = () => {
                   </table>
                 </div>
                 {current_page && (
-                  <div className="flex flex-row gap-1 items-center justify-end w-full p-12" key={current_page}>
+                  <div
+                    className="flex flex-row gap-1 items-center justify-end w-full p-12"
+                    key={current_page}
+                  >
                     <button
                       className="text-black p-1 rounded-md ease-in-out duration-500 cursor-pointer"
                       onClick={(e) => {
