@@ -120,7 +120,7 @@ const Large = () => {
   }, []);
 
   useEffect(() => {
-    if(role === "admin" || role === "technical") {
+    if (role === "admin" || role === "technical") {
       return;
     }
     const filterType = async () => {
@@ -182,7 +182,6 @@ const Large = () => {
       .catch((err) => {
         console.log(err);
       });
-    
   }, [selectedType]);
 
   //For Employee Job Count
@@ -228,7 +227,7 @@ const Large = () => {
   };
 
   const pageNumbers = generatePageNumbers(current_page, pages);
-  
+
   // Fetch initial data on component mount
   const filteredSearch = (e) => {
     e.preventDefault();
@@ -580,7 +579,7 @@ const Large = () => {
                                     </button>
                                   ) : role === "user" &&
                                     data.ticket_status === "4" ? (
-                                      // when ticket status is 4 or for checking
+                                    // when ticket status is 4 or for checking
                                     <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
@@ -627,11 +626,11 @@ const Large = () => {
                                         </p>
                                       </div>
                                     </button>
-                                  // button if role is admin and its conditions and its conditions
-                                  ) : role === "admin" &&
+                                  ) : // button if role is admin and its conditions and its conditions
+                                  role === "admin" &&
                                     data.ticket_status === "5" ? (
-                                      // when ticket status is 5 or done
-                                      <button
+                                    // when ticket status is 5 or done
+                                    <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
                                         setShowAcceptDenyModal(true);
@@ -665,8 +664,8 @@ const Large = () => {
                                     </button>
                                   ) : role === "admin" &&
                                     data.ticket_status === "4" ? (
-                                      // when ticket status is 4 or for checking
-                                      <button
+                                    // when ticket status is 4 or for checking
+                                    <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
                                         setShowAcceptDenyModal(true);
@@ -725,11 +724,11 @@ const Large = () => {
                                         </p>
                                       </div>
                                     </button>
-                                  // button if role is technical and its conditions
-                                  ) : role === "technical" &&
+                                  ) : // button if role is technical and its conditions
+                                  role === "technical" &&
                                     data.ticket_status === "5" ? (
-                                      // when ticket status is 5 or done
-                                      <button
+                                    // when ticket status is 5 or done
+                                    <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
                                         setShowAcceptDenyModal(true);
@@ -797,8 +796,8 @@ const Large = () => {
                                 </td>
                               </tr>
                             </tbody>
-                            // data mapping if selected type is all
-                          ) : selectedType === "All" ? (
+                          ) : // data mapping if selected type is all
+                          selectedType === "All" ? (
                             <tbody>
                               <tr
                                 className="text-xs font-normal even:bg-red-300 hover:bg-[#f6edff] ease-in-out duration-500 cursor-pointer border-b"
@@ -963,11 +962,11 @@ const Large = () => {
                                         </p>
                                       </div>
                                     </button>
-                                  // button if role is admin and its conditions
-                                  ) : role === "admin" &&
+                                  ) : // button if role is admin and its conditions
+                                  role === "admin" &&
                                     data.ticket_status === "5" ? (
-                                      // when ticket status is 5 or done
-                                      <button
+                                    // when ticket status is 5 or done
+                                    <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
                                         setShowAcceptDenyModal(true);
@@ -1001,8 +1000,8 @@ const Large = () => {
                                     </button>
                                   ) : role === "admin" &&
                                     data.ticket_status === "4" ? (
-                                      // when ticket status is 4 or for checking
-                                      <button
+                                    // when ticket status is 4 or for checking
+                                    <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
                                         setShowAcceptDenyModal(true);
@@ -1061,11 +1060,11 @@ const Large = () => {
                                         </p>
                                       </div>
                                     </button>
-                                  // button if role is technical and its conditions
-                                  ) : role === "technical" &&
+                                  ) : // button if role is technical and its conditions
+                                  role === "technical" &&
                                     data.ticket_status === "5" ? (
-                                      // when ticket status is 5 or done
-                                      <button
+                                    // when ticket status is 5 or done
+                                    <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
                                         setShowAcceptDenyModal(true);
@@ -1135,7 +1134,7 @@ const Large = () => {
                             </tbody>
                           ) : null
                         )
-                        // end of mapping
+                      // end of mapping
                     )}
                   </table>
                 </div>
