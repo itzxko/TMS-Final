@@ -45,7 +45,7 @@ The Ticketing Management System is a web-based application designed to streamlin
       ```bash
       composer install
       ```
-   3. Set up environment variables: Create a `.env` file the copy the code from the `.env.example` and configure necessary variables needed.
+   3. Set up environment variables: Create a `.env` file then copy the code from the `.env.example` and configure necessary variables needed.
    4. Generate app_key:
       ```bash
       php artisan key:generate
