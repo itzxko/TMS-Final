@@ -21,7 +21,7 @@ import { TbProgressBolt } from "react-icons/tb";
 import { MdOutlineWorkOutline } from "react-icons/md";
 import { HiOutlineClipboardCheck } from "react-icons/hi";
 import { LiaUser } from "react-icons/lia";
-import { RiStickyNoteAddLine } from "react-icons/ri";
+import { MdOutlineNewLabel } from "react-icons/md";
 
 // importing popup modals
 import UserModal from "../UserModal";
@@ -103,23 +103,23 @@ const Large = () => {
   // Fetch pending ticket data
   useEffect(() => {
     let url = ``;
-    switch(role){
+    switch (role) {
       case "user":
-        url = "user/"
+        url = "user/";
         break;
       case "technical":
-        url = "tech/"
+        url = "tech/";
         break;
       case "admin":
-        url = ``
+        url = ``;
         break;
     }
     axiosClient
       .get(`/${url}pending-ticket?page=${current_page}`)
       .then((res) => {
         setPendingTicket(res.data.Message.data);
-        set_current_page(res.data.Message.current_page)
-        setPages(res.data.Message.last_page)
+        set_current_page(res.data.Message.current_page);
+        setPages(res.data.Message.last_page);
       });
   }, [current_page]);
 
@@ -259,7 +259,7 @@ const Large = () => {
       })
       .then((res) => {
         setPendingTicket(res.data);
-        
+
         set_current_page(res.current_page);
         setPages(res.last_page);
       })
@@ -290,59 +290,54 @@ const Large = () => {
             }
           >
             <div className="w-full grid grid-cols-5 gap-6 py-6">
-              <div className="relative w-full flex flex-col items-center justify-center p-4 bg-gradient-to-l from-[#a10b00] via-[#d41c0f] to-[#ff3021] rounded-xl shadow-xl text-white overflow-hidden">
-                <div className="w-full">
+              <div className="relative bg-[#FAF5FF] p-6 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:scale-105 transition-transform duration-500">
+                <div className="w-full flex py-2"></div>
+                <div className="w-full flex flex-row-reverse items-end justify-between">
+                  <p className="text-2xl font-bold text-[#a10b00]">16</p>
                   <p className="text-xs font-semibold">Requested</p>
                 </div>
-                <div className="flex items-center justify-end w-full px-4">
-                  <p className="text-6xl font-extrabold text-white/75">{localStorage.getItem("request_count")}</p>
-                </div>
-                <div className="absolute top-4 left-0">
-                  <RiStickyNoteAddLine className="text-9xl text-white/15" />
+                <div className="absolute top-[-20px] left-6 p-3 rounded-lg shadow-xl bg-gradient-to-tr from-[#a10b00] via-[#d62417] to-[#ff5044]">
+                  <MdOutlineNewLabel className="text-3xl text-white" />
                 </div>
               </div>
-              <div className="relative w-full flex flex-col items-center justify-center p-4 bg-gradient-to-l from-[#c95b00] via-[#e0731a] to-[#ff8c2f] rounded-xl shadow-xl text-white overflow-hidden">
-                <div className="w-full">
+              <div className="relative bg-[#FAF5FF] p-6 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:scale-105 transition-transform duration-500">
+                <div className="w-full flex py-2"></div>
+                <div className="w-full flex flex-row-reverse items-end justify-between">
+                  <p className="text-2xl font-bold text-[#c95b00]">16</p>
                   <p className="text-xs font-semibold">Assigned</p>
                 </div>
-                <div className="flex items-center justify-end w-full px-4">
-                  <p className="text-6xl font-extrabold text-white/75">14</p>
-                </div>
-                <div className="absolute top-4 left-0">
-                  <LiaUser className="text-9xl text-white/15" />
+                <div className="absolute top-[-20px] left-6 p-3 rounded-lg shadow-xl bg-gradient-to-tr from-[#c95b00] via-[#e97619] to-[#ff7e15]">
+                  <LiaUser className="text-3xl text-white" />
                 </div>
               </div>
-              <div className="relative w-full flex flex-col items-center justify-center p-4 bg-gradient-to-l from-[#570075] via-[#a912db] to-[#cf3fff] rounded-xl shadow-xl text-white overflow-hidden">
-                <div className="w-full">
+              <div className="relative bg-[#FAF5FF] p-6 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:scale-105 transition-transform duration-500">
+                <div className="w-full flex py-2"></div>
+                <div className="w-full flex flex-row-reverse items-end justify-between">
+                  <p className="text-2xl font-bold text-[#570075]">16</p>
                   <p className="text-xs font-semibold">Ongoing</p>
                 </div>
-                <div className="flex items-center justify-end w-full px-4">
-                  <p className="text-6xl font-extrabold text-white/75">16</p>
-                </div>
-                <div className="absolute top-4 left-0">
-                  <MdOutlineWorkOutline className="text-9xl text-white/15" />
+                <div className="absolute top-[-20px] left-6 p-3 rounded-lg shadow-xl bg-gradient-to-tr from-[#570075] via-[#b61ce9] to-[#c517ff]">
+                  <MdOutlineWorkOutline className="text-3xl text-white" />
                 </div>
               </div>
-              <div className="relative w-full flex flex-col items-center justify-center p-4 bg-gradient-to-l from-[#007a3f] via-[#17ce76] to-[#00c465] rounded-xl shadow-xl text-white overflow-hidden">
-                <div className="w-full">
+              <div className="relative bg-[#FAF5FF] p-6 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:scale-105 transition-transform duration-500">
+                <div className="w-full flex py-2"></div>
+                <div className="w-full flex flex-row-reverse items-end justify-between">
+                  <p className="text-2xl font-bold text-[#007a3f]">16</p>
                   <p className="text-xs font-semibold">For Checking</p>
                 </div>
-                <div className="flex items-center justify-end w-full px-4">
-                  <p className="text-6xl font-extrabold text-white/75">18</p>
-                </div>
-                <div className="absolute top-4 left-0">
-                  <TbProgressBolt className="text-9xl text-white/15" />
+                <div className="absolute top-[-20px] left-6 p-3 rounded-lg shadow-xl bg-gradient-to-tr from-[#007a3f] via-[#13c26d] to-[#25d882]">
+                  <TbProgressBolt className="text-3xl text-white" />
                 </div>
               </div>
-              <div className="relative w-full flex flex-col items-center justify-center p-4 bg-gradient-to-l from-[#181818] via-[#464646] to-[#575050] rounded-xl shadow-xl text-white overflow-hidden">
-                <div className="w-full">
+              <div className="relative bg-[#FAF5FF] p-6 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:scale-105 transition-transform duration-500">
+                <div className="w-full flex py-2"></div>
+                <div className="w-full flex flex-row-reverse items-end justify-between">
+                  <p className="text-2xl font-bold text-[#363636]">16</p>
                   <p className="text-xs font-semibold">Done</p>
                 </div>
-                <div className="flex items-center justify-end w-full px-4">
-                  <p className="text-6xl font-extrabold text-white/75">20</p>
-                </div>
-                <div className="absolute top-4 left-0">
-                  <HiOutlineClipboardCheck className="text-9xl text-white/15" />
+                <div className="absolute top-[-20px] left-6 p-3 rounded-lg shadow-xl bg-gradient-to-tr from-[#363636] via-[#6d6a6a] to-[#727272]">
+                  <TbProgressBolt className="text-3xl text-white" />
                 </div>
               </div>
             </div>

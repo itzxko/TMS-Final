@@ -93,28 +93,28 @@ const Small = () => {
     set_current_page(current_page - 1);
   };
 
- // Fetch pending ticket data
- useEffect(() => {
-  let url = ``;
-  switch(role){
-    case "user":
-      url = "user/"
-      break;
-    case "technical":
-      url = "tech/"
-      break;
-    case "admin":
-      url = ``
-      break;
-  }
-  axiosClient
-    .get(`/${url}pending-ticket?page=${current_page}`)
-    .then((res) => {
-      setPendingTicket(res.data.Message.data);
-      set_current_page(res.data.Message.current_page);
-      setPages(res.data.Message.last_page);
-    });
-}, [current_page]);
+  // Fetch pending ticket data
+  useEffect(() => {
+    let url = ``;
+    switch (role) {
+      case "user":
+        url = "user/";
+        break;
+      case "technical":
+        url = "tech/";
+        break;
+      case "admin":
+        url = ``;
+        break;
+    }
+    axiosClient
+      .get(`/${url}pending-ticket?page=${current_page}`)
+      .then((res) => {
+        setPendingTicket(res.data.Message.data);
+        set_current_page(res.data.Message.current_page);
+        setPages(res.data.Message.last_page);
+      });
+  }, [current_page]);
 
   useEffect(() => {
     if (search === "" && role !== "technical" && role !== "user") {
@@ -145,7 +145,6 @@ const Small = () => {
       })
       .catch((err) => console.log(err));
   };
-
 
   // Check if there are tickets of the selected type
   const hasTicketsOfType = pendingTicket.length > 0;
@@ -226,7 +225,6 @@ const Small = () => {
     };
     filterType();
   }, [selectedType]);
-
 
   const filteredSearch = (e) => {
     e.preventDefault();
