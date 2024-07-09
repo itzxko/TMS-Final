@@ -56,6 +56,17 @@ class TechnicalController extends Controller
 
         return $this->success(['message' => 'Request accepted']);
     }
+    // Deny the request
+    public function denyRequest(Request $request)
+    {
+        // Perform an update directly
+        DB::table('ticketing_main')->where('ticket_cde', $request->ticket_cde)->update([
+            'ticket_status' => 3,
+            'ticket_update_date' => now()
+        ]);
+
+        return $this->success(['message' => 'Request accepted']);
+    }
 
     // Accept the ongoing request
     public function acceptOngoingRequest(Request $request)
