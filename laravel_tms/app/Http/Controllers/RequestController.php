@@ -37,6 +37,7 @@ class RequestController extends Controller
         }
     }
 
+
     // Get the role of the authenticated user
     public function add_request(AddUserRequest $request)
     {
@@ -180,32 +181,49 @@ class RequestController extends Controller
         }
     }
 
+    public function getCount(){
+        $count = DB::table("ticketing_main")
+            ->where('ticket_status', '!=', "5")
+            ->count();
+        return $count;
+    }
+
     public function getPendingTicket()
-    {
-        // Get all pending tickets
-        $ticket = DB::table('ticketing_main')->orderBy("ticket_update_date", "desc")->paginate(10);
-        return response()->json(["Message" => $ticket, "role" => Auth::user()->role], 200);
+    {   
+        $tickets = DB::table('ticketing_main')
+        ->orderBy("ticket_update_date", "desc")
+        ->paginate(10);
+        // Get the count of pending tickets
+        // $count = DB::table("ticketing_main")
+        //     ->where('ticket_status', '!=', "5")
+        //     ->count();
+        $count = $this->getCount();
+        return response()->json([
+            "Message" => $tickets,
+            "count" => $count
+        ], 200);
     }
 
     // Get all tickets assigned to the authenticated user
     public function getTicketByTechnical()
     {
+        if(Auth::user()->role !== "technical"){
+            return response()->json(["Message" => "You are unauthorized!"], "Request Failed", 401);
+        }
+        $count = $this->getCount();
         $ticket = DB::table('ticketing_main')
             ->where("ticket_assigned_to_id", Auth::user()->emp_no)
             ->orderBy("ticket_update_date", "desc")->paginate(10);
-        return response()->json(["Message" => $ticket, "role" => Auth::user()->role], 200);
+        return response()->json(["Message" => $ticket, "role" => Auth::user()->role, "count" => $count], 200);
     }
-    public function getTicketByAdmin()
-    {
-        $ticket = DB::table('ticketing_main')
-            ->where("ticket_assigned_to_id", Auth::user()->emp_no)
-            ->where("ticket_status", "5")
-            ->or("ticket_status", "Done")
-            ->orderBy("ticket_update_date", "desc")->paginate(10);
-        return response()->json(["Message" => $ticket, "role" => Auth::user()->role], 200);
-    }
+    
+
+
     public function getTicketByUser()
     {
+        if(Auth::user()->role !== "user"){
+            return response()->json(["Message" => "You are unauthorized!"], "Request Failed", 401);
+        }
         $ticket = DB::table('ticketing_main')
             ->where("ticket_client", Auth::user()->emp_no)
             ->orderBy("ticket_update_date", "desc")->paginate(10);
@@ -230,7 +248,6 @@ class RequestController extends Controller
     {
         // Filter pending tickets by search
         $query = DB::table('ticketing_main')
-            ->where("ticket_client", Auth::user()->emp_no)
             ->orderBy("ticket_update_date", "desc");
         if ($search !== "" || $search != "") {
             $filter = $query->where('ticket_type', 'like', '%' . $search . '%')->paginate(10);

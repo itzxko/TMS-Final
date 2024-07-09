@@ -56,13 +56,12 @@ class UserController extends Controller
                     'login' => 'failed'
                 ], 401);
             }
-
-            // Send OTP to the user's email (You should implement the OTP sending logic here)
-            return response()->json([
-                'status' => 'success',
-                'message' => 'OTP is sent to your email!',
-                'login' => 'success'
-            ]);
+            $otp = rand(100000, 999999); // Ensure 6-digit OTP
+            Mail::to($data['email'])->send(new OtpEmail($otp, $data['email']));
+            $user = DB::table('users')->where("email", $data['email'])->update(["otp" => $otp]);
+            if ($user) {
+                return response()->json(['message' => 'OTP sent to your email.'], 200);
+            }
         } catch (\Throwable $th) {
             // Handle any exceptions
             return response()->json([
@@ -81,16 +80,14 @@ class UserController extends Controller
             'email' => 'required|email',
             'otp' => 'required|numeric',
         ]);
-
+    
+        // Retrieve the user by email
         $user = DB::table('users')->where('email', $data['email'])->first();
-
+    
         if ($user && $user->otp == $data['otp']) {
-            // Regenerate the session
+            // Manually authenticate the user using a string ID
+            Auth::loginUsingId((string) $user->emp_no);
             $request->session()->regenerate();
-
-            // Manually log in the user
-            Auth::loginUsingId($user->emp_no);
-
             // Debug: Check if user is authenticated
             if (Auth::check()) {
                 Log::info('User authenticated after OTP verification: ', ['user' => Auth::user()]);
@@ -102,31 +99,11 @@ class UserController extends Controller
                 return response()->json(['message' => 'OTP verified but user not authenticated.'], 401);
             }
         }
-
+    
         return response()->json(['message' => 'Invalid OTP.'], 400);
     }
+    
 
-    // Send OTP
-    public function sendOTP(Request $request)
-    {
-        try {
-            $data = $request->validate([
-                'email' => 'required|email',
-            ]);
-
-            $otp = rand(100000, 999999); // Ensure 6-digit OTP
-            Mail::to($data['email'])->send(new OtpEmail($otp, $data['email']));
-            $user = DB::table('users')->where("email", $data['email'])->update(["otp" => $otp]);
-
-            if ($user) {
-                return response()->json(['message' => 'OTP sent to your email.'], 200);
-            }
-
-            return response()->json(['message' => 'Request failed!'], 500);
-        } catch (\Throwable $th) {
-            throw $th;
-        }
-    }
 
     public function logout(Request $request)
     {

@@ -20,7 +20,7 @@ function Navbar({ selectedRole, setShowUserForm }) {
   const [menu, setMenu] = useState(false); // Toggle Menu state
   const [name, setName] = useState([]); // State to store employee names
   const [logout, setLogout] = useState(false); // Logout state
-  const role = useRole(); // Custom hook to get user role
+  const {role} = useRole();
   const navigate = useNavigate(); // Navigate function from react-router-dom
 
   // Function to toggle the menu
@@ -50,7 +50,9 @@ function Navbar({ selectedRole, setShowUserForm }) {
 
   // Fetch employee job count on component mount
   useEffect(() => {
-    if (role !== "user" || role !== "technical") {
+    if (role !== "admin") {
+        return;
+    }
       axiosClient
         .get("/getEmployeeJobs")
         .then((res) => {
@@ -59,7 +61,7 @@ function Navbar({ selectedRole, setShowUserForm }) {
         .catch((err) => {
           console.log(err);
         });
-    }
+    
   }, []); // Empty dependency array ensures this effect runs once on mount
 
   return (

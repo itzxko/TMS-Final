@@ -62,9 +62,9 @@ const Large = () => {
   const [name, setName] = useState([]);
   const [bumpCode, setBumpCode] = useState("");
   const [ticket_assigned_to_name, setTicket_assigned_to_name] = useState(null);
-
   const containerRef = useRef(null); //scrolling
   const { role } = useRole();
+  const [requestCount, setRequestCount] = useState(0);
 
   //handling scrolling
   const handleScrollDown = (scrollOffset) => {
@@ -103,13 +103,23 @@ const Large = () => {
   // Fetch pending ticket data
   useEffect(() => {
     let url = ``;
-    if (role === "user") {
-      url = `user/`;
+    switch(role){
+      case "user":
+        url = "user/"
+        break;
+      case "technical":
+        url = "tech/"
+        break;
+      case "admin":
+        url = ``
+        break;
     }
     axiosClient
       .get(`/${url}pending-ticket?page=${current_page}`)
       .then((res) => {
         setPendingTicket(res.data.Message.data);
+        set_current_page(res.data.Message.current_page)
+        setPages(res.data.Message.last_page)
       });
   }, [current_page]);
 
@@ -167,29 +177,30 @@ const Large = () => {
   }, [search]);
 
   // Filtering Pending Ticket
-  useEffect(() => {
-    let url = ``;
-    if (role === "admin") {
-      url = `/pending-ticket`;
-    } else if (role === "technical") {
-      url = "/tech/pending-ticket";
-    } else if (role === "user") {
-      url = "/user/pending-ticket";
-    }
-    axiosClient
-      .get(url)
-      .then((res) => {
-        return res.data;
-      })
-      .then((res) => {
-        setPendingTicket(res.Message.data);
-        set_current_page(res.Message.current_page);
-        setPages(res.Message.last_page);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [selectedType]);
+  // useEffect(() => {
+  //   let url = ``;
+  //   if (role === "admin") {
+  //     url = `/pending-ticket`;
+  //   } else if (role === "technical") {
+  //     url = "/tech/pending-ticket";
+  //   } else if (role === "user") {
+  //     url = "/user/pending-ticket";
+  //   }
+  //   axiosClient
+  //     .get(url)
+  //     .then((res) => {
+  //       return res.data;
+  //     })
+  //     .then((res) => {
+  //       localStorage.setItem('request_count', res.count);
+  //       setPendingTicket(res.Message.data);
+  //       set_current_page(res.Message.current_page);
+  //       setPages(res.Message.last_page);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, [role]);
 
   //For Employee Job Count
   useEffect(() => {
@@ -248,6 +259,7 @@ const Large = () => {
       })
       .then((res) => {
         setPendingTicket(res.data);
+        
         set_current_page(res.current_page);
         setPages(res.last_page);
       })
@@ -283,7 +295,7 @@ const Large = () => {
                   <p className="text-xs font-semibold">Requested</p>
                 </div>
                 <div className="flex items-center justify-end w-full px-4">
-                  <p className="text-6xl font-extrabold text-white/75">12</p>
+                  <p className="text-6xl font-extrabold text-white/75">{localStorage.getItem("request_count")}</p>
                 </div>
                 <div className="absolute top-4 left-0">
                   <RiStickyNoteAddLine className="text-9xl text-white/15" />
