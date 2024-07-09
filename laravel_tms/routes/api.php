@@ -36,9 +36,9 @@ Route::middleware([UserAuthorization::class])->group(function(){
 
 Route::middleware([AdminAuthorization::class])->group(function () {
         // Retrieves pending tickets and allows filtering by type or search
-        Route::get('pending-ticket', [RequestController::class, 'getPendingTicket']);
-        Route::get('spec_ticket_type/{type}', [TicketController::class, 'getSpecificTicketType']);
-        Route::post('assign_request/{id}', [RequestController::class, 'assign_request']);
+        // Route::get('pending-ticket', [RequestController::class, 'getPendingTicket']);
+        // Route::get('spec_ticket_type/{type}', [TicketController::class, 'getSpecificTicketType']);
+        // Route::post('assign_request/{id}', [RequestController::class, 'assign_request']);
 });
 
 Route::middleware([TechAuthorization::class])->group(function () {
@@ -61,7 +61,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/pending-ticket/{type}', [RequestController::class, 'filterPendingTicket']);
     Route::get('/pending-ticket/search/{search}', [RequestController::class, 'filteredBySearch']);
    
- 
+    Route::get('pending-ticket', [RequestController::class, 'getPendingTicket']);
+        Route::get('spec_ticket_type/{type}', [TicketController::class, 'getSpecificTicketType']);
+        Route::post('assign_request/{id}', [RequestController::class, 'assign_request']);   
 });
 
 // User registration and authentication routes
