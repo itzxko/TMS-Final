@@ -137,6 +137,9 @@ const Large = () => {
   }, []);
 
   useEffect(() => {
+    if (role === "admin" || role === "technical") {
+      return;
+    }
     const filterType = async () => {
       try {
         const res = await axiosClient.get(`/pending-ticket/${selectedType}`);
@@ -529,7 +532,8 @@ const Large = () => {
                           return true;
                         })
                         // mapping the data to the table
-                        .map((data, index) =>(
+                        .map((data, index) =>
+                          data.ticket_type === selectedType ? (
                             // data mapping if there is a specific selected type and its conditions
                             <tbody>
                               <tr
