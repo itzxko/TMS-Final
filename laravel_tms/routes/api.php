@@ -17,32 +17,32 @@ use App\Http\Controllers\TechnicalController;
 Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 
 // Group routes that require authentication for user role
-Route::middleware([UserAuthorization::class])->group(function(){
+Route::middleware([UserAuthorization::class])->group(function () {
     // Adds a file to a request
     Route::post('add_file', [RequestController::class, 'add_file']);
-     // Adds a new request
+    // Adds a new request
     Route::post('add-request', [RequestController::class, 'add_request']);
     Route::get("/user/pending-ticket", [RequestController::class, "getTicketByUser"]);
     // Bumps the update date of a ticket
     Route::post('follow-up', function (Request $request) {
-            DB::table('ticketing_main')
-                ->where('ticket_client', Auth::user()->emp_no)
-                ->where('ticket_cde', $request->ticket_cde)
-                ->update(['ticket_update_date' => now()]);
-            return response()->json(["Message" => "Bumped!"], 200);
-        });
+        DB::table('ticketing_main')
+            ->where('ticket_client', Auth::user()->emp_no)
+            ->where('ticket_cde', $request->ticket_cde)
+            ->update(['ticket_update_date' => now()]);
+        return response()->json(["Message" => "Bumped!"], 200);
+    });
     Route::get('ticket', [TicketController::class, 'getTicketType']);
 });
 
 Route::middleware([AdminAuthorization::class])->group(function () {
-        // Retrieves pending tickets and allows filtering by type or search
-        Route::get('pending-ticket', [RequestController::class, 'getPendingTicket']);
-        Route::get('spec_ticket_type/{type}', [TicketController::class, 'getSpecificTicketType']);
-        Route::post('assign_request/{id}', [RequestController::class, 'assign_request']);
+    // Retrieves pending tickets and allows filtering by type or search
+    Route::get('pending-ticket', [RequestController::class, 'getPendingTicket']);
+    Route::get('spec_ticket_type/{type}', [TicketController::class, 'getSpecificTicketType']);
+    Route::post('assign_request/{id}', [RequestController::class, 'assign_request']);
 });
 
 Route::middleware([TechAuthorization::class])->group(function () {
-    Route::get("/tech/pending-ticket", [RequestController::class, "getTicketByTechnical"]); 
+    Route::get("/tech/pending-ticket", [RequestController::class, "getTicketByTechnical"]);
 });
 Route::middleware([TechAdminMiddleware::class])->group(function () {
        // Retrieves images, videos, and documents associated with a ticket
@@ -55,7 +55,7 @@ Route::middleware([TechAdminMiddleware::class])->group(function () {
 });
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('get_user', [RequestController::class, 'getUserName']);
- 
+
     Route::get('/pending-ticket/{type}', [RequestController::class, 'filterPendingTicket']);
     Route::get('/pending-ticket/search/{search}', [RequestController::class, 'filteredBySearch']);
    
@@ -73,4 +73,7 @@ Route::post('/send-otp', [UserController::class, 'sendOTP']);
 // Technical staff routes for updating and accepting requests
 Route::post('/techUpdate', [TechnicalController::class, 'updateTechnical']);
 Route::post('/acceptRequest', [TechnicalController::class, 'acceptRequest']);
+Route::post('/denyRequest', [TechnicalController::class, 'denyRequest']);
+Route::post('/acceptOngoingRequest', [TechnicalController::class, 'acceptOngoingRequest']);
+Route::post('/denyOngoingRequest', [TechnicalController::class, 'denyOngoingRequest']);
 Route::get('/techShow/{id}', [TechnicalController::class, 'show']);

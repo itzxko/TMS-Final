@@ -76,9 +76,41 @@ const AcceptDenyModal = ({
   }, [isVisible]);
 
   // Function to handle form submission
-  const handleSubmit = async (e) => {
+  const handleAccept = async (e) => {
     try {
       const response = await axiosClient.post("/acceptRequest", { ticket_cde });
+      onClose();
+      location.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  }; 
+
+  const handleDeny = async (e) => {
+    try {
+      const response = await axiosClient.post("/denyRequest", { ticket_cde });
+      onClose();
+      location.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  };  
+  
+  // Function to handle form submission
+  const handleAcceptOngoing = async (e) => {
+    try {
+      const response = await axiosClient.post("/acceptOngoingRequest", { ticket_cde });
+      onClose();
+      location.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+  // Function to handle form submission
+  const handleDenyOngoing = async (e) => {
+    try {
+      const response = await axiosClient.post("/denyOngoingRequest", { ticket_cde });
       onClose();
       location.reload();
     } catch (error) {
@@ -457,7 +489,7 @@ const AcceptDenyModal = ({
                 {/* If the selected role is user and the ticket status is 4 or for checking, render the accept and deny buttons */}
                   <div
                     className="flex items-center justify-center py-2 px-4 bg-[#2f2f2f] hover:bg-[#474747] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
-                    onClick={handleSubmit}
+                    onClick={handleAccept}
                   >
                     <p className="text-xs font-normal text-white truncate">
                       Accept
@@ -466,6 +498,32 @@ const AcceptDenyModal = ({
                   <div
                     className="flex items-center justify-center py-2 px-4 bg-[#FFFFFF] hover:bg-[#f2f2f2] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
                     onClick={() => {
+                      onClick={handleDeny}
+                      setShowImageModal(false);
+                      onClose();
+                      setActiveDetails(false);
+                    }}
+                  >
+                    <p className="text-xs font-normal text-black truncate">
+                      Deny
+                    </p>
+                  </div>
+                </>
+              ) : selectedRole === "technical" && ticket_status === "2" ? (
+                <>
+                {/* If the selected role is user and the ticket status is 4 or for checking, render the accept and deny buttons */}
+                  <div
+                    className="flex items-center justify-center py-2 px-4 bg-[#2f2f2f] hover:bg-[#474747] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
+                    onClick={handleAcceptOngoing}
+                  >
+                    <p className="text-xs font-normal text-white truncate">
+                      Accept
+                    </p>
+                  </div>
+                  <div
+                    className="flex items-center justify-center py-2 px-4 bg-[#FFFFFF] hover:bg-[#f2f2f2] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
+                    onClick={() => {
+                      handleDenyOngoing();
                       setShowImageModal(false);
                       onClose();
                       setActiveDetails(false);
