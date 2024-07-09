@@ -70,6 +70,7 @@ Route::post('/send-otp', [UserController::class, 'sendOTP']);
 // Technical staff routes for updating and accepting requests
 Route::post('/techUpdate', [TechnicalController::class, 'updateTechnical']);
 Route::post('/acceptRequest', [TechnicalController::class, 'acceptRequest']);
+Route::post('/denyRequest', [TechnicalController::class, 'denyRequest']);
 Route::post('/acceptOngoingRequest', [TechnicalController::class, 'acceptOngoingRequest']);
 Route::post('/denyOngoingRequest', [TechnicalController::class, 'denyOngoingRequest']);
 Route::get('/techShow/{id}', [TechnicalController::class, 'show']);

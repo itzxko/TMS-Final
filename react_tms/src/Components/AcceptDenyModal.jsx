@@ -7,6 +7,7 @@ import ImageModal from "./ImageModal"; //Image Modal
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { LiaDownloadSolid } from "react-icons/lia";
 import { RiAttachment2 } from "react-icons/ri";
+import { TiInfoLarge } from "react-icons/ti";
 import { MdAttachment } from "react-icons/md";
 import { TiArrowLeft } from "react-icons/ti";
 import { PiImages } from "react-icons/pi";
@@ -76,7 +77,7 @@ const AcceptDenyModal = ({
   }, [isVisible]);
 
   // Function to handle form submission
-  const handleSubmit = async (e) => {
+  const handleAccept = async (e) => {
     try {
       const response = await axiosClient.post("/acceptRequest", { ticket_cde });
       onClose();
@@ -84,23 +85,37 @@ const AcceptDenyModal = ({
     } catch (error) {
       console.error(error);
     }
-  };  
-  
-  // Function to handle form submission
-  const handleAcceptOngoing = async (e) => {
+  };
+
+  const handleDeny = async (e) => {
     try {
-      const response = await axiosClient.post("/acceptOngoingRequest", { ticket_cde });
+      const response = await axiosClient.post("/denyRequest", { ticket_cde });
       onClose();
       location.reload();
     } catch (error) {
       console.error(error);
     }
   };
-  
+
+  // Function to handle form submission
+  const handleAcceptOngoing = async (e) => {
+    try {
+      const response = await axiosClient.post("/acceptOngoingRequest", {
+        ticket_cde,
+      });
+      onClose();
+      location.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   // Function to handle form submission
   const handleDenyOngoing = async (e) => {
     try {
-      const response = await axiosClient.post("/denyOngoingRequest", { ticket_cde });
+      const response = await axiosClient.post("/denyOngoingRequest", {
+        ticket_cde,
+      });
       onClose();
       location.reload();
     } catch (error) {
@@ -181,19 +196,10 @@ const AcceptDenyModal = ({
         }}
       >
         {/* Modal content */}
-        <div className="w-full md:w-2/3 lg:w-1/3 bg-[#FAF5FF] flex flex-col items-center justify-center p-8 md:p-10 rounded-xl shadow-xl">
+        <div className="w-full md:w-2/3 lg:w-3/4 bg-[#FAF5FF] flex flex-col items-center justify-center p-8 md:p-10 rounded-xl shadow-xl">
           <div className="relative w-full flex items-center justify-center pb-2 md:pb-12">
             <p className="text-xs font-semibold">Ticket Details</p>
-            <div
-              className={
-                !activeDetails
-                  ? "absolute right-0 bg-[FAF5FF] p-2 cursor-pointer text-black"
-                  : "absolute right-0 bg-[#2f2f2f] p-2 cursor-pointer text-white rounded-md"
-              }
-              onClick={() => setActiveDetails(!activeDetails)}
-            >
-              <MdAttachment className="text-md" />
-            </div>
+
             <div
               className="absolute left-0 p-2 hover:bg-gray-200 ease-in-out duration-500 rounded-md"
               onClick={() => onClose()}
@@ -203,8 +209,14 @@ const AcceptDenyModal = ({
           </div>
 
           {/* if activeDetails is false, render the ticket type, requester, and description */}
-          {activeDetails ? (
-            <>
+          <div className="w-full flex flex-col-reverse lg:flex-row-reverse  justify-center items-start py-6 gap-4 lg:gap-12">
+            <div className="w-full lg:w-1/2 flex flex-col">
+              <div className="w-full flex flex-row gap-2 items-center justify-start py-4 px-1">
+                <div className="p-2 bg-[#2f2f2f] rounded-full text-white shadow-xl">
+                  <RiAttachment2 className="text-sm" />
+                </div>
+                <p className="text-xs font-semibold">Attachments Section</p>
+              </div>
               <div className="w-full flex flex-col items-center justify-center py-4">
                 <div className=" flex item-center justify-start w-full py-2 px-1">
                   <p className="text-xs font-normal">Images and Videos</p>
@@ -350,13 +362,17 @@ const AcceptDenyModal = ({
                   </div>
                 </div>
               </div>
-            </>
-          ) : (
-            <>
-            {/* Render ticket type, requester, and description */}
+            </div>
+            <div className="w-full lg:w-1/2 flex flex-col">
+              <div className="w-full flex flex-row gap-2 items-center justify-start py-4 px-1">
+                <div className="p-2 bg-[#2f2f2f] rounded-full text-white shadow-xl">
+                  <TiInfoLarge className="text-sm" />
+                </div>
+                <p className="text-xs font-semibold">Information Section</p>
+              </div>
               {selectedRole === "user" && ticket_status === "5" ? (
                 <>
-                {/* If the selected role is user and the ticket status is 5 or done, render the ticket type */}
+                  {/* If the selected role is user and the ticket status is 5 or done, render the ticket type */}
                   <div className="w-full flex flex-row items-center justify-center">
                     <div className="w-full flex flex-col items-center justify-center">
                       <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
@@ -372,7 +388,7 @@ const AcceptDenyModal = ({
                 </>
               ) : selectedRole === "user" && ticket_status === "4" ? (
                 <>
-                 {/* If the selected role is user and the ticket status is 4 or for checking, render the ticket type and requester */}
+                  {/* If the selected role is user and the ticket status is 4 or for checking, render the ticket type and requester */}
                   <div className="w-full flex flex-row items-center justify-center">
                     <div className="w-full flex flex-col items-center justify-center">
                       <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
@@ -470,16 +486,16 @@ const AcceptDenyModal = ({
                   </div>
                 </div>
               </div>
-            </>
-          )}
+            </div>
+          </div>
           <div className="w-full flex flex-row gap-2 items-center justify-between py-4">
             <div className="flex flex-row gap-2 items-center justify-end w-full">
               {selectedRole === "user" && ticket_status === "4" ? (
                 <>
-                {/* If the selected role is user and the ticket status is 4 or for checking, render the accept and deny buttons */}
+                  {/* If the selected role is user and the ticket status is 4 or for checking, render the accept and deny buttons */}
                   <div
                     className="flex items-center justify-center py-2 px-4 bg-[#2f2f2f] hover:bg-[#474747] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
-                    onClick={handleSubmit}
+                    onClick={handleAccept}
                   >
                     <p className="text-xs font-normal text-white truncate">
                       Accept
@@ -488,6 +504,7 @@ const AcceptDenyModal = ({
                   <div
                     className="flex items-center justify-center py-2 px-4 bg-[#FFFFFF] hover:bg-[#f2f2f2] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
                     onClick={() => {
+                      onClick = { handleDeny };
                       setShowImageModal(false);
                       onClose();
                       setActiveDetails(false);
@@ -500,7 +517,7 @@ const AcceptDenyModal = ({
                 </>
               ) : selectedRole === "technical" && ticket_status === "2" ? (
                 <>
-                {/* If the selected role is user and the ticket status is 4 or for checking, render the accept and deny buttons */}
+                  {/* If the selected role is user and the ticket status is 4 or for checking, render the accept and deny buttons */}
                   <div
                     className="flex items-center justify-center py-2 px-4 bg-[#2f2f2f] hover:bg-[#474747] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
                     onClick={handleAcceptOngoing}

@@ -19,7 +19,7 @@ import { BsSend } from "react-icons/bs";
 import { BsEnvelopePaper } from "react-icons/bs";
 import { TbProgressBolt } from "react-icons/tb";
 import { MdOutlineWorkOutline } from "react-icons/md";
-import { HiOutlineClipboardCheck } from "react-icons/hi";
+import { MdOutlineDownloadDone } from "react-icons/md";
 import { LiaUser } from "react-icons/lia";
 import { MdOutlineNewLabel } from "react-icons/md";
 
@@ -58,6 +58,11 @@ const Large = () => {
   const [ticket_desc_remarks, set_tickec_desc_remarks] = useState("");
   const [ticket_desc_replacement, set_ticket_desc_replacement] = useState("");
   const [ticket_status, set_ticket_status] = useState("");
+  const [requested, setRequested] = useState(0);
+  const [assigned, setAssigned] = useState(0);
+  const [ongoing, setOngoing] = useState(0);
+  const [forChecking, setForChecking] = useState(0);
+  const [done, setDone] = useState(0);
   const [current_page, set_current_page] = useState(1);
   const [name, setName] = useState([]);
   const [bumpCode, setBumpCode] = useState("");
@@ -75,7 +80,6 @@ const Large = () => {
 
   // Check if there are tickets of the selected type
   const hasTicketsOfType = pendingTicket.length > 0;
-  console.log(pendingTicket.length);
   // Function to handle filter use state
   const handleFilter = () => {
     setFilter(!filter);
@@ -176,32 +180,6 @@ const Large = () => {
     }
   }, [search]);
 
-  // Filtering Pending Ticket
-  // useEffect(() => {
-  //   let url = ``;
-  //   if (role === "admin") {
-  //     url = `/pending-ticket`;
-  //   } else if (role === "technical") {
-  //     url = "/tech/pending-ticket";
-  //   } else if (role === "user") {
-  //     url = "/user/pending-ticket";
-  //   }
-  //   axiosClient
-  //     .get(url)
-  //     .then((res) => {
-  //       return res.data;
-  //     })
-  //     .then((res) => {
-  //       localStorage.setItem('request_count', res.count);
-  //       setPendingTicket(res.Message.data);
-  //       set_current_page(res.Message.current_page);
-  //       setPages(res.Message.last_page);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, [role]);
-
   //For Employee Job Count
   useEffect(() => {
     if (role === "admin") {
@@ -268,6 +246,32 @@ const Large = () => {
       });
   };
 
+  useEffect(() => {
+    if (pendingTicket) {
+      const requestedCount = pendingTicket.filter(
+        (item) => item.ticket_status === "1"
+      ).length;
+      const assignedCount = pendingTicket.filter(
+        (item) => item.ticket_status === "2"
+      ).length;
+      const ongoingCount = pendingTicket.filter(
+        (item) => item.ticket_status === "3"
+      ).length;
+      const forCheckingCount = pendingTicket.filter(
+        (item) => item.ticket_status === "4"
+      ).length;
+      const doneCount = pendingTicket.filter(
+        (item) => item.ticket_status === "5"
+      ).length;
+
+      setRequested(requestedCount);
+      setAssigned(assignedCount);
+      setOngoing(ongoingCount);
+      setForChecking(forCheckingCount);
+      setDone(doneCount);
+    }
+  }, [pendingTicket]);
+
   //Render Page
   return (
     <>
@@ -289,11 +293,19 @@ const Large = () => {
               role === "admin" ? "flex flex-col w-4/5" : "flex flex-col w-full"
             }
           >
-            <div className="w-full grid grid-cols-5 gap-6 py-6">
+            <div
+              className={
+                role === "admin"
+                  ? "w-full grid grid-cols-5 gap-6 py-6"
+                  : "hidden"
+              }
+            >
               <div className="relative bg-[#FAF5FF] p-6 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:scale-105 transition-transform duration-500">
                 <div className="w-full flex py-2"></div>
                 <div className="w-full flex flex-row-reverse items-end justify-between">
-                  <p className="text-2xl font-bold text-[#a10b00]">16</p>
+                  <p className="text-2xl font-bold text-[#a10b00]">
+                    {requested}
+                  </p>
                   <p className="text-xs font-semibold">Requested</p>
                 </div>
                 <div className="absolute top-[-20px] left-6 p-3 rounded-lg shadow-xl bg-gradient-to-tr from-[#a10b00] via-[#d62417] to-[#ff5044]">
@@ -303,7 +315,9 @@ const Large = () => {
               <div className="relative bg-[#FAF5FF] p-6 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:scale-105 transition-transform duration-500">
                 <div className="w-full flex py-2"></div>
                 <div className="w-full flex flex-row-reverse items-end justify-between">
-                  <p className="text-2xl font-bold text-[#c95b00]">16</p>
+                  <p className="text-2xl font-bold text-[#c95b00]">
+                    {assigned}
+                  </p>
                   <p className="text-xs font-semibold">Assigned</p>
                 </div>
                 <div className="absolute top-[-20px] left-6 p-3 rounded-lg shadow-xl bg-gradient-to-tr from-[#c95b00] via-[#e97619] to-[#ff7e15]">
@@ -313,7 +327,7 @@ const Large = () => {
               <div className="relative bg-[#FAF5FF] p-6 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:scale-105 transition-transform duration-500">
                 <div className="w-full flex py-2"></div>
                 <div className="w-full flex flex-row-reverse items-end justify-between">
-                  <p className="text-2xl font-bold text-[#570075]">16</p>
+                  <p className="text-2xl font-bold text-[#570075]">{ongoing}</p>
                   <p className="text-xs font-semibold">Ongoing</p>
                 </div>
                 <div className="absolute top-[-20px] left-6 p-3 rounded-lg shadow-xl bg-gradient-to-tr from-[#570075] via-[#b61ce9] to-[#c517ff]">
@@ -323,7 +337,9 @@ const Large = () => {
               <div className="relative bg-[#FAF5FF] p-6 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:scale-105 transition-transform duration-500">
                 <div className="w-full flex py-2"></div>
                 <div className="w-full flex flex-row-reverse items-end justify-between">
-                  <p className="text-2xl font-bold text-[#007a3f]">16</p>
+                  <p className="text-2xl font-bold text-[#007a3f]">
+                    {forChecking}
+                  </p>
                   <p className="text-xs font-semibold">For Checking</p>
                 </div>
                 <div className="absolute top-[-20px] left-6 p-3 rounded-lg shadow-xl bg-gradient-to-tr from-[#007a3f] via-[#13c26d] to-[#25d882]">
@@ -333,11 +349,11 @@ const Large = () => {
               <div className="relative bg-[#FAF5FF] p-6 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:scale-105 transition-transform duration-500">
                 <div className="w-full flex py-2"></div>
                 <div className="w-full flex flex-row-reverse items-end justify-between">
-                  <p className="text-2xl font-bold text-[#363636]">16</p>
+                  <p className="text-2xl font-bold text-[#363636]">{done}</p>
                   <p className="text-xs font-semibold">Done</p>
                 </div>
                 <div className="absolute top-[-20px] left-6 p-3 rounded-lg shadow-xl bg-gradient-to-tr from-[#363636] via-[#6d6a6a] to-[#727272]">
-                  <TbProgressBolt className="text-3xl text-white" />
+                  <MdOutlineDownloadDone className="text-3xl text-white" />
                 </div>
               </div>
             </div>
@@ -463,20 +479,19 @@ const Large = () => {
                         >
                           Requested By
                         </th>
-                        <th scope="col" className="text-start p-4 truncate">
-                          Assigned To
-                        </th>
-
-                        <th scope="col" className="text-start p-4 truncate">
-                          Status
-                        </th>
                         <th
                           className={
                             !(role === "admin" || role === "user")
                               ? "hidden"
-                              : "text-center p-4 truncate"
+                              : "text-start p-4 truncate"
                           }
                         >
+                          Assigned To
+                        </th>
+                        <th scope="col" className="text-start p-4 truncate">
+                          Status
+                        </th>
+                        <th scope="col" className="text-center p-4 truncate">
                           Action
                         </th>
                       </tr>
@@ -732,31 +747,31 @@ const Large = () => {
                                     data.ticket_status === "1" ? (
                                     // when ticket status is 4 or for checking
                                     <button
-                                    className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
-                                    onClick={() => {
-                                      setAdminForm(true);
-                                      set_name_requester(
-                                        data.ticket_client_name
-                                      );
-                                      setTicket_assigned_to_name(
-                                        data.ticket_assigned_to_name
-                                      );
-                                      get_ticket_desc(data.ticket_type);
-                                      set_request_desc(
-                                        data.ticket_desc_concern
-                                      );
-                                      set_request_type(data.ticket_type);
-                                      setID(data.id);
-                                      set_ticket_cde(data.ticket_cde);
-                                    }}
-                                  >
-                                    <div className="flex flex-row gap-1 items-center justify-center w-full">
-                                      <RiUserSharedLine className="text-sm" />
-                                      <p className="text-xs font-normal truncate">
-                                        Assign
-                                      </p>
-                                    </div>
-                                  </button>
+                                      className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
+                                      onClick={() => {
+                                        setAdminForm(true);
+                                        set_name_requester(
+                                          data.ticket_client_name
+                                        );
+                                        setTicket_assigned_to_name(
+                                          data.ticket_assigned_to_name
+                                        );
+                                        get_ticket_desc(data.ticket_type);
+                                        set_request_desc(
+                                          data.ticket_desc_concern
+                                        );
+                                        set_request_type(data.ticket_type);
+                                        setID(data.id);
+                                        set_ticket_cde(data.ticket_cde);
+                                      }}
+                                    >
+                                      <div className="flex flex-row gap-1 items-center justify-center w-full">
+                                        <RiUserSharedLine className="text-sm" />
+                                        <p className="text-xs font-normal truncate">
+                                          Assign
+                                        </p>
+                                      </div>
+                                    </button>
                                   ) : role === "admin" ? (
                                     <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
@@ -827,41 +842,41 @@ const Large = () => {
                                       </div>
                                     </button>
                                   ) : role === "technical" &&
-                                  data.ticket_status === "2" ? (
-                                  // when ticket status is 5 or done
-                                  <button
-                                    className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
-                                    onClick={() => {
-                                      setShowAcceptDenyModal(true);
-                                      set_name_requester(
-                                        data.ticket_client_name
-                                      );
-                                      setTicketID(data.id);
-                                      set_ticket_cde(data.ticket_cde);
-                                      set_request_desc(
-                                        data.ticket_desc_concern
-                                      );
-                                      set_request_type(data.ticket_type);
-                                      set_tickec_desc_remarks(
-                                        data.ticket_desc_remarks
-                                      );
-                                      set_ticket_desc_findings(
-                                        data.ticket_desc_findings
-                                      );
-                                      set_ticket_desc_replacement(
-                                        data.ticket_desc_replacement
-                                      );
-                                      set_ticket_status(data.ticket_status);
-                                    }}
-                                  >
-                                    <div className="flex flex-row gap-1 items-center justify-center w-full">
-                                      <RxInfoCircled className="text-sm" />{" "}
-                                      <p className="text-xs font-normal truncate">
-                                        Review
-                                      </p>
-                                    </div>
-                                  </button>
-                                ) : (
+                                    data.ticket_status === "2" ? (
+                                    // when ticket status is 5 or done
+                                    <button
+                                      className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
+                                      onClick={() => {
+                                        setShowAcceptDenyModal(true);
+                                        set_name_requester(
+                                          data.ticket_client_name
+                                        );
+                                        setTicketID(data.id);
+                                        set_ticket_cde(data.ticket_cde);
+                                        set_request_desc(
+                                          data.ticket_desc_concern
+                                        );
+                                        set_request_type(data.ticket_type);
+                                        set_tickec_desc_remarks(
+                                          data.ticket_desc_remarks
+                                        );
+                                        set_ticket_desc_findings(
+                                          data.ticket_desc_findings
+                                        );
+                                        set_ticket_desc_replacement(
+                                          data.ticket_desc_replacement
+                                        );
+                                        set_ticket_status(data.ticket_status);
+                                      }}
+                                    >
+                                      <div className="flex flex-row gap-1 items-center justify-center w-full">
+                                        <RxInfoCircled className="text-sm" />{" "}
+                                        <p className="text-xs font-normal truncate">
+                                          Review
+                                        </p>
+                                      </div>
+                                    </button>
+                                  ) : (
                                     <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
@@ -1097,31 +1112,31 @@ const Large = () => {
                                     data.ticket_status === "1" ? (
                                     // when ticket status is 4 or for checking
                                     <button
-                                    className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
-                                    onClick={() => {
-                                      setAdminForm(true);
-                                      set_name_requester(
-                                        data.ticket_client_name
-                                      );
-                                      setTicket_assigned_to_name(
-                                        data.ticket_assigned_to_name
-                                      );
-                                      get_ticket_desc(data.ticket_type);
-                                      set_request_desc(
-                                        data.ticket_desc_concern
-                                      );
-                                      set_request_type(data.ticket_type);
-                                      setID(data.id);
-                                      set_ticket_cde(data.ticket_cde);
-                                    }}
-                                  >
-                                    <div className="flex flex-row gap-1 items-center justify-center w-full">
-                                      <RiUserSharedLine className="text-sm" />
-                                      <p className="text-xs font-normal truncate">
-                                        Assign
-                                      </p>
-                                    </div>
-                                  </button>
+                                      className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
+                                      onClick={() => {
+                                        setAdminForm(true);
+                                        set_name_requester(
+                                          data.ticket_client_name
+                                        );
+                                        setTicket_assigned_to_name(
+                                          data.ticket_assigned_to_name
+                                        );
+                                        get_ticket_desc(data.ticket_type);
+                                        set_request_desc(
+                                          data.ticket_desc_concern
+                                        );
+                                        set_request_type(data.ticket_type);
+                                        setID(data.id);
+                                        set_ticket_cde(data.ticket_cde);
+                                      }}
+                                    >
+                                      <div className="flex flex-row gap-1 items-center justify-center w-full">
+                                        <RiUserSharedLine className="text-sm" />
+                                        <p className="text-xs font-normal truncate">
+                                          Assign
+                                        </p>
+                                      </div>
+                                    </button>
                                   ) : role === "admin" ? (
                                     <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
@@ -1192,41 +1207,41 @@ const Large = () => {
                                       </div>
                                     </button>
                                   ) : role === "technical" &&
-                                  data.ticket_status === "2" ? (
-                                  // when ticket status is 5 or done
-                                  <button
-                                    className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
-                                    onClick={() => {
-                                      setShowAcceptDenyModal(true);
-                                      set_name_requester(
-                                        data.ticket_client_name
-                                      );
-                                      setTicketID(data.id);
-                                      set_ticket_cde(data.ticket_cde);
-                                      set_request_desc(
-                                        data.ticket_desc_concern
-                                      );
-                                      set_request_type(data.ticket_type);
-                                      set_tickec_desc_remarks(
-                                        data.ticket_desc_remarks
-                                      );
-                                      set_ticket_desc_findings(
-                                        data.ticket_desc_findings
-                                      );
-                                      set_ticket_desc_replacement(
-                                        data.ticket_desc_replacement
-                                      );
-                                      set_ticket_status(data.ticket_status);
-                                    }}
-                                  >
-                                    <div className="flex flex-row gap-1 items-center justify-center w-full">
-                                      <RxInfoCircled className="text-sm" />{" "}
-                                      <p className="text-xs font-normal truncate">
-                                        Review
-                                      </p>
-                                    </div>
-                                  </button>
-                                ) : (
+                                    data.ticket_status === "2" ? (
+                                    // when ticket status is 5 or done
+                                    <button
+                                      className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
+                                      onClick={() => {
+                                        setShowAcceptDenyModal(true);
+                                        set_name_requester(
+                                          data.ticket_client_name
+                                        );
+                                        setTicketID(data.id);
+                                        set_ticket_cde(data.ticket_cde);
+                                        set_request_desc(
+                                          data.ticket_desc_concern
+                                        );
+                                        set_request_type(data.ticket_type);
+                                        set_tickec_desc_remarks(
+                                          data.ticket_desc_remarks
+                                        );
+                                        set_ticket_desc_findings(
+                                          data.ticket_desc_findings
+                                        );
+                                        set_ticket_desc_replacement(
+                                          data.ticket_desc_replacement
+                                        );
+                                        set_ticket_status(data.ticket_status);
+                                      }}
+                                    >
+                                      <div className="flex flex-row gap-1 items-center justify-center w-full">
+                                        <RxInfoCircled className="text-sm" />{" "}
+                                        <p className="text-xs font-normal truncate">
+                                          Review
+                                        </p>
+                                      </div>
+                                    </button>
+                                  ) : (
                                     <button
                                       className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                       onClick={() => {
