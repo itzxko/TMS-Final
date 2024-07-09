@@ -50,9 +50,7 @@ Route::middleware([TechAdminMiddleware::class])->group(function () {
        // Retrieves attachment details
        Route::get('getAttachment', [TicketController::class, 'getAttachment']);
 
-       Route::get('get_images/{ticket_cde}', [RequestController::class, 'getImagesByTicketCode']);
-       Route::get('get_videos/{ticket_cde}', [RequestController::class, 'getVideosByTicketCode']);
-       Route::get('get_documents/{ticket_cde}', [RequestController::class, 'getDocumentsByTicketCode']);
+     
    
 });
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -61,7 +59,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/pending-ticket/{type}', [RequestController::class, 'filterPendingTicket']);
     Route::get('/pending-ticket/search/{search}', [RequestController::class, 'filteredBySearch']);
    
- 
+    Route::get('get_images/{ticket_cde}', [RequestController::class, 'getImagesByTicketCode']);
+    Route::get('get_videos/{ticket_cde}', [RequestController::class, 'getVideosByTicketCode']);
+    Route::get('get_documents/{ticket_cde}', [RequestController::class, 'getDocumentsByTicketCode']);
 });
 
 // User registration and authentication routes

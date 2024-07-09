@@ -126,7 +126,7 @@ const Login = () => {
                 </div>
                 <div className="w-full flex flex-col items-center justify-center pb-8">
                   <p className="font-bold text-[#113e21] text-sm uppercase">
-                    TMS.
+                    Ticketing Management System
                   </p>
                   <p className="text-xs">login to your account</p>
                 </div>
@@ -171,7 +171,7 @@ const Login = () => {
                     <>
                       <div className="w-full flex flex-col gap-2">
                         <p className="text-xs font-semibold px-1">
-                          One-time Password.
+                          One-time Password
                         </p>
                         <div className="py-3 px-4 bg-[#f6edff] rounded-md flex flex-row w-full gap-3 items-center justify-center">
                           <TbMailCode className="text-lg" />
