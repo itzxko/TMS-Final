@@ -624,155 +624,155 @@ const Small = () => {
                                 </button>
                               ) : // button if role is admin and its conditions
                               role === "admin" && data.ticket_status === "2" ? (
-                              <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
-                                <p
-                                  className="text-xs font-semibold "
-                                  onClick={() => {
-                                    setAdminForm(true);
-                                    set_request_desc(
-                                      data.ticket_desc_concern
-                                    );
-                                    set_name_requester(
-                                      data.ticket_client_name
-                                    );
-                                    setTicket_assigned_to_name(
-                                      data.ticket_assigned_to_name
-                                    );
-                                    get_ticket_desc(data.ticket_type);
-                                    
-                                    set_request_type(data.ticket_type);
-                                    setID(data.id);
-                                    set_ticket_cde(data.ticket_cde);
-                                    set_name_requester(
-                                      data.ticket_client_name
-                                    );
-                                  }}
-                                >
-                                  Assign
-                                </p>
-                              </button>
-                            ) : role === "admin" &&
-                              data.ticket_status === "1" ? (
-                              <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
-                                <p
-                                  className="text-xs font-semibold "
-                                  onClick={() => {
-                                    setAdminForm(true);
-                                    set_request_desc(
-                                      data.ticket_desc_concern
-                                    );
-                                    set_name_requester(
-                                      data.ticket_client_name
-                                    );
-                                    setTicket_assigned_to_name(
-                                      data.ticket_assigned_to_name
-                                    );
-                                    get_ticket_desc(data.ticket_type);
-                                    
-                                    set_request_type(data.ticket_type);
-                                    setID(data.id);
-                                    set_ticket_cde(data.ticket_cde);
-                                    set_name_requester(
-                                      data.ticket_client_name
-                                    );
-                                  }}
-                                >
-                                  Assign
-                                </p>
-                              </button>
-                            ) : role === "admin" ? (
-                              <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
-                                <p
-                                  className="text-xs font-semibold "
-                                  onClick={() => {
-                                    setShowAcceptDenyModal(true);
-                                    setTicketID(data.id);
-                                    set_ticket_cde(data.ticket_cde);
-                                    set_request_desc(
-                                      data.ticket_desc_concern
-                                    );
-                                    set_request_type(data.ticket_type);
-                                    set_tickec_desc_remarks(
-                                      data.ticket_desc_remarks
-                                    );
-                                    set_ticket_desc_findings(
-                                      data.ticket_desc_findings
-                                    );
-                                    set_ticket_desc_replacement(
-                                      data.ticket_desc_replacement
-                                    );
-                                    set_ticket_status(data.ticket_status);
-                                  }}
-                                >
-                                  Details
-                                </p>
-                              </button>
-                            ) : // button if role is technical and its conditions
-                            role === "technical" &&
-                              data.ticket_status === "5" ? (
-                              // when ticket status is 5 or done
-                              <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
-                                <p
-                                  className="text-xs font-semibold "
-                                  onClick={() => {
-                                    setShowAcceptDenyModal(true);
-                                    setTicketID(data.id);
-                                    set_ticket_cde(data.ticket_cde);
-                                    set_request_desc(
-                                      data.ticket_desc_concern
-                                    );
-                                    set_request_type(data.ticket_type);
-                                    set_tickec_desc_remarks(
-                                      data.ticket_desc_remarks
-                                    );
-                                    set_name_requester(
-                                      data.ticket_client_name
-                                    );
-                                    set_ticket_desc_findings(
-                                      data.ticket_desc_findings
-                                    );
-                                    set_ticket_desc_replacement(
-                                      data.ticket_desc_replacement
-                                    );
-                                    set_ticket_status(data.ticket_status);
-                                  }}
-                                >
-                                  Details
-                                </p>
-                              </button>
-                            ) : role === "technical" &&
-                            data.ticket_status === "2" ? (
-                            // when ticket status is 2 or assigned
-                            <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
-                              <p
-                                className="text-xs font-semibold "
-                                onClick={() => {
-                                  setShowAcceptDenyModal(true);
-                                  setTicketID(data.id);
-                                  set_ticket_cde(data.ticket_cde);
-                                  set_request_desc(
-                                    data.ticket_desc_concern
-                                  );
-                                  set_request_type(data.ticket_type);
-                                  set_tickec_desc_remarks(
-                                    data.ticket_desc_remarks
-                                  );
-                                  set_name_requester(
-                                    data.ticket_client_name
-                                  );
-                                  set_ticket_desc_findings(
-                                    data.ticket_desc_findings
-                                  );
-                                  set_ticket_desc_replacement(
-                                    data.ticket_desc_replacement
-                                  );
-                                  set_ticket_status(data.ticket_status);
-                                }}
-                              >
-                                Review
-                              </p>
-                            </button>
-                          )  : role === "technical" ? (
+                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                  <p
+                                    className="text-xs font-semibold "
+                                    onClick={() => {
+                                      setAdminForm(true);
+                                      set_request_desc(
+                                        data.ticket_desc_concern
+                                      );
+                                      set_name_requester(
+                                        data.ticket_client_name
+                                      );
+                                      setTicket_assigned_to_name(
+                                        data.ticket_assigned_to_name
+                                      );
+                                      get_ticket_desc(data.ticket_type);
+
+                                      set_request_type(data.ticket_type);
+                                      setID(data.id);
+                                      set_ticket_cde(data.ticket_cde);
+                                      set_name_requester(
+                                        data.ticket_client_name
+                                      );
+                                    }}
+                                  >
+                                    Assign
+                                  </p>
+                                </button>
+                              ) : role === "admin" &&
+                                data.ticket_status === "1" ? (
+                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                  <p
+                                    className="text-xs font-semibold "
+                                    onClick={() => {
+                                      setAdminForm(true);
+                                      set_request_desc(
+                                        data.ticket_desc_concern
+                                      );
+                                      set_name_requester(
+                                        data.ticket_client_name
+                                      );
+                                      setTicket_assigned_to_name(
+                                        data.ticket_assigned_to_name
+                                      );
+                                      get_ticket_desc(data.ticket_type);
+
+                                      set_request_type(data.ticket_type);
+                                      setID(data.id);
+                                      set_ticket_cde(data.ticket_cde);
+                                      set_name_requester(
+                                        data.ticket_client_name
+                                      );
+                                    }}
+                                  >
+                                    Assign
+                                  </p>
+                                </button>
+                              ) : role === "admin" ? (
+                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                  <p
+                                    className="text-xs font-semibold "
+                                    onClick={() => {
+                                      setShowAcceptDenyModal(true);
+                                      setTicketID(data.id);
+                                      set_ticket_cde(data.ticket_cde);
+                                      set_request_desc(
+                                        data.ticket_desc_concern
+                                      );
+                                      set_request_type(data.ticket_type);
+                                      set_tickec_desc_remarks(
+                                        data.ticket_desc_remarks
+                                      );
+                                      set_ticket_desc_findings(
+                                        data.ticket_desc_findings
+                                      );
+                                      set_ticket_desc_replacement(
+                                        data.ticket_desc_replacement
+                                      );
+                                      set_ticket_status(data.ticket_status);
+                                    }}
+                                  >
+                                    Details
+                                  </p>
+                                </button>
+                              ) : // button if role is technical and its conditions
+                              role === "technical" &&
+                                data.ticket_status === "5" ? (
+                                // when ticket status is 5 or done
+                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                  <p
+                                    className="text-xs font-semibold "
+                                    onClick={() => {
+                                      setShowAcceptDenyModal(true);
+                                      setTicketID(data.id);
+                                      set_ticket_cde(data.ticket_cde);
+                                      set_request_desc(
+                                        data.ticket_desc_concern
+                                      );
+                                      set_request_type(data.ticket_type);
+                                      set_tickec_desc_remarks(
+                                        data.ticket_desc_remarks
+                                      );
+                                      set_name_requester(
+                                        data.ticket_client_name
+                                      );
+                                      set_ticket_desc_findings(
+                                        data.ticket_desc_findings
+                                      );
+                                      set_ticket_desc_replacement(
+                                        data.ticket_desc_replacement
+                                      );
+                                      set_ticket_status(data.ticket_status);
+                                    }}
+                                  >
+                                    Details
+                                  </p>
+                                </button>
+                              ) : role === "technical" &&
+                                data.ticket_status === "2" ? (
+                                // when ticket status is 2 or assigned
+                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                  <p
+                                    className="text-xs font-semibold "
+                                    onClick={() => {
+                                      setShowAcceptDenyModal(true);
+                                      setTicketID(data.id);
+                                      set_ticket_cde(data.ticket_cde);
+                                      set_request_desc(
+                                        data.ticket_desc_concern
+                                      );
+                                      set_request_type(data.ticket_type);
+                                      set_tickec_desc_remarks(
+                                        data.ticket_desc_remarks
+                                      );
+                                      set_name_requester(
+                                        data.ticket_client_name
+                                      );
+                                      set_ticket_desc_findings(
+                                        data.ticket_desc_findings
+                                      );
+                                      set_ticket_desc_replacement(
+                                        data.ticket_desc_replacement
+                                      );
+                                      set_ticket_status(data.ticket_status);
+                                    }}
+                                  >
+                                    Review
+                                  </p>
+                                </button>
+                              ) : role === "technical" ? (
                                 <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
@@ -970,7 +970,7 @@ const Small = () => {
                                         data.ticket_assigned_to_name
                                       );
                                       get_ticket_desc(data.ticket_type);
-                                      
+
                                       set_request_type(data.ticket_type);
                                       setID(data.id);
                                       set_ticket_cde(data.ticket_cde);
@@ -999,7 +999,7 @@ const Small = () => {
                                         data.ticket_assigned_to_name
                                       );
                                       get_ticket_desc(data.ticket_type);
-                                      
+
                                       set_request_type(data.ticket_type);
                                       setID(data.id);
                                       set_ticket_cde(data.ticket_cde);
@@ -1072,38 +1072,38 @@ const Small = () => {
                                   </p>
                                 </button>
                               ) : role === "technical" &&
-                              data.ticket_status === "2" ? (
-                              // when ticket status is 2 or assigned
-                              <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
-                                <p
-                                  className="text-xs font-semibold "
-                                  onClick={() => {
-                                    setShowAcceptDenyModal(true);
-                                    setTicketID(data.id);
-                                    set_ticket_cde(data.ticket_cde);
-                                    set_request_desc(
-                                      data.ticket_desc_concern
-                                    );
-                                    set_request_type(data.ticket_type);
-                                    set_tickec_desc_remarks(
-                                      data.ticket_desc_remarks
-                                    );
-                                    set_name_requester(
-                                      data.ticket_client_name
-                                    );
-                                    set_ticket_desc_findings(
-                                      data.ticket_desc_findings
-                                    );
-                                    set_ticket_desc_replacement(
-                                      data.ticket_desc_replacement
-                                    );
-                                    set_ticket_status(data.ticket_status);
-                                  }}
-                                >
-                                  Review
-                                </p>
-                              </button>
-                            ) : role === "technical" ? (
+                                data.ticket_status === "2" ? (
+                                // when ticket status is 2 or assigned
+                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                  <p
+                                    className="text-xs font-semibold "
+                                    onClick={() => {
+                                      setShowAcceptDenyModal(true);
+                                      setTicketID(data.id);
+                                      set_ticket_cde(data.ticket_cde);
+                                      set_request_desc(
+                                        data.ticket_desc_concern
+                                      );
+                                      set_request_type(data.ticket_type);
+                                      set_tickec_desc_remarks(
+                                        data.ticket_desc_remarks
+                                      );
+                                      set_name_requester(
+                                        data.ticket_client_name
+                                      );
+                                      set_ticket_desc_findings(
+                                        data.ticket_desc_findings
+                                      );
+                                      set_ticket_desc_replacement(
+                                        data.ticket_desc_replacement
+                                      );
+                                      set_ticket_status(data.ticket_status);
+                                    }}
+                                  >
+                                    Review
+                                  </p>
+                                </button>
+                              ) : role === "technical" ? (
                                 <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "
