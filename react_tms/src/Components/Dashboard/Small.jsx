@@ -18,7 +18,7 @@ import { BsSend } from "react-icons/bs";
 import { BsEnvelopePaper } from "react-icons/bs";
 import { TbProgressBolt } from "react-icons/tb";
 import { MdOutlineWorkOutline } from "react-icons/md";
-import { HiOutlineClipboardCheck } from "react-icons/hi";
+import { MdOutlineDownloadDone } from "react-icons/md";
 import { LiaUser } from "react-icons/lia";
 import {
   MdOutlineKeyboardArrowLeft,
@@ -241,15 +241,25 @@ const Small = () => {
       .catch((err) => {
         console.log(err);
       });
-  }; 
-  
+  };
+
   useEffect(() => {
     if (pendingTicket) {
-      const requestedCount = pendingTicket.filter((item) => item.ticket_status === '1').length;
-      const assignedCount = pendingTicket.filter((item) => item.ticket_status === '2').length;
-      const ongoingCount = pendingTicket.filter((item) => item.ticket_status === '3').length;
-      const forCheckingCount = pendingTicket.filter((item) => item.ticket_status === '4').length;
-      const doneCount = pendingTicket.filter((item) => item.ticket_status === '5').length;
+      const requestedCount = pendingTicket.filter(
+        (item) => item.ticket_status === "1"
+      ).length;
+      const assignedCount = pendingTicket.filter(
+        (item) => item.ticket_status === "2"
+      ).length;
+      const ongoingCount = pendingTicket.filter(
+        (item) => item.ticket_status === "3"
+      ).length;
+      const forCheckingCount = pendingTicket.filter(
+        (item) => item.ticket_status === "4"
+      ).length;
+      const doneCount = pendingTicket.filter(
+        (item) => item.ticket_status === "5"
+      ).length;
 
       setRequested(requestedCount);
       setAssigned(assignedCount);
@@ -278,7 +288,9 @@ const Small = () => {
                   <div className="w-full py-2"></div>
                   <div className="w-full flex items-end justify-between">
                     <p className="text-xs font-bold">Requested</p>
-                    <p className="text-2xl font-extrabold text-[#a10b00]">{requested}</p>
+                    <p className="text-2xl font-extrabold text-[#a10b00]">
+                      {requested}
+                    </p>
                   </div>
                   <div className="bg-gradient-to-tr from-[#a10b00] via-[#d62417] to-[#ff5044] p-2 rounded-lg shadow-xl absolute top-[-10px] left-6">
                     <MdOutlineNewLabel className="text-3xl text-white" />
@@ -288,7 +300,9 @@ const Small = () => {
                   <div className="w-full py-2"></div>
                   <div className="w-full flex items-end justify-between">
                     <p className="text-xs font-bold">Assigned</p>
-                    <p className="text-2xl font-extrabold text-[#c95b00]">{assigned}</p>
+                    <p className="text-2xl font-extrabold text-[#c95b00]">
+                      {assigned}
+                    </p>
                   </div>
                   <div className="bg-gradient-to-tr from-[#c95b00] via-[#e97619] to-[#ff7e15] p-2 rounded-lg shadow-xl absolute top-[-10px] left-6">
                     <LiaUser className="text-3xl text-white" />
@@ -298,7 +312,9 @@ const Small = () => {
                   <div className="w-full py-2"></div>
                   <div className="w-full flex items-end justify-between">
                     <p className="text-xs font-bold">Ongoing</p>
-                    <p className="text-2xl font-extrabold text-[#570075]">{ongoing}</p>
+                    <p className="text-2xl font-extrabold text-[#570075]">
+                      {ongoing}
+                    </p>
                   </div>
                   <div className="bg-gradient-to-tr from-[#570075] via-[#b61ce9] to-[#c517ff] p-2 rounded-lg shadow-xl absolute top-[-10px] left-6">
                     <MdOutlineWorkOutline className="text-3xl text-white" />
@@ -308,7 +324,9 @@ const Small = () => {
                   <div className="w-full py-2"></div>
                   <div className="w-full flex items-end justify-between">
                     <p className="text-xs font-bold">For Checking</p>
-                    <p className="text-2xl font-extrabold text-[#007a3f]">{forChecking}</p>
+                    <p className="text-2xl font-extrabold text-[#007a3f]">
+                      {forChecking}
+                    </p>
                   </div>
                   <div className="bg-gradient-to-tr from-[#007a3f] via-[#13c26d] to-[#25d882] p-2 rounded-lg shadow-xl absolute top-[-10px] left-6">
                     <TbProgressBolt className="text-3xl text-white" />
@@ -318,10 +336,12 @@ const Small = () => {
                   <div className="w-full py-2"></div>
                   <div className="w-full flex items-end justify-between">
                     <p className="text-xs font-bold">Done</p>
-                    <p className="text-2xl font-extrabold text-[#363636]">{done}</p>
+                    <p className="text-2xl font-extrabold text-[#363636]">
+                      {done}
+                    </p>
                   </div>
                   <div className="bg-gradient-to-tr from-[#363636] via-[#6d6a6a] to-[#727272] p-2 rounded-lg shadow-xl absolute top-[-10px] left-6">
-                    <TbProgressBolt className="text-3xl text-white" />
+                    <MdOutlineDownloadDone className="text-3xl text-white" />
                   </div>
                 </div>
               </div>
