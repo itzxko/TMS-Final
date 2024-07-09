@@ -55,6 +55,11 @@ const Small = () => {
   const [ticket_desc_remarks, set_tickec_desc_remarks] = useState("");
   const [ticket_desc_replacement, set_ticket_desc_replacement] = useState("");
   const [ticket_status, set_ticket_status] = useState("");
+  const [requested, setRequested] = useState(0);
+  const [assigned, setAssigned] = useState(0);
+  const [ongoing, setOngoing] = useState(0);
+  const [forChecking, setForChecking] = useState(0);
+  const [done, setDone] = useState(0);
   const [ticket_cde, set_ticket_cde] = useState([]);
   const [openSearch, setOpenSearch] = useState(false);
   const [search, setSearch] = useState(null);
@@ -182,31 +187,6 @@ const Small = () => {
     }
   }, []);
 
-  // Filtering Pending Ticket
-  // useEffect(() => {
-  //   let url = ``;
-  //   if (role === "admin") {
-  //     url = `/pending-ticket`;
-  //   } else if (role === "technical") {
-  //     url = "/tech/pending-ticket";
-  //   } else if (role === "user") {
-  //     url = "/user/pending-ticket";
-  //   }
-  //   axiosClient
-  //     .get(url)
-  //     .then((res) => {
-  //       return res.data;
-  //     })
-  //     .then((res) => {
-  //       setPendingTicket(res.Message.data);
-  //       set_current_page(res.Message.current_page);
-  //       setPages(res.Message.last_page);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
-
   useEffect(() => {
     if (role === "admin" || role === "technical") {
       return;
@@ -244,7 +224,23 @@ const Small = () => {
       .catch((err) => {
         console.log(err);
       });
-  };
+  }; 
+  
+  useEffect(() => {
+    if (pendingTicket) {
+      const requestedCount = pendingTicket.filter((item) => item.ticket_status === '1').length;
+      const assignedCount = pendingTicket.filter((item) => item.ticket_status === '2').length;
+      const ongoingCount = pendingTicket.filter((item) => item.ticket_status === '3').length;
+      const forCheckingCount = pendingTicket.filter((item) => item.ticket_status === '4').length;
+      const doneCount = pendingTicket.filter((item) => item.ticket_status === '5').length;
+
+      setRequested(requestedCount);
+      setAssigned(assignedCount);
+      setOngoing(ongoingCount);
+      setForChecking(forCheckingCount);
+      setDone(doneCount);
+    }
+  }, [pendingTicket]);
 
   //Render Page
   return (
@@ -260,7 +256,7 @@ const Small = () => {
               <div className="relative min-w-[180px] bg-gradient-to-l from-[#a10b00] via-[#d41c0f] to-[#ff3021] flex flex-col text-white p-4 rounded-lg overflow-hidden">
                 <p className="text-xs font-semibold">Requested</p>
                 <div className="w-full flex items-center justify-end">
-                  <p className="text-3xl font-extrabold text-white/75">20</p>
+                  <p className="text-3xl font-extrabold text-white/75">{requested}</p>
                 </div>
                 <div className="absolute top-4 left-0">
                   <RiStickyNoteAddLine className="text-8xl text-white/15" />
@@ -269,7 +265,7 @@ const Small = () => {
               <div className="relative min-w-[180px] bg-gradient-to-l from-[#c95b00] via-[#e0731a] to-[#ff8c2f] flex flex-col text-white p-4 rounded-lg overflow-hidden">
                 <p className="text-xs font-semibold">Assigned</p>
                 <div className="w-full flex items-center justify-end">
-                  <p className="text-3xl font-extrabold text-white/75">20</p>
+                  <p className="text-3xl font-extrabold text-white/75">{assigned}</p>
                 </div>
                 <div className="absolute top-4 left-0">
                   <LiaUser className="text-8xl text-white/15" />
@@ -278,7 +274,7 @@ const Small = () => {
               <div className="relative min-w-[180px] bg-gradient-to-l from-[#570075] via-[#a912db] to-[#cf3fff] flex flex-col text-white p-4 rounded-lg overflow-hidden">
                 <p className="text-xs font-semibold">Ongoing</p>
                 <div className="w-full flex items-center justify-end">
-                  <p className="text-3xl font-extrabold text-white/75">20</p>
+                  <p className="text-3xl font-extrabold text-white/75">{ongoing}</p>
                 </div>
                 <div className="absolute top-4 left-0">
                   <MdOutlineWorkOutline className="text-8xl text-white/15" />
@@ -287,7 +283,7 @@ const Small = () => {
               <div className="relative min-w-[180px] bg-gradient-to-l from-[#007a3f] via-[#17ce76] to-[#00c465] flex flex-col text-white p-4 rounded-lg overflow-hidden">
                 <p className="text-xs font-semibold">For Checking</p>
                 <div className="w-full flex items-center justify-end">
-                  <p className="text-3xl font-extrabold text-white/75">20</p>
+                  <p className="text-3xl font-extrabold text-white/75">{forChecking}</p>
                 </div>
                 <div className="absolute top-4 left-0">
                   <TbProgressBolt className="text-8xl text-white/15" />
@@ -296,7 +292,7 @@ const Small = () => {
               <div className="relative min-w-[180px] bg-gradient-to-l from-[#181818] via-[#464646] to-[#575050] flex flex-col text-white p-4 rounded-lg overflow-hidden">
                 <p className="text-xs font-semibold">Done</p>
                 <div className="w-full flex items-center justify-end">
-                  <p className="text-3xl font-extrabold text-white/75">20</p>
+                  <p className="text-3xl font-extrabold text-white/75">{done}</p>
                 </div>
                 <div className="absolute top-4 left-0">
                   <HiOutlineClipboardCheck className="text-8xl text-white/15" />
