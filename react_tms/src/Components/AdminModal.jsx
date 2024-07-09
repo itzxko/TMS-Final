@@ -4,12 +4,13 @@ import ImageModal from "./ImageModal";
 
 import { LiaDownloadSolid } from "react-icons/lia";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
-import { RiAttachment2 } from "react-icons/ri";
 import { TiArrowLeft } from "react-icons/ti";
 import { RiArrowDropDownLine, RiArrowDropUpLine } from "react-icons/ri";
 import { PiImages } from "react-icons/pi";
 import { TbBrandDatabricks } from "react-icons/tb";
 import { MdAttachment } from "react-icons/md";
+import { RiAttachment2 } from "react-icons/ri";
+import { TiInfoLarge } from "react-icons/ti";
 
 import Loading from "./Loading/Loading";
 
@@ -215,20 +216,9 @@ const AdminModal = ({
           }
         }}
       >
-        <div className="w-full md:w-2/3 lg:w-1/3 bg-[#FAF5FF] flex flex-col items-center justify-center p-8 md:p-10 rounded-xl shadow-xl">
-          <div className="relative w-full flex items-center justify-center pb-2 md:pb-12">
+        <div className="w-full lg:w-3/4 bg-[#FAF5FF] flex flex-col items-center justify-center p-8 md:p-10 rounded-xl shadow-xl">
+          <div className="relative w-full flex items-center justify-center pb-2">
             <p className="text-xs font-semibold">Ticket Details</p>
-            <div
-              // This part is for the attachment button
-              className={
-                !activeDetails
-                  ? "absolute right-0 bg-[FAF5FF] p-2 cursor-pointer text-black"
-                  : "absolute right-0 bg-[#2f2f2f] p-2 cursor-pointer text-white rounded-md"
-              }
-              onClick={() => setActiveDetails(!activeDetails)}
-            >
-              <MdAttachment className="text-md" />
-            </div>
             <div
               className="absolute left-0 p-2 hover:bg-gray-200 ease-in-out duration-500 rounded-md"
               onClick={() => onClose()}
@@ -236,10 +226,15 @@ const AdminModal = ({
               <TiArrowLeft className="text-xl" />
             </div>
           </div>
-          {activeDetails ? (
-            <>
-            {/** This part is for the ticket details */}
-              <div className="w-full flex flex-col items-center justify-center py-4">
+          <div className="w-full flex flex-col-reverse lg:flex-row-reverse  justify-center items-center py-6 gap-4 lg:gap-12">
+            <div className="w-full lg:w-1/2 flex flex-col">
+              <div className="w-full flex flex-row gap-2 items-center justify-start py-4 px-1">
+                <div className="p-2 bg-[#2f2f2f] rounded-full text-white shadow-xl">
+                  <RiAttachment2 className="text-sm" />
+                </div>
+                <p className="text-xs font-semibold">Attachments Section</p>
+              </div>
+              <div className="w-full flex flex-col items-center justify-center">
                 <div className=" flex item-center justify-start w-full py-2 px-1">
                   <p className="text-xs font-normal">Images and Videos</p>
                 </div>
@@ -261,7 +256,7 @@ const AdminModal = ({
                       if (mediaFile?.type === "image") {
                         return (
                           <div
-                            className="w-full h-[260px] rounded-md overflow-hidden cursor-pointer"
+                            className="w-full h-[320px] rounded-md overflow-hidden cursor-pointer"
                             onClick={imgmodal}
                           >
                             {/* Render the image file */}
@@ -278,7 +273,7 @@ const AdminModal = ({
                       }
                       if (mediaFile?.type === "video") {
                         return (
-                          <div className="w-full h-[260px] rounded-md overflow-hidden cursor-pointer">
+                          <div className="w-full h-[320px] rounded-md overflow-hidden cursor-pointer">
                             <video
                               controls
                               className="w-full h-full object-cover object-center"
@@ -393,10 +388,14 @@ const AdminModal = ({
                   </div>
                 </div>
               </div>
-            </>
-          ) : (
-            <>
-            {/** This part is for the ticket details */}
+            </div>
+            <div className="w-full lg:w-1/2 flex flex-col">
+              <div className="w-full flex flex-row gap-2 items-center justify-start py-4 px-1">
+                <div className="p-2 bg-[#2f2f2f] rounded-full text-white shadow-xl">
+                  <TiInfoLarge className="text-sm" />
+                </div>
+                <p className="text-xs font-semibold">Information Section</p>
+              </div>
               <div className="w-full flex flex-row gap-6 items-center justify-center py-2">
                 <div className="w-1/2 flex flex-col items-center justify-center">
                   <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
@@ -482,12 +481,12 @@ const AdminModal = ({
                   ))}
                 </div>
               </div>
-            </>
-          )}
+            </div>
+          </div>
           <div className="w-full flex flex-row gap-2 items-center justify-between py-4">
             <div className="flex items-center justify-start w-1/2">
               <p
-              // This part is for the incomplete input warning
+                // This part is for the incomplete input warning
                 className={
                   incompleteInput
                     ? "text-xs font-semibold text-red-700 animate-shake line-clamp-1"
