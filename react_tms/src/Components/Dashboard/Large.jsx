@@ -19,7 +19,7 @@ import { BsSend } from "react-icons/bs";
 import { BsEnvelopePaper } from "react-icons/bs";
 import { TbProgressBolt } from "react-icons/tb";
 import { MdOutlineWorkOutline } from "react-icons/md";
-import { HiOutlineClipboardCheck } from "react-icons/hi";
+import { MdOutlineDownloadDone } from "react-icons/md";
 import { LiaUser } from "react-icons/lia";
 import { MdOutlineNewLabel } from "react-icons/md";
 
@@ -245,14 +245,24 @@ const Large = () => {
         console.log(err);
       });
   };
-  
+
   useEffect(() => {
     if (pendingTicket) {
-      const requestedCount = pendingTicket.filter((item) => item.ticket_status === '1').length;
-      const assignedCount = pendingTicket.filter((item) => item.ticket_status === '2').length;
-      const ongoingCount = pendingTicket.filter((item) => item.ticket_status === '3').length;
-      const forCheckingCount = pendingTicket.filter((item) => item.ticket_status === '4').length;
-      const doneCount = pendingTicket.filter((item) => item.ticket_status === '5').length;
+      const requestedCount = pendingTicket.filter(
+        (item) => item.ticket_status === "1"
+      ).length;
+      const assignedCount = pendingTicket.filter(
+        (item) => item.ticket_status === "2"
+      ).length;
+      const ongoingCount = pendingTicket.filter(
+        (item) => item.ticket_status === "3"
+      ).length;
+      const forCheckingCount = pendingTicket.filter(
+        (item) => item.ticket_status === "4"
+      ).length;
+      const doneCount = pendingTicket.filter(
+        (item) => item.ticket_status === "5"
+      ).length;
 
       setRequested(requestedCount);
       setAssigned(assignedCount);
@@ -283,15 +293,19 @@ const Large = () => {
               role === "admin" ? "flex flex-col w-4/5" : "flex flex-col w-full"
             }
           >
-            <div className={
-            role === "admin"
-              ? "w-full grid grid-cols-5 gap-6 py-6"
-              : "hidden"
-          }>
+            <div
+              className={
+                role === "admin"
+                  ? "w-full grid grid-cols-5 gap-6 py-6"
+                  : "hidden"
+              }
+            >
               <div className="relative bg-[#FAF5FF] p-6 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:scale-105 transition-transform duration-500">
                 <div className="w-full flex py-2"></div>
                 <div className="w-full flex flex-row-reverse items-end justify-between">
-                  <p className="text-2xl font-bold text-[#a10b00]">{requested}</p>
+                  <p className="text-2xl font-bold text-[#a10b00]">
+                    {requested}
+                  </p>
                   <p className="text-xs font-semibold">Requested</p>
                 </div>
                 <div className="absolute top-[-20px] left-6 p-3 rounded-lg shadow-xl bg-gradient-to-tr from-[#a10b00] via-[#d62417] to-[#ff5044]">
@@ -301,7 +315,9 @@ const Large = () => {
               <div className="relative bg-[#FAF5FF] p-6 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:scale-105 transition-transform duration-500">
                 <div className="w-full flex py-2"></div>
                 <div className="w-full flex flex-row-reverse items-end justify-between">
-                  <p className="text-2xl font-bold text-[#c95b00]">{assigned}</p>
+                  <p className="text-2xl font-bold text-[#c95b00]">
+                    {assigned}
+                  </p>
                   <p className="text-xs font-semibold">Assigned</p>
                 </div>
                 <div className="absolute top-[-20px] left-6 p-3 rounded-lg shadow-xl bg-gradient-to-tr from-[#c95b00] via-[#e97619] to-[#ff7e15]">
@@ -321,7 +337,9 @@ const Large = () => {
               <div className="relative bg-[#FAF5FF] p-6 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:scale-105 transition-transform duration-500">
                 <div className="w-full flex py-2"></div>
                 <div className="w-full flex flex-row-reverse items-end justify-between">
-                  <p className="text-2xl font-bold text-[#007a3f]">{forChecking}</p>
+                  <p className="text-2xl font-bold text-[#007a3f]">
+                    {forChecking}
+                  </p>
                   <p className="text-xs font-semibold">For Checking</p>
                 </div>
                 <div className="absolute top-[-20px] left-6 p-3 rounded-lg shadow-xl bg-gradient-to-tr from-[#007a3f] via-[#13c26d] to-[#25d882]">
@@ -335,7 +353,7 @@ const Large = () => {
                   <p className="text-xs font-semibold">Done</p>
                 </div>
                 <div className="absolute top-[-20px] left-6 p-3 rounded-lg shadow-xl bg-gradient-to-tr from-[#363636] via-[#6d6a6a] to-[#727272]">
-                  <TbProgressBolt className="text-3xl text-white" />
+                  <MdOutlineDownloadDone className="text-3xl text-white" />
                 </div>
               </div>
             </div>
