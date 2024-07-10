@@ -181,26 +181,35 @@ class RequestController extends Controller
         }
     }
 
-    public function getCount(){
-        $count = DB::table("ticketing_main")
-            ->where('ticket_status', '!=', "5")
-            ->count();
-        return $count;
-    }
-
     public function getPendingTicket()
     {   
         $tickets = DB::table('ticketing_main')
         ->orderBy("ticket_update_date", "desc")
         ->paginate(10);
-        // Get the count of pending tickets
-        // $count = DB::table("ticketing_main")
-        //     ->where('ticket_status', '!=', "5")
-        //     ->count();
-        $count = $this->getCount();
+        
+        
+        $statuses = ["1" => "requested", "2" => "assigned", "3" => "ongoing", "4" => "forChecking", "5" => "done"];
+        $counts = [];
+        
+        foreach ($statuses as $status => $name) {
+            $counts[$name] = DB::table("ticketing_main")
+                ->where('ticket_status', '=', $status)
+                ->count();
+        }
+
+        $requested = $counts["requested"];
+        $assigned = $counts["assigned"];
+        $ongoing = $counts["ongoing"];
+        $forChecking = $counts["forChecking"];
+        $done = $counts["done"];
+            
         return response()->json([
             "Message" => $tickets,
-            "count" => $count
+            "requested" => $requested,
+            "assigned" => $assigned,
+            "ongoing" => $ongoing,
+            "forChecking" => $forChecking,
+            "done" => $done
         ], 200);
     }
 
@@ -210,11 +219,33 @@ class RequestController extends Controller
         if(Auth::user()->role !== "technical"){
             return response()->json(["Message" => "You are unauthorized!"], "Request Failed", 401);
         }
-        $count = $this->getCount();
-        $ticket = DB::table('ticketing_main')
+        $statuses = ["1" => "requested", "2" => "assigned", "3" => "ongoing", "4" => "forChecking", "5" => "done"];
+        $counts = [];
+        
+        foreach ($statuses as $status => $name) {
+            $counts[$name] = DB::table("ticketing_main")
+                ->where('ticket_status', '=', $status)
+                ->where('ticket_assigned_to_id', Auth::user()->emp_no)
+                ->count();
+        }
+
+        $requested = $counts["requested"];
+        $assigned = $counts["assigned"];
+        $ongoing = $counts["ongoing"];
+        $forChecking = $counts["forChecking"];
+        $done = $counts["done"];            
+
+        $tickets = DB::table('ticketing_main')
             ->where("ticket_assigned_to_id", Auth::user()->emp_no)
             ->orderBy("ticket_update_date", "desc")->paginate(10);
-        return response()->json(["Message" => $ticket, "role" => Auth::user()->role, "count" => $count], 200);
+        return response()->json([
+                "Message" => $tickets,
+                "requested" => $requested,
+                "assigned" => $assigned,
+                "ongoing" => $ongoing,
+                "forChecking" => $forChecking,
+                "done" => $done
+            ], 200);
     }
     
 
@@ -224,18 +255,53 @@ class RequestController extends Controller
         if(Auth::user()->role !== "user"){
             return response()->json(["Message" => "You are unauthorized!"], "Request Failed", 401);
         }
-        $ticket = DB::table('ticketing_main')
-            ->where("ticket_client", Auth::user()->emp_no)
-            ->orderBy("ticket_update_date", "desc")->paginate(10);
-        return response()->json(["Message" => $ticket, "role" => Auth::user()->role], 200);
+        $statuses = ["1" => "requested", "2" => "assigned", "3" => "ongoing", "4" => "forChecking", "5" => "done"];
+        $counts = [];
+        
+        foreach ($statuses as $status => $name) {
+            $counts[$name] = DB::table("ticketing_main")
+                ->where('ticket_status', '=', $status)
+                ->where('ticket_client', Auth::user()->emp_no)
+                ->count();
+        }
+
+        $requested = $counts["requested"];
+        $assigned = $counts["assigned"];
+        $ongoing = $counts["ongoing"];
+        $forChecking = $counts["forChecking"];
+        $done = $counts["done"];            
+
+        $tickets = DB::table('ticketing_main')
+                ->where("ticket_client", Auth::user()->emp_no)
+                ->orderBy("ticket_update_date", "desc")->paginate(10);
+        return response()->json([
+                    "Message" => $tickets,
+                    "requested" => $requested,
+                    "assigned" => $assigned,
+                    "ongoing" => $ongoing,
+                    "forChecking" => $forChecking,
+                    "done" => $done
+                ], 200);
     }
 
     public function filterPendingTicket($type)
     {
         // Filter pending tickets by type
-        $query = DB::table('ticketing_main')
+        if(Auth::user()->role === "admin"){
+            $query = DB::table('ticketing_main')
+            ->orderBy("ticket_update_date", "desc");
+        }
+        if(Auth::user()->role === "user"){
+            $query = DB::table('ticketing_main')
             ->where("ticket_client", Auth::user()->emp_no)
             ->orderBy("ticket_update_date", "desc");
+        }
+        if(Auth::user()->role === "technical"){
+            $query = DB::table('ticketing_main')
+            ->where("ticket_assigned_to_id", Auth::user()->emp_no)
+            ->orderBy("ticket_update_date", "desc");
+        }
+       
         if ($type !== "All") {
             $filter = $query->where('ticket_type', $type)->paginate(10);
             return $this->success(["Message" => $filter], "Request success", 201);

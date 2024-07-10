@@ -135,6 +135,11 @@ const Small = () => {
         setPendingTicket(res.data.Message.data);
         set_current_page(res.data.Message.current_page);
         setPages(res.data.Message.last_page);
+        setRequested(res.data.requested);
+        setAssigned(res.data.assigned);
+        setOngoing(res.data.ongoing);
+        setForChecking(res.data.forChecking);
+        setDone(res.data.done);
       });
   }, [current_page]);
 
@@ -205,9 +210,6 @@ const Small = () => {
   }, []);
 
   useEffect(() => {
-    if (role === "admin" || role === "technical") {
-      return;
-    }
     const filterType = async () => {
       try {
         const res = await axiosClient.get(`/pending-ticket/${selectedType}`);
@@ -242,32 +244,6 @@ const Small = () => {
         console.log(err);
       });
   };
-
-  useEffect(() => {
-    if (pendingTicket) {
-      const requestedCount = pendingTicket.filter(
-        (item) => item.ticket_status === "1"
-      ).length;
-      const assignedCount = pendingTicket.filter(
-        (item) => item.ticket_status === "2"
-      ).length;
-      const ongoingCount = pendingTicket.filter(
-        (item) => item.ticket_status === "3"
-      ).length;
-      const forCheckingCount = pendingTicket.filter(
-        (item) => item.ticket_status === "4"
-      ).length;
-      const doneCount = pendingTicket.filter(
-        (item) => item.ticket_status === "5"
-      ).length;
-
-      setRequested(requestedCount);
-      setAssigned(assignedCount);
-      setOngoing(ongoingCount);
-      setForChecking(forCheckingCount);
-      setDone(doneCount);
-    }
-  }, [pendingTicket]);
 
   //Render Page
   return (
@@ -489,340 +465,7 @@ const Small = () => {
                     })
                     // Mapping the ticket card
                     .map((data, index) =>
-                      data.ticket_type === selectedType ? (
-                        // data mapping if there is a specific selected type and its conditions
-                        <div
-                          key={index}
-                          className="bg-[#FAF5FF] min-h-[250px] rounded-lg overflow-hidden px-6 py-6"
-                        >
-                          <div className="h-full flex flex-col">
-                            <div className="h-1/5 flex flex-rows-2 gap-4 ">
-                              <div className="flex items-center justify-center rounded-md">
-                                <div className="bg-[#f6edff] p-4 rounded-lg">
-                                  <FaCodeMerge className="text-[#2f2f2f] text-xl" />
-                                </div>
-                              </div>
-                              <div className="flex items-start justify-center">
-                                <div className="grid grid-rows-3 text-start">
-                                  <p className="text-xs font-bold truncate">
-                                    {data.ticket_type}
-                                  </p>
-                                  {/* Display ticket status */}
-                                  <p className="text-xs font-extrabold capitalize truncate">
-                                    {data.ticket_status === "1" ? (
-                                      <span className="text-[#a10b00]">
-                                        Requested
-                                      </span>
-                                    ) : data.ticket_status === "2" ? (
-                                      <span className="text-[#c95b00]">
-                                        Assigned
-                                      </span>
-                                    ) : data.ticket_status === "3" ? (
-                                      <span className="text-[#570075]">
-                                        Ongoing
-                                      </span>
-                                    ) : data.ticket_status === "4" ? (
-                                      <span className="text-[#007a3f]">
-                                        For Checking
-                                      </span>
-                                    ) : (
-                                      <span className="text-[#363636]">
-                                        Done
-                                      </span>
-                                    )}
-                                  </p>
-
-                                  <p className="text-xs font-normal truncate">
-                                    {data.ticket_assigned_to_name
-                                      ? data.ticket_assigned_to_name
-                                      : "No Data"}
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="h-2/5 w-full pt-6 pb-4 px-1">
-                              <div className="w-full h-full">
-                                <p className="line-clamp-3 text-xs font-normal">
-                                  {data.ticket_desc_concern}
-                                </p>
-                              </div>
-                            </div>
-                            <div className="h-1/5 w-full flex items-center justify-center py-4">
-                              <div className="w-full grid grid-cols-2 px-2 gap-4">
-                                <div className="text-start">
-                                  <div className="flex gap-2 items-center">
-                                    <TbCalendarTime className="text-md text-[#2f2f2f]" />
-                                    <p className="text-xs font-semibold text-gray-600 truncate">
-                                      {data.ticket_status_if_date}
-                                    </p>
-                                  </div>
-                                </div>
-                                <div className="text-start">
-                                  <div className="flex gap-2 items-center">
-                                    <BiTimer className="text-md text-[#2f2f2f]" />
-                                    <p className="text-xs font-semibold text-gray-600 truncate">
-                                      {data.ticket_update_date}
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="h-1/45 flex justify-center items-center">
-                              {/* button if role is user and its conditions */}
-                              {role === "user" && data.ticket_status === "5" ? (
-                                // when ticket status is 5 or done
-                                <button className="bg-[#595959] w-full text-white py-3 rounded-md ease-in-out duration-500 disabled">
-                                  <p
-                                    className="text-xs font-semibold "
-                                    onClick={() => {
-                                      setShowAcceptDenyModal(true);
-                                      setTicketID(data.id);
-                                      set_ticket_cde(data.ticket_cde);
-                                      set_request_desc(
-                                        data.ticket_desc_concern
-                                      );
-                                      set_request_type(data.ticket_type);
-                                      set_tickec_desc_remarks(
-                                        data.ticket_desc_remarks
-                                      );
-                                      set_ticket_desc_findings(
-                                        data.ticket_desc_findings
-                                      );
-                                      set_ticket_desc_replacement(
-                                        data.ticket_desc_replacement
-                                      );
-                                      set_ticket_status(data.ticket_status);
-                                    }}
-                                  >
-                                    Details
-                                  </p>
-                                </button>
-                              ) : role === "user" &&
-                                data.ticket_status === "4" ? (
-                                // when ticket status is 4 or for checking
-                                <button className="bg-[#595959] w-full text-white py-3 rounded-md ease-in-out duration-500 disabled">
-                                  <p
-                                    className="text-xs font-semibold "
-                                    onClick={() => {
-                                      setShowAcceptDenyModal(true);
-                                      setTicketID(data.id);
-                                      set_ticket_cde(data.ticket_cde);
-                                      set_request_desc(
-                                        data.ticket_desc_concern
-                                      );
-                                      set_request_type(data.ticket_type);
-                                      set_tickec_desc_remarks(
-                                        data.ticket_desc_remarks
-                                      );
-                                      set_ticket_desc_findings(
-                                        data.ticket_desc_findings
-                                      );
-                                      set_ticket_desc_replacement(
-                                        data.ticket_desc_replacement
-                                      );
-                                      set_ticket_status(data.ticket_status);
-                                    }}
-                                  >
-                                    Review
-                                  </p>
-                                </button>
-                              ) : role === "user" ? (
-                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
-                                  <p
-                                    className="text-xs font-semibold "
-                                    onClick={() => {
-                                      setShowFollowUp(true);
-                                      setBumpCode(data.ticket_cde);
-                                    }}
-                                  >
-                                    Follow Up
-                                  </p>
-                                </button>
-                              ) : // button if role is admin and its conditions
-                              role === "admin" && data.ticket_status === "2" ? (
-                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
-                                  <p
-                                    className="text-xs font-semibold "
-                                    onClick={() => {
-                                      setAdminForm(true);
-                                      set_request_desc(
-                                        data.ticket_desc_concern
-                                      );
-                                      set_name_requester(
-                                        data.ticket_client_name
-                                      );
-                                      setTicket_assigned_to_name(
-                                        data.ticket_assigned_to_name
-                                      );
-                                      get_ticket_desc(data.ticket_type);
-
-                                      set_request_type(data.ticket_type);
-                                      setID(data.id);
-                                      set_ticket_cde(data.ticket_cde);
-                                      set_name_requester(
-                                        data.ticket_client_name
-                                      );
-                                    }}
-                                  >
-                                    Assign
-                                  </p>
-                                </button>
-                              ) : role === "admin" &&
-                                data.ticket_status === "1" ? (
-                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
-                                  <p
-                                    className="text-xs font-semibold "
-                                    onClick={() => {
-                                      setAdminForm(true);
-                                      set_request_desc(
-                                        data.ticket_desc_concern
-                                      );
-                                      set_name_requester(
-                                        data.ticket_client_name
-                                      );
-                                      setTicket_assigned_to_name(
-                                        data.ticket_assigned_to_name
-                                      );
-                                      get_ticket_desc(data.ticket_type);
-
-                                      set_request_type(data.ticket_type);
-                                      setID(data.id);
-                                      set_ticket_cde(data.ticket_cde);
-                                      set_name_requester(
-                                        data.ticket_client_name
-                                      );
-                                    }}
-                                  >
-                                    Assign
-                                  </p>
-                                </button>
-                              ) : role === "admin" ? (
-                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
-                                  <p
-                                    className="text-xs font-semibold "
-                                    onClick={() => {
-                                      setShowAcceptDenyModal(true);
-                                      setTicketID(data.id);
-                                      set_ticket_cde(data.ticket_cde);
-                                      set_request_desc(
-                                        data.ticket_desc_concern
-                                      );
-                                      set_request_type(data.ticket_type);
-                                      set_tickec_desc_remarks(
-                                        data.ticket_desc_remarks
-                                      );
-                                      set_ticket_desc_findings(
-                                        data.ticket_desc_findings
-                                      );
-                                      set_ticket_desc_replacement(
-                                        data.ticket_desc_replacement
-                                      );
-                                      set_ticket_status(data.ticket_status);
-                                    }}
-                                  >
-                                    Details
-                                  </p>
-                                </button>
-                              ) : // button if role is technical and its conditions
-                              role === "technical" &&
-                                data.ticket_status === "5" ? (
-                                // when ticket status is 5 or done
-                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
-                                  <p
-                                    className="text-xs font-semibold "
-                                    onClick={() => {
-                                      setShowAcceptDenyModal(true);
-                                      setTicketID(data.id);
-                                      set_ticket_cde(data.ticket_cde);
-                                      set_request_desc(
-                                        data.ticket_desc_concern
-                                      );
-                                      set_request_type(data.ticket_type);
-                                      set_tickec_desc_remarks(
-                                        data.ticket_desc_remarks
-                                      );
-                                      set_name_requester(
-                                        data.ticket_client_name
-                                      );
-                                      set_ticket_desc_findings(
-                                        data.ticket_desc_findings
-                                      );
-                                      set_ticket_desc_replacement(
-                                        data.ticket_desc_replacement
-                                      );
-                                      set_ticket_status(data.ticket_status);
-                                    }}
-                                  >
-                                    Details
-                                  </p>
-                                </button>
-                              ) : role === "technical" &&
-                                data.ticket_status === "2" ? (
-                                // when ticket status is 2 or assigned
-                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
-                                  <p
-                                    className="text-xs font-semibold "
-                                    onClick={() => {
-                                      setShowAcceptDenyModal(true);
-                                      setTicketID(data.id);
-                                      set_ticket_cde(data.ticket_cde);
-                                      set_request_desc(
-                                        data.ticket_desc_concern
-                                      );
-                                      set_request_type(data.ticket_type);
-                                      set_tickec_desc_remarks(
-                                        data.ticket_desc_remarks
-                                      );
-                                      set_name_requester(
-                                        data.ticket_client_name
-                                      );
-                                      set_ticket_desc_findings(
-                                        data.ticket_desc_findings
-                                      );
-                                      set_ticket_desc_replacement(
-                                        data.ticket_desc_replacement
-                                      );
-                                      set_ticket_status(data.ticket_status);
-                                    }}
-                                  >
-                                    Review
-                                  </p>
-                                </button>
-                              ) : role === "technical" ? (
-                                <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
-                                  <p
-                                    className="text-xs font-semibold "
-                                    onClick={() => {
-                                      setShowTechForm(true);
-                                      setTicketID(data.id);
-                                      set_ticket_cde(data.ticket_cde);
-                                      set_request_desc(
-                                        data.ticket_desc_concern
-                                      );
-                                      set_request_type(data.ticket_type);
-                                      set_name_requester(
-                                        data.ticket_client_name
-                                      );
-                                      set_tickec_desc_remarks(
-                                        data.ticket_desc_remarks
-                                      );
-                                      set_ticket_desc_findings(
-                                        data.ticket_desc_findings
-                                      );
-                                      set_ticket_desc_replacement(
-                                        data.ticket_desc_replacement
-                                      );
-                                    }}
-                                  >
-                                    Update
-                                  </p>
-                                </button>
-                              ) : null}
-                            </div>
-                          </div>
-                        </div>
-                      ) : // data mapping if selected type is all
-                      selectedType === "All" ? (
+                   (
                         <div
                           key={index}
                           className="bg-[#FAF5FF] min-h-[250px] rounded-lg overflow-hidden px-6 py-6"
@@ -1152,7 +795,7 @@ const Small = () => {
                             </div>
                           </div>
                         </div>
-                      ) : null
+                      )
                     )}
                 </div>
               )}
