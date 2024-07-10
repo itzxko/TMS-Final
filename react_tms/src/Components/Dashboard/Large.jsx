@@ -124,6 +124,11 @@ const Large = () => {
         setPendingTicket(res.data.Message.data);
         set_current_page(res.data.Message.current_page);
         setPages(res.data.Message.last_page);
+        setRequested(res.data.requested);
+        setAssigned(res.data.assigned);
+        setOngoing(res.data.ongoing);
+        setForChecking(res.data.forChecking);
+        setDone(res.data.done);
       });
   }, [current_page]);
 
@@ -246,31 +251,6 @@ const Large = () => {
       });
   };
 
-  useEffect(() => {
-    if (pendingTicket) {
-      const requestedCount = pendingTicket.filter(
-        (item) => item.ticket_status === "1"
-      ).length;
-      const assignedCount = pendingTicket.filter(
-        (item) => item.ticket_status === "2"
-      ).length;
-      const ongoingCount = pendingTicket.filter(
-        (item) => item.ticket_status === "3"
-      ).length;
-      const forCheckingCount = pendingTicket.filter(
-        (item) => item.ticket_status === "4"
-      ).length;
-      const doneCount = pendingTicket.filter(
-        (item) => item.ticket_status === "5"
-      ).length;
-
-      setRequested(requestedCount);
-      setAssigned(assignedCount);
-      setOngoing(ongoingCount);
-      setForChecking(forCheckingCount);
-      setDone(doneCount);
-    }
-  }, [pendingTicket]);
 
   //Render Page
   return (
@@ -293,13 +273,7 @@ const Large = () => {
               role === "admin" ? "flex flex-col w-4/5" : "flex flex-col w-full"
             }
           >
-            <div
-              className={
-                role === "admin"
-                  ? "w-full grid grid-cols-5 gap-6 py-6"
-                  : "hidden"
-              }
-            >
+            <div className={"w-full grid grid-cols-5 gap-6 py-6"}>
               <div className="relative bg-[#FAF5FF] p-6 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:scale-105 transition-transform duration-500">
                 <div className="w-full flex py-2"></div>
                 <div className="w-full flex flex-row-reverse items-end justify-between">
