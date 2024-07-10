@@ -293,13 +293,7 @@ const Large = () => {
               role === "admin" ? "flex flex-col w-4/5" : "flex flex-col w-full"
             }
           >
-            <div
-              className={
-                role === "admin"
-                  ? "w-full grid grid-cols-5 gap-6 py-6"
-                  : "hidden"
-              }
-            >
+            <div className="w-full grid grid-cols-5 gap-6 py-6">
               <div className="relative bg-[#FAF5FF] p-6 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:scale-105 transition-transform duration-500">
                 <div className="w-full flex py-2"></div>
                 <div className="w-full flex flex-row-reverse items-end justify-between">
