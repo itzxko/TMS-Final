@@ -248,7 +248,6 @@ const Large = () => {
       });
   };
 
-
   //Render Page
   return (
     <>
@@ -335,21 +334,21 @@ const Large = () => {
                 Hi, {localStorage.getItem("username")}
               </p>
               <div className="flex flex-row justify-center items-center gap-2">
-                <div className="flex items-center justify-center px-4 py-3 bg-[#FAF5FF] rounded-lg cursor-pointer ease-in-out duration-500 group">
+                <div className="flex items-center justify-center px-4 py-3 bg-[#FAF5FF] rounded-lg cursor-pointer ease-in-out duration-500">
                   <div
-                    className="flex items-center justify-center group-hover:pr-2"
+                    className="flex items-center justify-center pr-2"
                     onClick={(e) => filteredSearch(e)}
                   >
-                    <BiSearch className="text-sm group-hover:rotate-[360deg] transition-all duration-500" />
+                    <BiSearch className="text-sm" />
                   </div>
-                 <input
+                  <input
                     type="text"
                     name=""
                     id=""
                     placeholder="Search tickets"
                     role="presentation"
                     spellCheck="false"
-                    className="outline-none bg-[#FAF5FF] text-xs font-normal hidden group-hover:block pl-3 border-l border-gray-300"
+                    className="outline-none bg-[#FAF5FF] text-xs font-normal pl-3 border-l border-gray-300"
                     onChange={(e) => setSearch(e.target.value.toLowerCase())}
                   />
                 </div>
@@ -518,86 +517,265 @@ const Large = () => {
                           return true;
                         })
                         // mapping the data to the table
-                        .map((data, index) => (<tbody>
-                              <tr
-                                className="text-xs font-normal even:bg-red-300 hover:bg-[#f6edff] ease-in-out duration-500 cursor-pointer border-b"
+                        .map((data, index) => (
+                          <tbody>
+                            <tr
+                              className="text-xs font-normal even:bg-red-300 hover:bg-[#f6edff] ease-in-out duration-500 cursor-pointer border-b"
+                              key={index.id}
+                            >
+                              <th
+                                scope="row"
+                                className="text-[#24693c] text-start p-4"
+                              >
+                                <p className="w-full truncate">
+                                  {data.ticket_type}
+                                </p>
+                              </th>
+                              <td className="p-4" scope="row">
+                                <p className="w-full line-clamp-2">
+                                  {data.ticket_desc_concern}
+                                </p>
+                              </td>
+                              <td className="p-4">
+                                <p className="w-full truncate">
+                                  {data.ticket_status_if_date}
+                                </p>
+                              </td>
+                              <td className="p-4">
+                                <p className="w-full truncate">
+                                  {data.ticket_update_date}
+                                </p>
+                              </td>
+                              <td
+                                className={
+                                  !(role === "admin" || role === "technical")
+                                    ? "hidden"
+                                    : "p-4"
+                                }
+                              >
+                                <p className="font-bold text-gray-600 w-full truncate">
+                                  {data.ticket_client_name}
+                                </p>
+                              </td>
+                              <td
+                                className={
+                                  !(role === "admin" || role === "user")
+                                    ? "hidden"
+                                    : "p-4"
+                                }
                                 key={index.id}
                               >
-                                <th
-                                  scope="row"
-                                  className="text-[#24693c] text-start p-4"
-                                >
-                                  <p className="w-full truncate">
-                                    {data.ticket_type}
-                                  </p>
-                                </th>
-                                <td className="p-4" scope="row">
-                                  <p className="w-full line-clamp-2">
-                                    {data.ticket_desc_concern}
-                                  </p>
-                                </td>
-                                <td className="p-4">
-                                  <p className="w-full truncate">
-                                    {data.ticket_status_if_date}
-                                  </p>
-                                </td>
-                                <td className="p-4">
-                                  <p className="w-full truncate">
-                                    {data.ticket_update_date}
-                                  </p>
-                                </td>
-                                <td
-                                  className={
-                                    !(role === "admin" || role === "technical")
-                                      ? "hidden"
-                                      : "p-4"
-                                  }
-                                >
-                                  <p className="font-bold text-gray-600 w-full truncate">
-                                    {data.ticket_client_name}
-                                  </p>
-                                </td>
-                                <td
-                                  className={
-                                    !(role === "admin" || role === "user")
-                                      ? "hidden"
-                                      : "p-4"
-                                  }
-                                  key={index.id}
-                                >
-                                  <p className="font-bold text-gray-600 w-full truncate">
-                                    {data.ticket_assigned_to_name
-                                      ? data.ticket_assigned_to_name
-                                      : "Not Assigned"}
-                                  </p>
-                                </td>
+                                <p className="font-bold text-gray-600 w-full truncate">
+                                  {data.ticket_assigned_to_name
+                                    ? data.ticket_assigned_to_name
+                                    : "Not Assigned"}
+                                </p>
+                              </td>
 
-                                <td className="p-4" key={index.id}>
-                                  {data.ticket_status === "1" ? (
-                                    <p className=" w-full font-bold truncate text-[#a10b00]">
-                                      Requested
-                                    </p>
-                                  ) : data.ticket_status === "2" ? (
-                                    <p className=" w-full truncate font-bold text-[#c95b00]">
-                                      Assigned
-                                    </p>
-                                  ) : data.ticket_status === "3" ? (
-                                    <p className="w-full truncate font-bold text-[#570075]">
-                                      Ongoing
-                                    </p>
-                                  ) : data.ticket_status === "4" ? (
-                                    <p className=" w-full truncate font-bold text-[#007a3f]">
-                                      For Checking
-                                    </p>
-                                  ) : (
-                                    <p className="w-full truncate font-bold text-[#363636]">
-                                      Done
-                                    </p>
-                                  )}
-                                </td>
-                                <td className="p-4 text-center" key={index.id}>
-                                  {/* button if role is user and its */}
-                                  {role === "user" &&
+                              <td className="p-4" key={index.id}>
+                                {data.ticket_status === "1" ? (
+                                  <p className=" w-full font-bold truncate text-[#a10b00]">
+                                    Requested
+                                  </p>
+                                ) : data.ticket_status === "2" ? (
+                                  <p className=" w-full truncate font-bold text-[#c95b00]">
+                                    Assigned
+                                  </p>
+                                ) : data.ticket_status === "3" ? (
+                                  <p className="w-full truncate font-bold text-[#570075]">
+                                    Ongoing
+                                  </p>
+                                ) : data.ticket_status === "4" ? (
+                                  <p className=" w-full truncate font-bold text-[#007a3f]">
+                                    For Checking
+                                  </p>
+                                ) : (
+                                  <p className="w-full truncate font-bold text-[#363636]">
+                                    Done
+                                  </p>
+                                )}
+                              </td>
+                              <td className="p-4 text-center" key={index.id}>
+                                {/* button if role is user and its */}
+                                {role === "user" &&
+                                data.ticket_status === "5" ? (
+                                  // when ticket status is 5 or done
+                                  <button
+                                    className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
+                                    onClick={() => {
+                                      setShowAcceptDenyModal(true);
+                                      set_name_requester(
+                                        data.ticket_client_name
+                                      );
+                                      setTicketID(data.id);
+                                      set_ticket_cde(data.ticket_cde);
+                                      set_request_desc(
+                                        data.ticket_desc_concern
+                                      );
+                                      set_request_type(data.ticket_type);
+                                      set_tickec_desc_remarks(
+                                        data.ticket_desc_remarks
+                                      );
+                                      set_ticket_desc_findings(
+                                        data.ticket_desc_findings
+                                      );
+                                      set_ticket_desc_replacement(
+                                        data.ticket_desc_replacement
+                                      );
+                                      set_ticket_status(data.ticket_status);
+                                    }}
+                                  >
+                                    <div className="flex flex-row gap-1 items-center justify-center w-full">
+                                      <RxInfoCircled className="text-sm" />{" "}
+                                      <p className="text-xs font-normal truncate">
+                                        Details
+                                      </p>
+                                    </div>
+                                  </button>
+                                ) : role === "user" &&
+                                  data.ticket_status === "4" ? (
+                                  // when ticket status is 4 or for checking
+                                  <button
+                                    className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
+                                    onClick={() => {
+                                      setShowAcceptDenyModal(true);
+                                      set_name_requester(
+                                        data.ticket_client_name
+                                      );
+                                      setTicketID(data.id);
+                                      set_ticket_cde(data.ticket_cde);
+                                      set_request_desc(
+                                        data.ticket_desc_concern
+                                      );
+                                      set_request_type(data.ticket_type);
+                                      set_tickec_desc_remarks(
+                                        data.ticket_desc_remarks
+                                      );
+                                      set_ticket_desc_findings(
+                                        data.ticket_desc_findings
+                                      );
+                                      set_ticket_desc_replacement(
+                                        data.ticket_desc_replacement
+                                      );
+                                      set_ticket_status(data.ticket_status);
+                                    }}
+                                  >
+                                    <div className="flex flex-row gap-1 items-center justify-center w-full">
+                                      <FiCheckSquare className="text-sm" />
+                                      <p className="text-xs font-normal truncate">
+                                        Review
+                                      </p>
+                                    </div>
+                                  </button>
+                                ) : role === "user" ? (
+                                  <button
+                                    className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
+                                    onClick={() => {
+                                      setShowFollowUp(true);
+                                      setBumpCode(data.ticket_cde);
+                                    }}
+                                  >
+                                    <div className="flex flex-row gap-1 items-center justify-center w-full">
+                                      <TbTransfer className="text-sm" />{" "}
+                                      <p className="text-xs font-normal truncate">
+                                        Follow Up
+                                      </p>
+                                    </div>
+                                  </button>
+                                ) : // button if role is admin and its conditions and its conditions
+                                role === "admin" &&
+                                  data.ticket_status === "2" ? (
+                                  // when ticket status is 5 or done
+                                  <button
+                                    className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
+                                    onClick={() => {
+                                      setAdminForm(true);
+                                      set_name_requester(
+                                        data.ticket_client_name
+                                      );
+                                      setTicket_assigned_to_name(
+                                        data.ticket_assigned_to_name
+                                      );
+                                      get_ticket_desc(data.ticket_type);
+                                      set_request_desc(
+                                        data.ticket_desc_concern
+                                      );
+                                      set_request_type(data.ticket_type);
+                                      setID(data.id);
+                                      set_ticket_cde(data.ticket_cde);
+                                    }}
+                                  >
+                                    <div className="flex flex-row gap-1 items-center justify-center w-full">
+                                      <RiUserSharedLine className="text-sm" />
+                                      <p className="text-xs font-normal truncate">
+                                        Assign
+                                      </p>
+                                    </div>
+                                  </button>
+                                ) : role === "admin" &&
+                                  data.ticket_status === "1" ? (
+                                  // when ticket status is 4 or for checking
+                                  <button
+                                    className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
+                                    onClick={() => {
+                                      setAdminForm(true);
+                                      set_name_requester(
+                                        data.ticket_client_name
+                                      );
+                                      setTicket_assigned_to_name(
+                                        data.ticket_assigned_to_name
+                                      );
+                                      get_ticket_desc(data.ticket_type);
+                                      set_request_desc(
+                                        data.ticket_desc_concern
+                                      );
+                                      set_request_type(data.ticket_type);
+                                      setID(data.id);
+                                      set_ticket_cde(data.ticket_cde);
+                                    }}
+                                  >
+                                    <div className="flex flex-row gap-1 items-center justify-center w-full">
+                                      <RiUserSharedLine className="text-sm" />
+                                      <p className="text-xs font-normal truncate">
+                                        Assign
+                                      </p>
+                                    </div>
+                                  </button>
+                                ) : role === "admin" ? (
+                                  <button
+                                    className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
+                                    onClick={() => {
+                                      setShowAcceptDenyModal(true);
+                                      set_name_requester(
+                                        data.ticket_client_name
+                                      );
+                                      setTicketID(data.id);
+                                      set_ticket_cde(data.ticket_cde);
+                                      set_request_desc(
+                                        data.ticket_desc_concern
+                                      );
+                                      set_request_type(data.ticket_type);
+                                      set_tickec_desc_remarks(
+                                        data.ticket_desc_remarks
+                                      );
+                                      set_ticket_desc_findings(
+                                        data.ticket_desc_findings
+                                      );
+                                      set_ticket_desc_replacement(
+                                        data.ticket_desc_replacement
+                                      );
+                                      set_ticket_status(data.ticket_status);
+                                    }}
+                                  >
+                                    <div className="flex flex-row gap-1 items-center justify-center w-full">
+                                      <RxInfoCircled className="text-sm" />{" "}
+                                      <p className="text-xs font-normal truncate">
+                                        Details
+                                      </p>
+                                    </div>
+                                  </button>
+                                ) : // button if role is technical and its conditions
+                                role === "technical" &&
                                   data.ticket_status === "5" ? (
                                     // when ticket status is 5 or done
                                     <button
@@ -841,11 +1019,11 @@ const Large = () => {
                                     <div className="flex flex-row gap-1 items-center justify-center w-full">
                                       <RxInfoCircled className="text-sm" />{" "}
                                       <p className="text-xs font-normal truncate">
-                                        Review
+                                        Details
                                       </p>
                                     </div>
                                   </button>
-                                  ) : role === "technical" &&
+                                ) : role === "technical" &&
                                   data.ticket_status === "2" ? (
                                   // when ticket status is 5 or done
                                   <button
@@ -881,43 +1059,42 @@ const Large = () => {
                                     </div>
                                   </button>
                                 ) : (
-                                    <button
-                                      className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
-                                      onClick={() => {
-                                        setShowTechForm(true);
-                                        set_name_requester(
-                                          data.ticket_client_name
-                                        );
-                                        setTicketID(data.id);
-                                        set_ticket_cde(data.ticket_cde);
-                                        set_request_desc(
-                                          data.ticket_desc_concern
-                                        );
-                                        set_request_type(data.ticket_type);
-                                        set_tickec_desc_remarks(
-                                          data.ticket_desc_remarks
-                                        );
-                                        set_ticket_desc_findings(
-                                          data.ticket_desc_findings
-                                        );
-                                        set_ticket_desc_replacement(
-                                          data.ticket_desc_replacement
-                                        );
-                                      }}
-                                    >
-                                      <div className="flex flex-row gap-1 items-center justify-center w-full">
-                                        <RiEditLine className="text-sm" />
-                                        <p className="text-xs font-normal truncate">
-                                          Update
-                                        </p>
-                                      </div>
-                                    </button>
-                                  )}
-                                </td>
-                              </tr>
-                            </tbody>
-                          ) 
-                        )
+                                  <button
+                                    className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
+                                    onClick={() => {
+                                      setShowTechForm(true);
+                                      set_name_requester(
+                                        data.ticket_client_name
+                                      );
+                                      setTicketID(data.id);
+                                      set_ticket_cde(data.ticket_cde);
+                                      set_request_desc(
+                                        data.ticket_desc_concern
+                                      );
+                                      set_request_type(data.ticket_type);
+                                      set_tickec_desc_remarks(
+                                        data.ticket_desc_remarks
+                                      );
+                                      set_ticket_desc_findings(
+                                        data.ticket_desc_findings
+                                      );
+                                      set_ticket_desc_replacement(
+                                        data.ticket_desc_replacement
+                                      );
+                                    }}
+                                  >
+                                    <div className="flex flex-row gap-1 items-center justify-center w-full">
+                                      <RiEditLine className="text-sm" />
+                                      <p className="text-xs font-normal truncate">
+                                        Update
+                                      </p>
+                                    </div>
+                                  </button>
+                                )}
+                              </td>
+                            </tr>
+                          </tbody>
+                        ))
                       // end of mapping
                     )}
                   </table>
