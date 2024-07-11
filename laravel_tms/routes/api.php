@@ -41,14 +41,11 @@ Route::middleware([AdminAuthorization::class])->group(function () {
 });
 
 Route::middleware([TechAuthorization::class])->group(function () {
-    Route::get("/tech/pending-ticket", [RequestController::class, "getTicketByTechnical"]);      
+    Route::get("/tech/pending-ticket", [RequestController::class, "getTicketByTechnical"]);
     // Technical staff routes for updating and accepting requests
     Route::post('/techUpdate', [TechnicalController::class, 'updateTechnical']);
-    Route::post('/acceptRequest', [TechnicalController::class, 'acceptRequest']);
-    Route::post('/denyRequest', [TechnicalController::class, 'denyRequest']);
     Route::post('/acceptOngoingRequest', [TechnicalController::class, 'acceptOngoingRequest']);
     Route::post('/denyOngoingRequest', [TechnicalController::class, 'denyOngoingRequest']);
-    Route::get('/techShow/{id}', [TechnicalController::class, 'show']);
 });
 Route::middleware([TechAdminMiddleware::class])->group(function () {
     // Retrieves images, videos, and documents associated with a ticket
@@ -65,6 +62,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('get_images/{ticket_cde}', [RequestController::class, 'getImagesByTicketCode']);
     Route::get('get_videos/{ticket_cde}', [RequestController::class, 'getVideosByTicketCode']);
     Route::get('get_documents/{ticket_cde}', [RequestController::class, 'getDocumentsByTicketCode']);
+    Route::get('/techShow/{id}', [TechnicalController::class, 'show']);
+    Route::post('/acceptRequest', [TechnicalController::class, 'acceptRequest']);
+    Route::post('/denyRequest', [TechnicalController::class, 'denyRequest']);
 
     Route::post('/logout', [UserController::class, 'logout']);
 });
@@ -74,4 +74,3 @@ Route::post('/register', [UserController::class, 'register']);
 Route::post('/verify-otp', [UserController::class, 'verifyOTP']);
 Route::post('/login', [UserController::class, 'userLogin']);
 Route::post('/send-otp', [UserController::class, 'sendOTP']);
-
