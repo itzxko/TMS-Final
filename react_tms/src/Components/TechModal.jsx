@@ -199,8 +199,8 @@ const TechModal = ({
         }}
       >
         {/* Modal Content */}
-        <div className="w-full md:w-2/3 lg:w-3/4 bg-[#FAF5FF] flex flex-col items-start justify-center p-8 md:p-10 rounded-xl shadow-xl">
-          <div className="relative w-full flex items-center justify-center pb-2 md:pb-12">
+        <div className="w-full md:w-2/3 lg:w-3/4 bg-[#FAF5FF] flex flex-col items-start justify-center md:p-10 rounded-xl shadow-xl">
+          <div className="relative w-full flex items-center justify-center pb-2 md:pb-6">
             <p className="text-xs font-semibold">Ticket Details</p>
 
             <div
@@ -467,7 +467,7 @@ const TechModal = ({
             </div>
           </div>
           {/* Render the Proceed and Cancel buttons */}
-          <div className="w-full flex flex-row gap-2 items-center justify-between py-4">
+          <div className="w-full flex flex-row gap-2 items-center justify-between">
             <div className="flex items-center justify-start w-1/2">
               {incompleteInput === true ? (
                 <p className="text-xs font-semibold text-red-700 animate-shake line-clamp-1">

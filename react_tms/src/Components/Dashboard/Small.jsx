@@ -762,7 +762,39 @@ const Small = () => {
                                     Review
                                   </p>
                                 </button>
-                              ) : role === "technical" ? (
+                              ) : role === "technical" &&
+                              data.ticket_status === "4" ? (
+                              // when ticket status is 2 or assigned
+                              <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
+                                <p
+                                  className="text-xs font-semibold "
+                                  onClick={() => {
+                                    setShowAcceptDenyModal(true);
+                                    setTicketID(data.id);
+                                    set_ticket_cde(data.ticket_cde);
+                                    set_request_desc(
+                                      data.ticket_desc_concern
+                                    );
+                                    set_request_type(data.ticket_type);
+                                    set_tickec_desc_remarks(
+                                      data.ticket_desc_remarks
+                                    );
+                                    set_name_requester(
+                                      data.ticket_client_name
+                                    );
+                                    set_ticket_desc_findings(
+                                      data.ticket_desc_findings
+                                    );
+                                    set_ticket_desc_replacement(
+                                      data.ticket_desc_replacement
+                                    );
+                                    set_ticket_status(data.ticket_status);
+                                  }}
+                                >
+                                  Review
+                                </p>
+                              </button>
+                            ) : role === "technical" ? (
                                 <button className="bg-[#2f2f2f] w-full text-white py-3 rounded-md hover:bg-[#474747] ease-in-out duration-500">
                                   <p
                                     className="text-xs font-semibold "

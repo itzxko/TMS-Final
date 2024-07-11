@@ -197,7 +197,7 @@ const AcceptDenyModal = ({
       >
         {/* Modal content */}
         <div className="w-full md:w-2/3 lg:w-3/4 bg-[#FAF5FF] flex flex-col items-center justify-center p-8 md:p-10 rounded-xl shadow-xl">
-          <div className="relative w-full flex items-center justify-center pb-2 md:pb-12">
+          <div className="relative w-full flex items-center justify-center pb-2 md:pb-6 ">
             <p className="text-xs font-semibold">Ticket Details</p>
 
             <div
@@ -209,7 +209,7 @@ const AcceptDenyModal = ({
           </div>
 
           {/* if activeDetails is false, render the ticket type, requester, and description */}
-          <div className="w-full flex flex-col-reverse lg:flex-row-reverse  justify-center items-start py-6 gap-4 lg:gap-12">
+          <div className="w-full flex flex-col-reverse lg:flex-row-reverse  justify-center items-start gap-4 lg:gap-12">
             <div className="w-full lg:w-1/2 flex flex-col">
               <div className="w-full flex flex-row gap-2 items-center justify-start py-4 px-1">
                 <div className="p-2 bg-[#2f2f2f] rounded-full text-white shadow-xl">
@@ -488,7 +488,7 @@ const AcceptDenyModal = ({
               </div>
             </div>
           </div>
-          <div className="w-full flex flex-row gap-2 items-center justify-between py-4">
+          <div className="w-full flex flex-row gap-2 items-center justify-between">
             <div className="flex flex-row gap-2 items-center justify-end w-full">
               {selectedRole === "user" && ticket_status === "4" ? (
                 <>
