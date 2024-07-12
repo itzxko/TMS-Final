@@ -440,7 +440,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
               </div>
             </div>
           </div>
-          <div className="w-full flex flex-row items-center justify-between py-4">
+          <div className="w-full flex flex-row items-center justify-between">
             <div className="w-1/2 flex items-center justify-start">
               <>
                 {/* Display error messages */}

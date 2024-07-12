@@ -483,7 +483,7 @@ const AdminModal = ({
               </div>
             </div>
           </div>
-          <div className="w-full flex flex-row gap-2 items-center justify-between py-4">
+          <div className="w-full flex flex-row gap-2 items-center justify-between">
             <div className="flex items-center justify-start w-1/2">
               <p
                 // This part is for the incomplete input warning
