@@ -17,6 +17,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
   const [_document, set_document] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [openType, setOpenType] = useState(false);
+  const [openItems, setOpenItems] = useState(false);
   const [loading, setLoading] = useState(false);
   const [incompleteInput, setIncompleteInput] = useState(false);
   const [limitError, setLimitError] = useState(false);
@@ -24,7 +25,12 @@ const UserModal = ({ isVisible, onClose, data }) => {
   // Toggle open/close the dropdown for ticket types
   const handleOpenType = () => {
     setOpenType(!openType);
-    console.log(openType);
+    setOpenItems(false);
+  };
+
+  const handleItems = () => {
+    setOpenItems(!openItems);
+    setOpenType(false);
   };
 
   /*This function handles the change event for file inputs. 
@@ -209,6 +215,8 @@ const UserModal = ({ isVisible, onClose, data }) => {
         //Close modal when clicking outside the modal
         onClick={(e) => {
           if (e.target.id === "container") {
+            setOpenItems(false);
+            setOpenType(false);
             onClose();
             selected(null);
             setActiveDetails(false);
@@ -225,45 +233,77 @@ const UserModal = ({ isVisible, onClose, data }) => {
               <TiArrowLeft className="text-xl" />
             </div>
           </div>
-          <div className="relative w-full flex flex-col items-center justify-center py-2">
-            <div className="flex items-center justify-start py-2 px-1 w-full">
-              <p className="text-xs font-normal">Ticket Type</p>
-              <p className="text-xs font-semibold text-red-700">*</p>
+          <div className="w-full flex flex-row gap-4 py-2 items-center justify-center">
+            <div className="relative w-1/2 flex flex-col items-center justify-center ">
+              <div className="flex items-center justify-start py-2 px-1 w-full">
+                <p className="text-xs font-normal">Ticket Type</p>
+                <p className="text-xs font-semibold text-red-700">*</p>
+              </div>
+              <div
+                className="px-4 py-3 w-full bg-[#f6edff] rounded-md border border-gray-300 flex items-center justify-between cursor-pointer"
+                onClick={handleOpenType}
+              >
+                {/* Display selected ticket type */}
+                <p className="text-xs font-semibold text-gray-500">
+                  {ticket_type}
+                </p>
+                {openType ? (
+                  <RiArrowDropUpLine className="text-xl" />
+                ) : (
+                  <RiArrowDropDownLine className="text-xl" />
+                )}
+              </div>
+              <div
+                className={
+                  openType
+                    ? "bg-[#f6edff] absolute top-[100px] w-full rounded-md border border-gray-300 overflow-hidden cursor-pointer shadow-xl"
+                    : "hidden"
+                }
+              >
+                {/* Display ticket types */}
+                {data.map((item) => (
+                  <div
+                    key={item.ID}
+                    className="py-2 w-full px-4 border-b"
+                    onClick={() => {
+                      set_ticket_type(item.TYPE_DESC);
+                      setOpenType(false);
+                    }}
+                  >
+                    <p className="text-xs truncate">{item.TYPE_DESC}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div
-              className="px-4 py-3 w-full bg-[#f6edff] rounded-md border border-gray-300 flex items-center justify-between"
-              onClick={handleOpenType}
-            >
-              {/* Display selected ticket type */}
-              <p className="text-xs font-semibold text-gray-500">
-                {ticket_type}
-              </p>
-              {openType ? (
-                <RiArrowDropUpLine className="text-xl" />
-              ) : (
-                <RiArrowDropDownLine className="text-xl" />
-              )}
-            </div>
-            <div
-              className={
-                openType
-                  ? "bg-[#f6edff] absolute top-[100px] w-full rounded-md border border-gray-300 overflow-hidden cursor-pointer shadow-xl"
-                  : "hidden"
-              }
-            >
-              {/* Display ticket types */}
-              {data.map((item) => (
-                <div
-                  key={item.ID}
-                  className="py-2 w-full px-4 border-b"
-                  onClick={() => {
-                    set_ticket_type(item.TYPE_DESC);
-                    setOpenType(false);
-                  }}
-                >
-                  <p className="text-xs truncate">{item.TYPE_DESC}</p>
+            <div className="relative w-1/2 flex flex-col items-center justify-center">
+              <div className="flex items-center justify-start py-2 px-1 w-full">
+                <p className="text-xs font-normal">Select Item</p>
+                <p className="text-xs font-semibold text-red-700">*</p>
+              </div>
+              <div
+                className="px-4 py-3 w-full bg-[#f6edff] rounded-md border border-gray-300 flex items-center justify-between cursor-pointer"
+                onClick={handleItems}
+              >
+                <p className="text-xs font-semibold text-gray-500">
+                  Select Items
+                </p>
+                {openItems ? (
+                  <RiArrowDropUpLine className="text-xl" />
+                ) : (
+                  <RiArrowDropDownLine className="text-xl" />
+                )}
+              </div>
+              <div
+                className={
+                  openItems
+                    ? "bg-[#f6edff] absolute top-[100px] w-full rounded-md border border-gray-300 overflow-hidden cursor-pointer shadow-xl"
+                    : "hidden"
+                }
+              >
+                <div className="py-2 w-full px-4 border-b">
+                  <p className="text-xs truncate">Test</p>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
           <div className="w-full flex flex-col items-center justify-center py-2">
@@ -457,7 +497,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
                 )}
               </>
             </div>
-            <div className="w-1/2 flex flex-row gap-2 items-center justify-end">
+            <div className="w-1/2 flex flex-row gap-2 items-center justify-end py-4">
               <div
                 className="flex items-center justify-center py-2 px-4 bg-[#2f2f2f] hover:bg-[#474747] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
                 onClick={handleSubmit}
