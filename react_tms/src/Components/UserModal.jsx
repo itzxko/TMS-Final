@@ -8,8 +8,11 @@ import { GrDocumentText } from "react-icons/gr";
 import imageCompression from "browser-image-compression";
 import Loading from "../Components/Loading/Loading";
 
+import items from "../JSON/Items.json";
+
 const UserModal = ({ isVisible, onClose, data }) => {
   const [ticket_type, set_ticket_type] = useState("Select Ticket Type");
+  const [itemInfo, showItemInfo] = useState(false);
   const [ticket_if_others, set_ticket_if_others] = useState(null);
   const [ticket_desc_concern, set_ticket_desc_concern] = useState("");
   const [file, setFile] = useState([]);
@@ -21,8 +24,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
   const [loading, setLoading] = useState(false);
   const [incompleteInput, setIncompleteInput] = useState(false);
   const [limitError, setLimitError] = useState(false);
-  const [items, setItems] = useState([]);
-  const [selectedItem, setSelectedItem] = useState("");
+
   // Toggle open/close the dropdown for ticket types
   const handleOpenType = () => {
     setOpenType(!openType);
@@ -34,21 +36,6 @@ const UserModal = ({ isVisible, onClose, data }) => {
     setOpenType(false);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try{
-        const res = await axiosClient.get('/getItems');
-        const {data} = res.data;
-        setItems(data.Message);
-      }catch(err){
-        console.log(err);
-      }
-    }
-    fetchData()
-  }, [])
-
-  
-  
   /*This function handles the change event for file inputs. 
   It's designed to process selected files by compressing them and 
   then converting the compressed files into a new format with a unique filename.*/
@@ -300,8 +287,8 @@ const UserModal = ({ isVisible, onClose, data }) => {
                 className="px-4 py-3 w-full bg-[#f6edff] rounded-md border border-gray-300 flex items-center justify-between cursor-pointer"
                 onClick={handleItems}
               >
-                <p className="text-xs font-semibold text-gray-500">
-                  {selectedItem || "Select Item"}
+                <p className="text-xs font-semibold text-gray-500" id="item-tb">
+                  Select Items
                 </p>
                 {openItems ? (
                   <RiArrowDropUpLine className="text-xl" />
@@ -317,15 +304,55 @@ const UserModal = ({ isVisible, onClose, data }) => {
                 }
               >
                 {items.map((item) => (
-                  <div className="py-2 w-full px-4 border-b" key={item.NO_PROPERTY} onClick={() =>{
-                    setSelectedItem(item.CDE_ARTICLE);
-                    setOpenItems(false);
-                  }}>
-                  <p className="text-xs truncate">{item.CDE_ARTICLE}</p>
-                 </div>
-                ))
-
-                }
+                  <div
+                    key={item.id}
+                    className="py-2 w-full px-4 border-b"
+                    onClick={() => {
+                      setOpenItems(!openItems);
+                      showItemInfo(true);
+                      document.getElementById("item-tb").innerText = item.item;
+                      document.getElementById("item-brand").innerText =
+                        item.brand;
+                      document.getElementById("item-no").innerText =
+                        item.serial;
+                    }}
+                  >
+                    <p className="text-xs truncate">{item.item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div
+            className={
+              itemInfo === true ? "w-full py-2 flex flex-row gap-4" : "hidden"
+            }
+          >
+            <div className="w-1/2 flex flex-col items-center justify-center">
+              <div className="flex items-center justify-start py-2 px-1 w-full">
+                <p className="text-xs font-normal">Brand/Model</p>
+                <p className="text-xs font-semibold text-red-700">*</p>
+              </div>
+              <div className="px-4 py-3 w-full bg-[#f6edff] rounded-md border border-gray-300 flex items-center justify-between cursor-pointer">
+                {/* Display selected ticket type */}
+                <p
+                  className="text-xs font-semibold text-gray-500"
+                  id="item-brand"
+                >
+                  .
+                </p>
+              </div>
+            </div>
+            <div className="w-1/2 flex flex-col items-center justify-center">
+              <div className="flex items-center justify-start py-2 px-1 w-full">
+                <p className="text-xs font-normal">Property No.</p>
+                <p className="text-xs font-semibold text-red-700">*</p>
+              </div>
+              <div className="px-4 py-3 w-full bg-[#f6edff] rounded-md border border-gray-300 flex items-center justify-between cursor-pointer">
+                {/* Display selected ticket type */}
+                <p className="text-xs font-semibold text-gray-500" id="item-no">
+                  .
+                </p>
               </div>
             </div>
           </div>
