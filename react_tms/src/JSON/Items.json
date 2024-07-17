@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "item": "Laptop",
+    "brand": "Asus",
+    "serial": 1
+  },
+  {
+    "id": 2,
+    "item": "Monitor",
+    "brand": "Samsung",
+    "serial": 2
+  }
+]

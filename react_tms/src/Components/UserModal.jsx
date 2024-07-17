@@ -8,8 +8,11 @@ import { GrDocumentText } from "react-icons/gr";
 import imageCompression from "browser-image-compression";
 import Loading from "../Components/Loading/Loading";
 
+import items from "../JSON/Items.json";
+
 const UserModal = ({ isVisible, onClose, data }) => {
   const [ticket_type, set_ticket_type] = useState("Select Ticket Type");
+  const [itemInfo, showItemInfo] = useState(false);
   const [ticket_if_others, set_ticket_if_others] = useState(null);
   const [ticket_desc_concern, set_ticket_desc_concern] = useState("");
   const [file, setFile] = useState([]);
@@ -284,7 +287,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
                 className="px-4 py-3 w-full bg-[#f6edff] rounded-md border border-gray-300 flex items-center justify-between cursor-pointer"
                 onClick={handleItems}
               >
-                <p className="text-xs font-semibold text-gray-500">
+                <p className="text-xs font-semibold text-gray-500" id="item-tb">
                   Select Items
                 </p>
                 {openItems ? (
@@ -300,9 +303,56 @@ const UserModal = ({ isVisible, onClose, data }) => {
                     : "hidden"
                 }
               >
-                <div className="py-2 w-full px-4 border-b">
-                  <p className="text-xs truncate">Test</p>
-                </div>
+                {items.map((item) => (
+                  <div
+                    key={item.id}
+                    className="py-2 w-full px-4 border-b"
+                    onClick={() => {
+                      setOpenItems(!openItems);
+                      showItemInfo(true);
+                      document.getElementById("item-tb").innerText = item.item;
+                      document.getElementById("item-brand").innerText =
+                        item.brand;
+                      document.getElementById("item-no").innerText =
+                        item.serial;
+                    }}
+                  >
+                    <p className="text-xs truncate">{item.item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div
+            className={
+              itemInfo === true ? "w-full py-2 flex flex-row gap-4" : "hidden"
+            }
+          >
+            <div className="w-1/2 flex flex-col items-center justify-center">
+              <div className="flex items-center justify-start py-2 px-1 w-full">
+                <p className="text-xs font-normal">Brand/Model</p>
+                <p className="text-xs font-semibold text-red-700">*</p>
+              </div>
+              <div className="px-4 py-3 w-full bg-[#f6edff] rounded-md border border-gray-300 flex items-center justify-between cursor-pointer">
+                {/* Display selected ticket type */}
+                <p
+                  className="text-xs font-semibold text-gray-500"
+                  id="item-brand"
+                >
+                  .
+                </p>
+              </div>
+            </div>
+            <div className="w-1/2 flex flex-col items-center justify-center">
+              <div className="flex items-center justify-start py-2 px-1 w-full">
+                <p className="text-xs font-normal">Property No.</p>
+                <p className="text-xs font-semibold text-red-700">*</p>
+              </div>
+              <div className="px-4 py-3 w-full bg-[#f6edff] rounded-md border border-gray-300 flex items-center justify-between cursor-pointer">
+                {/* Display selected ticket type */}
+                <p className="text-xs font-semibold text-gray-500" id="item-no">
+                  .
+                </p>
               </div>
             </div>
           </div>
