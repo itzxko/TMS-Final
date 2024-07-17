@@ -21,7 +21,8 @@ const UserModal = ({ isVisible, onClose, data }) => {
   const [loading, setLoading] = useState(false);
   const [incompleteInput, setIncompleteInput] = useState(false);
   const [limitError, setLimitError] = useState(false);
-
+  const [items, setItems] = useState([]);
+  const [selectedItem, setSelectedItem] = useState("");
   // Toggle open/close the dropdown for ticket types
   const handleOpenType = () => {
     setOpenType(!openType);
@@ -33,6 +34,21 @@ const UserModal = ({ isVisible, onClose, data }) => {
     setOpenType(false);
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try{
+        const res = await axiosClient.get('/getItems');
+        const {data} = res.data;
+        setItems(data.Message);
+      }catch(err){
+        console.log(err);
+      }
+    }
+    fetchData()
+  }, [])
+
+  
+  
   /*This function handles the change event for file inputs. 
   It's designed to process selected files by compressing them and 
   then converting the compressed files into a new format with a unique filename.*/
@@ -285,7 +301,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
                 onClick={handleItems}
               >
                 <p className="text-xs font-semibold text-gray-500">
-                  Select Items
+                  {selectedItem || "Select Item"}
                 </p>
                 {openItems ? (
                   <RiArrowDropUpLine className="text-xl" />
@@ -300,9 +316,16 @@ const UserModal = ({ isVisible, onClose, data }) => {
                     : "hidden"
                 }
               >
-                <div className="py-2 w-full px-4 border-b">
-                  <p className="text-xs truncate">Test</p>
-                </div>
+                {items.map((item) => (
+                  <div className="py-2 w-full px-4 border-b" key={item.NO_PROPERTY} onClick={() =>{
+                    setSelectedItem(item.CDE_ARTICLE);
+                    setOpenItems(false);
+                  }}>
+                  <p className="text-xs truncate">{item.CDE_ARTICLE}</p>
+                 </div>
+                ))
+
+                }
               </div>
             </div>
           </div>

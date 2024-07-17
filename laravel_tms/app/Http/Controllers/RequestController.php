@@ -284,6 +284,7 @@ class RequestController extends Controller
                 ], 200);
     }
 
+
     public function filterPendingTicket($type)
     {
         // Filter pending tickets by type
@@ -377,4 +378,18 @@ class RequestController extends Controller
             return response()->json(['error' => 'Internal server error'], 500);
         }
     }
+
+
+    public function getItems(){
+        try{
+            $items = DB::table('tbl_summary')
+                    ->where('MR_TO', Auth::user()->emp_no)
+                    ->get();
+            return $this->success(["Message" => $items], "Request Success", 200);
+        }catch(\Exception $e){
+            return $this->error(["Message" => $e->getMessage()], "Request failed", 500);
+        }
+    }
+
+
 }
