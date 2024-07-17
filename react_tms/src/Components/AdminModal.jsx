@@ -25,6 +25,7 @@ const AdminModal = ({
   id,
   selected,
   name_requester,
+  property_no,
   ticket_cde,
 }) => {
   const containerRef = useRef(null);
@@ -44,7 +45,8 @@ const AdminModal = ({
   const [loading, setLoading] = useState(true); // For loading state
   const [incompleteInput, setIncompleteInput] = useState(false); // For the incomplete input warning
   const allMedia = [...images, ...videos]; // Combine images and videos
-
+  const [itemDesc, setItemDesc] = useState("");
+  const [item, setItem] = useState("");
   // This part is for the employee data
   const handleEmployee = () => {
     setOpenEmployee(!openEmployee);
@@ -105,6 +107,26 @@ const AdminModal = ({
         console.log(err);
       });
   };
+
+  const fetchItemData = async () => {
+    try{
+      const response = await axiosClient.get(`/getItemByProperty/${property_no}`)
+      const { Message } = response.data.data;
+      if(Message){
+        const { CDE_ARTICLE, DESC_ARTICLE} = Message;
+        setItem(CDE_ARTICLE);
+        setItemDesc(DESC_ARTICLE);
+      }
+    }catch(err){
+      console.log(err)
+    }
+  }
+  useEffect(() => {
+    if(isVisible){
+      fetchItemData();  
+    }
+  }, [isVisible])
+  
 
   // This part is for the fetching of the employee data
   useEffect(() => {}, [Id, ticket_assigned_to_name, _office_code]);
@@ -441,7 +463,7 @@ const AdminModal = ({
                   </div>
                   <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
                     <p className="text-xs font-semibold text-gray-500 truncate">
-                      20210495-M
+                      {property_no}
                     </p>
                   </div>
                 </div>
@@ -451,7 +473,7 @@ const AdminModal = ({
                   </div>
                   <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
                     <p className="text-xs font-semibold text-gray-500 truncate">
-                      Sample Item
+                      {item}
                     </p>
                   </div>
                 </div>
@@ -466,6 +488,7 @@ const AdminModal = ({
                     id=""
                     rows={4}
                     className="outline-none bg-[#f6edff] w-full resize-none text-xs font-normal scrollbar-hide"
+                    value={itemDesc}
                     readOnly={true}
                   ></textarea>
                 </div>

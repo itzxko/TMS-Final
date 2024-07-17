@@ -24,6 +24,7 @@ class AddUserRequest extends FormRequest
         return [
             'ticket_type' => 'required|string|max:255',
             "ticket_desc_concern" => "required",
+            'property_no' => 'required',
             'file.*' => 'file|max:2048', // Limiting file size to 2MB (2048 kilobytes), adjust as necessary
             'document.*' => 'file|max:2048', // Limiting file size to 2MB (2048 kilobytes), adjust as necessary
             'video.*' => 'file|max:40000', // Limiting file size to 2MB (2048 kilobytes), adjust as necessary

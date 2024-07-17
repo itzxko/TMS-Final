@@ -1,9 +1,25 @@
-import React from "react";
+import React, {useState} from "react";
 
 import { TiArrowLeft } from "react-icons/ti";
 import { FaRegLightbulb } from "react-icons/fa";
+import axiosClient from "../../axios";
 
-const UserAccept = ({ isVisible, onClose }) => {
+const UserAccept = ({ isVisible, onClose, isAccept, property_no }) => {
+  const [feedback, setFeedBack] = useState();
+
+  const sendFeedBack = async () => {
+    try{
+      const res = axiosClient.post(`/add_feedback/${property_no}`, { feedback });
+      if(res){
+        location.reload();
+      }
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+  
+
   return (
     <div className="fixed top-0 left-0 w-full h-[100svh] items-center justify-center bg-black/50 flex z-10 font-dm">
       <div
@@ -34,19 +50,27 @@ const UserAccept = ({ isVisible, onClose }) => {
                 type="text"
                 className="w-full text-xs font-normal outline-none bg-[#f6edff] resize-none scrollbar-hide"
                 rows={4}
+                onChange={(e) => setFeedBack(e.target.value)}
                 placeholder="provide comments and suggestions regarding the ticket"
               />
             </div>
           </div>
           <div className="w-full flex flex-row gap-2 items-center justify-end pt-4">
-            <div className="py-2 px-4 bg-[#2f2f2f] rounded-md shadow-xl cursor-pointer hover:bg-[#474747] transition-colors duration-500">
+            <div className="py-2 px-4 bg-[#2f2f2f] rounded-md shadow-xl cursor-pointer hover:bg-[#474747] transition-colors duration-500"
+            onClick={(e) => {
+              e.preventDefault();
+              sendFeedBack();
+            }}>
               <p className="text-xs font-normal text-white cursor-pointer">
                 Confirm
               </p>
             </div>
             <div
               className="py-2 px-4 bg-white rounded-md shadow-xl cursor-pointer hover:bg-[#f2f2f2] transition-colors duration-500"
-              onClick={() => {}}
+              onClick={(e) => {
+                e.preventDefault();
+                sendFeedBack();
+              }}
             >
               <p className="text-xs font-normal text-black cursor-pointer">
                 Skip

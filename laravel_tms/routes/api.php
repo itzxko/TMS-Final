@@ -67,6 +67,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/denyRequest', [TechnicalController::class, 'denyRequest']);
 
     Route::post('/logout', [UserController::class, 'logout']);
+
+    Route::get('/getItems', [RequestController::class, 'getItems']);
+    Route::get('/getItemByProperty/{prop_no}', [RequestController::class, 'getItemByProperty']);
+    Route::post('/add_feedback/{prop_no}', [RequestController::class, 'clientFeedBack']);
 });
 
 // User registration and authentication routes

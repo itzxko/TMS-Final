@@ -26,6 +26,8 @@ const AcceptDenyModal = ({
   ticket_desc_replacement,
   ticket_status,
   selectedRole,
+  property_no,
+  setTriggerFetch
 }) => {
   const containerRef = useRef(null);
   const [userAccept, showUserAccept] = useState(false);
@@ -37,8 +39,14 @@ const AcceptDenyModal = ({
   const [denyFeedback, setDenyFeedback] = useState(false);
   const [loading, setLoading] = useState(true);
   const allMedia = [...images, ...videos];
-
+  const [itemDesc, setItemDesc] = useState("");
+  const [item, setItem] = useState("");
+  
   // Function to toggle image modal visibility
+
+
+  
+
   const imgmodal = () => {
     setShowImageModal(!showImageModal);
   };
@@ -171,8 +179,21 @@ const AcceptDenyModal = ({
           console.error("Error fetching documents:", error);
         }
       };
-
-      Promise.all([fetchDocuments(), fetchVideos(), fetchImages()]).then(() => {
+      const fetchItemData = async () => {
+        try{
+          const response = await axiosClient.get(`/getItemByProperty/${property_no}`)
+          const { Message } = response.data.data;
+          if(Message){
+            const { CDE_ARTICLE, DESC_ARTICLE} = Message;
+            setItem(CDE_ARTICLE);
+            setItemDesc(DESC_ARTICLE)
+          }
+          
+        }catch(err){
+          console.log(err)
+        }
+      } 
+      Promise.all([fetchDocuments(), fetchVideos(), fetchImages(), fetchItemData()]).then(() => {
         setLoading(false);
       });
     }
@@ -395,7 +416,7 @@ const AcceptDenyModal = ({
                         </div>
                         <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
                           <p className="text-xs font-semibold text-gray-500 truncate">
-                            Sample Serial
+                            {property_no}
                           </p>
                         </div>
                       </div>
@@ -406,7 +427,7 @@ const AcceptDenyModal = ({
                       </div>
                       <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
                         <p className="text-xs font-semibold text-gray-500 truncate">
-                          Sample Item
+                          {item}
                         </p>
                       </div>
                     </div>
@@ -420,6 +441,7 @@ const AcceptDenyModal = ({
                           id=""
                           rows={4}
                           className="outline-none bg-[#f6edff] w-full resize-none text-xs font-normal scrollbar-hide"
+                          value={itemDesc}
                           readOnly={true}
                         ></textarea>
                       </div>
@@ -449,7 +471,7 @@ const AcceptDenyModal = ({
                         </div>
                         <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
                           <p className="text-xs font-semibold text-gray-500 truncate">
-                            20210495-M
+                            {property_no}
                           </p>
                         </div>
                       </div>
@@ -460,7 +482,7 @@ const AcceptDenyModal = ({
                       </div>
                       <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
                         <p className="text-xs font-semibold text-gray-500 truncate">
-                          Sample Item
+                          {item}
                         </p>
                       </div>
                     </div>
@@ -474,6 +496,7 @@ const AcceptDenyModal = ({
                           id=""
                           rows={4}
                           className="outline-none bg-[#f6edff] w-full resize-none text-xs font-normal scrollbar-hide"
+                          value={itemDesc}
                           readOnly={true}
                         ></textarea>
                       </div>
@@ -516,7 +539,7 @@ const AcceptDenyModal = ({
                         </div>
                         <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
                           <p className="text-xs font-semibold text-gray-500 truncate">
-                            20210495-M
+                            {property_no}
                           </p>
                         </div>
                       </div>
@@ -526,7 +549,7 @@ const AcceptDenyModal = ({
                         </div>
                         <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
                           <p className="text-xs font-semibold text-gray-500 truncate">
-                            Sample Item
+                            {item}
                           </p>
                         </div>
                       </div>
@@ -541,6 +564,7 @@ const AcceptDenyModal = ({
                           id=""
                           rows={4}
                           className="outline-none bg-[#f6edff] w-full resize-none text-xs font-normal scrollbar-hide"
+                          value={itemDesc}
                           readOnly={true}
                         ></textarea>
                       </div>
@@ -704,6 +728,7 @@ const AcceptDenyModal = ({
       {userAccept && (
         <UserAccept
           isVisible={userAccept}
+          property_no={property_no}
           onClose={() => {
             showUserAccept(false);
           }}
