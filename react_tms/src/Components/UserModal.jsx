@@ -26,6 +26,20 @@ const UserModal = ({ isVisible, onClose, data }) => {
   const [loading, setLoading] = useState(false);
   const [incompleteInput, setIncompleteInput] = useState(false);
   const [limitError, setLimitError] = useState(false);
+  const [items, setItems] = useState([]);
+  const [propNumber, setPropNumber] = useState("")
+  const fetchItems = async () => {
+    try{
+      const response = await axiosClient.get('/getItems');
+      const { Message } = response.data.data;
+      setItems(Message);
+    }catch(err){
+      console.log(err);
+    }
+  }
+  useEffect(() => {
+    fetchItems()
+  }, [])
 
   // Toggle open/close the dropdown for ticket types
   const handleOpenType = () => {
@@ -131,6 +145,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
 
     formData.append("ticket_client_name", localStorage.getItem("username"));
     formData.append("ticket_type", ticket_type);
+    formData.append("property_no", propNumber);
     formData.append("ticket_if_others", ticket_if_others);
     formData.append("ticket_desc_concern", ticket_desc_concern);
 
@@ -279,6 +294,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
                     className="py-2 w-full px-4 border-b"
                     onClick={() => {
                       setOpenType(false);
+                      set_ticket_type(item.TYPE_DESC)
                     }}
                   >
                     <p className="text-xs truncate">{item.TYPE_DESC}</p>
@@ -293,7 +309,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
               </div>
               <div className="px-4 py-3 w-full bg-[#f6edff] rounded-md border border-gray-300 flex items-center justify-between cursor-pointer">
                 <p className="text-xs font-semibold text-gray-500 truncate">
-                  20210495-M
+                  {propNumber}
                 </p>
               </div>
             </div>
@@ -324,6 +340,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
                     onClick={() => {
                       removeItem();
                       isItemSelected(false);
+                      setPropNumber("")
                     }}
                   />
                 ) : null}
@@ -344,15 +361,16 @@ const UserModal = ({ isVisible, onClose, data }) => {
               {/* Display ticket types */}
               {items.map((item) => (
                 <div
-                  key={item.id}
+                  key={item.NO_PROPERTY}
                   className="py-2 w-full px-4 border-b"
                   onClick={() => {
                     setOpenItems(false);
                     isItemSelected(true);
-                    document.getElementById("item-tb").innerText = item.item;
+                    setPropNumber(item.NO_PROPERTY);
+                    document.getElementById("item-tb").innerText = item.CDE_ARTICLE;
                   }}
                 >
-                  <p className="text-xs truncate">{item.item}</p>
+                  <p className="text-xs truncate">{item.CDE_ARTICLE}</p>
                 </div>
               ))}
             </div>
