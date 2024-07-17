@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import axiosClient from "../axios";
 import Loading from "../Components/Loading/Loading"; //Loading Component
 import ImageModal from "./ImageModal"; //Image Modal
+import TechDeny from "./Popups/TechDeny";
+import UserAccept from "./Popups/UserAccept";
 
 //Icons
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
@@ -26,12 +28,13 @@ const AcceptDenyModal = ({
   selectedRole,
 }) => {
   const containerRef = useRef(null);
-  const [activeDetails, setActiveDetails] = useState(false);
+  const [userAccept, showUserAccept] = useState(false);
   const [images, setImages] = useState([]);
   const [videos, setVideos] = useState([]);
   const [documents, setDocuments] = useState([]);
   const [fileIndex, setFileIndex] = useState(0);
   const [showImageModal, setShowImageModal] = useState(false);
+  const [denyFeedback, setDenyFeedback] = useState(false);
   const [loading, setLoading] = useState(true);
   const allMedia = [...images, ...videos];
 
@@ -45,7 +48,6 @@ const AcceptDenyModal = ({
     const handleEsc = (event) => {
       if (event.key === "Escape") {
         onClose();
-        setActiveDetails(false);
       }
     };
 
@@ -184,14 +186,14 @@ const AcceptDenyModal = ({
 
   return (
     // Modal container
-    <div className="fixed top-0 left-0 w-full h-[100svh] items-center justify-center bg-black/50 flex z-10 font-figtree">
+    <div className="fixed top-0 left-0 w-full h-[100svh] items-center justify-center bg-black/50 flex z-10 font-dm">
       <div
         className="w-full min-h-[100svh] max-h-[100svh] py-12 px-4 overflow-auto flex justify-center items-start"
         id="container"
         onClick={(e) => {
           if (e.target.id === "container") {
             onClose();
-            setActiveDetails(false);
+            setDenyFeedback(false);
           }
         }}
       >
@@ -217,7 +219,7 @@ const AcceptDenyModal = ({
                 </div>
                 <p className="text-xs font-semibold">Attachments Section</p>
               </div>
-              <div className="w-full flex flex-col items-center justify-center py-4">
+              <div className="w-full flex flex-col items-center justify-center py-2">
                 <div className=" flex item-center justify-start w-full py-2 px-1">
                   <p className="text-xs font-normal">Images and Videos</p>
                 </div>
@@ -293,7 +295,7 @@ const AcceptDenyModal = ({
                   </div>
                 )}
               </div>
-              <div className="w-full flex flex-col items-center justify-center py-4">
+              <div className="w-full flex flex-col items-center justify-center py-2">
                 <div className="w-full flex items-center justify-start py-2 px-1">
                   <p className="text-xs font-normal">Documents</p>
                 </div>
@@ -495,7 +497,10 @@ const AcceptDenyModal = ({
                   {/* If the selected role is user and the ticket status is 4 or for checking, render the accept and deny buttons */}
                   <div
                     className="flex items-center justify-center py-2 px-4 bg-[#2f2f2f] hover:bg-[#474747] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
-                    onClick={handleAccept}
+                    // onClick={handleAccept}
+                    onClick={() => {
+                      showUserAccept(true);
+                    }}
                   >
                     <p className="text-xs font-normal text-white truncate">
                       Accept
@@ -504,10 +509,9 @@ const AcceptDenyModal = ({
                   <div
                     className="flex items-center justify-center py-2 px-4 bg-[#FFFFFF] hover:bg-[#f2f2f2] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
                     onClick={() => {
-                      onClick = { handleDeny };
-                      setShowImageModal(false);
-                      onClose();
-                      setActiveDetails(false);
+                      // onClick = { handleDeny };
+                      // setShowImageModal(false);
+                      // onClose();
                     }}
                   >
                     <p className="text-xs font-normal text-black truncate">
@@ -529,10 +533,10 @@ const AcceptDenyModal = ({
                   <div
                     className="flex items-center justify-center py-2 px-4 bg-[#FFFFFF] hover:bg-[#f2f2f2] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
                     onClick={() => {
-                      handleDenyOngoing();
-                      setShowImageModal(false);
-                      onClose();
-                      setActiveDetails(false);
+                      // handleDenyOngoing();
+                      // setShowImageModal(false);
+                      // onClose();
+                      setDenyFeedback(true);
                     }}
                   >
                     <p className="text-xs font-normal text-black truncate">
@@ -547,7 +551,6 @@ const AcceptDenyModal = ({
                   onClick={() => {
                     setShowImageModal(false);
                     onClose();
-                    setActiveDetails(false);
                   }}
                 >
                   <p className="text-xs font-normal text-black truncate">
@@ -568,6 +571,24 @@ const AcceptDenyModal = ({
           fileIndex={fileIndex}
           handleNext={handleNext}
           handlePrevious={handlePrevious}
+        />
+      )}
+
+      {denyFeedback && (
+        <TechDeny
+          isVisible={denyFeedback}
+          onClose={() => {
+            setDenyFeedback(false);
+          }}
+        />
+      )}
+
+      {userAccept && (
+        <UserAccept
+          isVisible={userAccept}
+          onClose={() => {
+            showUserAccept(false);
+          }}
         />
       )}
     </div>
