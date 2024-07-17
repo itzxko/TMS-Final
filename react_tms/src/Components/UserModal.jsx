@@ -26,6 +26,22 @@ const UserModal = ({ isVisible, onClose, data }) => {
   const [loading, setLoading] = useState(false);
   const [incompleteInput, setIncompleteInput] = useState(false);
   const [limitError, setLimitError] = useState(false);
+  const [items, setItems] = useState([]);
+  const [propertyNumber, setPropertyNumber] = useState("");
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try{
+        const res = await axiosClient.get('/getItems');
+        const {data} = res.data;
+        setItems(data.Message);
+      }catch(err){
+        console.log(err);
+      }
+    }
+    fetchData()
+  }, [])
 
   // Toggle open/close the dropdown for ticket types
   const removeItem = () => {
@@ -212,6 +228,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
     }
   }, [isVisible]);
 
+
   if (!isVisible) return null;
 
   // Render loading spinner while waiting for data
@@ -231,7 +248,6 @@ const UserModal = ({ isVisible, onClose, data }) => {
             setOpenType(false);
             setOpenBrand(false);
             onClose();
-            selected(null);
           }
         }}
       >
@@ -337,18 +353,18 @@ const UserModal = ({ isVisible, onClose, data }) => {
               >
                 {items.map((item) => (
                   <div
-                    key={item.id}
+                    key={item.NO_PROPERTY}
                     className="py-2 w-full px-4 border-b flex"
                     onClick={() => {
                       setOpenItems(!openItems);
-                      showItemInfo(true);
-
-                      document.getElementById("item-tb").innerText = item.item;
+                      showItemInfo(true);                    
+                      setPropertyNumber(item.NO_PROPERTY);
+                      document.getElementById("item-tb").innerText = item.CDE_ARTICLE;
                       document.getElementById("item-no").innerText =
-                        item.serial;
+                        item.NO_PROPERTY;
                     }}
                   >
-                    <p className="text-xs truncate">{item.item}</p>
+                    <p className="text-xs truncate">{item.CDE_ARTICLE}</p>
                   </div>
                 ))}
               </div>
@@ -392,10 +408,19 @@ const UserModal = ({ isVisible, onClose, data }) => {
                 }
               >
                 {/* Display ticket types */}
-
-                <div className="py-2 w-full px-4 border-b" onClick={() => {}}>
-                  <p className="text-xs truncate">Sample</p>
-                </div>
+                {items
+                  .filter(item => item.NO_PROPERTY === propertyNumber)
+                  .flatMap(item =>
+                    item.DESC_ARTICLE.split(',').map((desc, index) => (
+                      <div
+                        key={`${item.CDE_ARTICLE}-${index}`}
+                        className="py-2 w-full px-4 border-b"
+                        onClick={() => console.log(desc)}
+                      >
+                        <p className="text-xs truncate">{desc.trim()}</p>
+                      </div>
+                    ))
+                  )}
               </div>
             </div>
             <div className="w-1/5 flex flex-col items-center justify-center">
@@ -618,6 +643,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
               <div
                 className="flex items-center justify-center py-2 px-4 bg-[#FFFFFF] hover:bg-[#f2f2f2] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
                 onClick={() => {
+                  showItemInfo(false)
                   onClose();
                 }}
               >
