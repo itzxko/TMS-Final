@@ -24,7 +24,8 @@ const UserModal = ({ isVisible, onClose, data }) => {
   const [loading, setLoading] = useState(false);
   const [incompleteInput, setIncompleteInput] = useState(false);
   const [limitError, setLimitError] = useState(false);
-
+  const [items, setItems] = useState([]);
+  const [selectedItem, setSelectedItem] = useState("");
   // Toggle open/close the dropdown for ticket types
   const handleOpenType = () => {
     setOpenType(!openType);
@@ -203,6 +204,19 @@ const UserModal = ({ isVisible, onClose, data }) => {
     }
   }, [isVisible]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try{
+        const res = await axiosClient.get('/getItems');
+        const {data} = res.data;
+        setItems(data.Message);
+      }catch(err){
+        console.log(err);
+      }
+    }
+    fetchData()
+  }, [])
+
   if (!isVisible) return null;
 
   // Render loading spinner while waiting for data
@@ -305,19 +319,19 @@ const UserModal = ({ isVisible, onClose, data }) => {
               >
                 {items.map((item) => (
                   <div
-                    key={item.id}
+                    key={item.NO_PROPERTY}
                     className="py-2 w-full px-4 border-b"
                     onClick={() => {
                       setOpenItems(!openItems);
                       showItemInfo(true);
-                      document.getElementById("item-tb").innerText = item.item;
+                      document.getElementById("item-tb").innerText = item.CDE_ARTICLE;
                       document.getElementById("item-brand").innerText =
-                        item.brand;
+                        item.DESC_ARTICLE;
                       document.getElementById("item-no").innerText =
-                        item.serial;
+                        item.NO_PROPERTY;
                     }}
                   >
-                    <p className="text-xs truncate">{item.item}</p>
+                    <p className="text-xs truncate">{item.CDE_ARTICLE}</p>
                   </div>
                 ))}
               </div>
