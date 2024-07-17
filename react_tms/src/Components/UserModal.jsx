@@ -20,7 +20,9 @@ const UserModal = ({ isVisible, onClose, data }) => {
   const [video, set_video] = useState([]);
   const [_document, set_document] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [itemSelected, isItemSelected] = useState(false);
   const [openType, setOpenType] = useState(false);
+  const [openItems, setOpenItems] = useState(false);
   const [loading, setLoading] = useState(false);
   const [incompleteInput, setIncompleteInput] = useState(false);
   const [limitError, setLimitError] = useState(false);
@@ -28,6 +30,10 @@ const UserModal = ({ isVisible, onClose, data }) => {
   // Toggle open/close the dropdown for ticket types
   const handleOpenType = () => {
     setOpenType(!openType);
+  };
+
+  const removeItem = () => {
+    document.getElementById("item-tb").innerText = "Select Item";
   };
 
   /*This function handles the change event for file inputs. 
@@ -212,10 +218,12 @@ const UserModal = ({ isVisible, onClose, data }) => {
         //Close modal when clicking outside the modal
         onClick={(e) => {
           if (e.target.id === "container") {
+            onClose();
+            setOpenItems(false);
+            setOpenType(false);
             setOpenItems(false);
             setOpenType(false);
             setOpenBrand(false);
-            onClose();
             selected(null);
           }
         }}
@@ -225,7 +233,11 @@ const UserModal = ({ isVisible, onClose, data }) => {
             <p className="text-sm font-semibold">New Ticket.</p>
             <div
               className="absolute left-0 p-2 hover:bg-gray-200 ease-in-out duration-500 rounded-md"
-              onClick={() => onClose()}
+              onClick={() => {
+                setOpenItems(false);
+                setOpenType(false);
+                onClose();
+              }}
             >
               <TiArrowLeft className="text-xl" />
             </div>
@@ -240,6 +252,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
                 className="px-4 py-3 w-full bg-[#f6edff] rounded-md border border-gray-300 flex items-center justify-between cursor-pointer"
                 onClick={() => {
                   handleOpenType();
+                  setOpenItems(false);
                 }}
               >
                 {/* Display selected ticket type */}
@@ -265,7 +278,6 @@ const UserModal = ({ isVisible, onClose, data }) => {
                     key={item.ID}
                     className="py-2 w-full px-4 border-b"
                     onClick={() => {
-                      set_ticket_type(item.TYPE_DESC);
                       setOpenType(false);
                     }}
                   >
@@ -280,13 +292,69 @@ const UserModal = ({ isVisible, onClose, data }) => {
                 <p className="text-xs font-semibold text-red-700">*</p>
               </div>
               <div className="px-4 py-3 w-full bg-[#f6edff] rounded-md border border-gray-300 flex items-center justify-between cursor-pointer">
-                <p
-                  className="text-xs font-semibold text-gray-500 truncate"
-                  id="item-tb"
-                >
+                <p className="text-xs font-semibold text-gray-500 truncate">
                   20210495-M
                 </p>
               </div>
+            </div>
+          </div>
+          <div className="relative w-full flex flex-col items-center justify-center py-2">
+            <div className="flex items-center justify-start py-2 px-1 w-full">
+              <p className="text-xs font-normal truncate">Select Items</p>
+              <p className="text-xs font-semibold text-red-700">*</p>
+            </div>
+            <div
+              className="px-4 py-3 w-full bg-[#f6edff] rounded-md border border-gray-300 flex items-center justify-between cursor-pointer"
+              onClick={() => {
+                setOpenItems(!openItems);
+                setOpenType(false);
+              }}
+            >
+              {/* Display selected ticket type */}
+              <p
+                className="text-xs font-semibold text-gray-500 truncate"
+                id="item-tb"
+              >
+                Select Item
+              </p>
+              <div className="flex flex-row">
+                {itemSelected ? (
+                  <RiCloseLine
+                    className="text-sm"
+                    onClick={() => {
+                      removeItem();
+                      isItemSelected(false);
+                    }}
+                  />
+                ) : null}
+                {openItems ? (
+                  <RiArrowDropUpLine className="text-md" />
+                ) : (
+                  <RiArrowDropDownLine className="text-md" />
+                )}
+              </div>
+            </div>
+            <div
+              className={
+                openItems
+                  ? "bg-[#f6edff] absolute top-[86px] w-full rounded-md border border-gray-300 overflow-hidden cursor-pointer shadow-xl z-[10]"
+                  : "hidden"
+              }
+            >
+              {/* Display ticket types */}
+              {items.map((item) => (
+                <div
+                  key={item.id}
+                  className="py-2 w-full px-4 border-b"
+                  onClick={() => {
+                    setOpenItems(false);
+                    isItemSelected(true);
+                    document.getElementById("item-tb").innerText = item.item;
+                  }}
+                >
+                  <p className="text-xs truncate">{item.item}</p>
+                </div>
+              ))}
             </div>
           </div>
           <div className="w-full flex flex-col items-center justify-center py-2">
