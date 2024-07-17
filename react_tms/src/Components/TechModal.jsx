@@ -199,7 +199,7 @@ const TechModal = ({
         }}
       >
         {/* Modal Content */}
-        <div className="w-full md:w-2/3 lg:w-3/4 bg-[#FAF5FF] flex flex-col items-start justify-center md:p-10 rounded-xl shadow-xl">
+        <div className="w-full md:w-2/3 lg:w-3/4 bg-[#FAF5FF] flex flex-col items-start justify-center p-8 md:p-10 rounded-xl shadow-xl">
           <div className="relative w-full flex items-center justify-center pb-2 md:pb-6">
             <p className="text-xs font-semibold">Ticket Details</p>
 
@@ -373,10 +373,10 @@ const TechModal = ({
                 </div>
                 <p className="text-xs font-semibold">Information Section</p>
               </div>
-              <div className="w-full flex flex-row gap-6 items-center justify-center py-2">
-                <div className="w-1/2 flex flex-col items-center justify-center">
+              <div className="w-full flex flex-row gap-4 items-center justify-center py-2">
+                <div className="w-2/5 flex flex-col items-center justify-center">
                   <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
-                    <p className="text-xs font-normal">Ticket Type</p>
+                    <p className="text-xs font-normal truncate">Ticket Type</p>
                   </div>
                   <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
                     <p className="text-xs font-semibold text-gray-500 truncate">
@@ -384,15 +384,39 @@ const TechModal = ({
                     </p>
                   </div>
                 </div>
-                <div className="w-1/2 flex flex-col items-center justify-center">
+                <div className="w-2/5 flex flex-col items-center justify-center">
                   <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
-                    <p className="text-xs font-normal">Requester</p>
+                    <p className="text-xs font-normal truncate">Requester</p>
                   </div>
                   <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
                     <p className="text-xs font-semibold text-gray-500 truncate">
                       {requester_name}
                     </p>
                   </div>
+                </div>
+                <div className="w-1/5 flex flex-col items-center justify-center">
+                  <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
+                    <p className="text-xs font-normal truncate">Property No.</p>
+                  </div>
+                  <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
+                    <p className="text-xs font-semibold text-gray-500 truncate">
+                      Sample Serial
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="w-full flex flex-col items-center justify-center py-2">
+                <div className="flex justify-start items-center w-full py-2">
+                  <p className="text-xs font-normal">Item Description</p>
+                </div>
+                <div className="p-4 rounded-md bg-[#f6edff] w-full border border-gray-300">
+                  <textarea
+                    name=""
+                    id=""
+                    rows={4}
+                    className="outline-none bg-[#f6edff] w-full resize-none text-xs font-normal scrollbar-hide"
+                    readOnly={true}
+                  ></textarea>
                 </div>
               </div>
               <div className="py-2 w-full flex flex-col items-center justify-center">
