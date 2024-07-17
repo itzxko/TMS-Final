@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import axiosClient from "../axios";
 import Loading from "../Components/Loading/Loading"; //Loading Component
 import ImageModal from "./ImageModal"; //Image Modal
+import TechDeny from "./Popups/TechDeny";
 
 //Icons
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
@@ -32,6 +33,7 @@ const AcceptDenyModal = ({
   const [documents, setDocuments] = useState([]);
   const [fileIndex, setFileIndex] = useState(0);
   const [showImageModal, setShowImageModal] = useState(false);
+  const [denyFeedback, setDenyFeedback] = useState(false);
   const [loading, setLoading] = useState(true);
   const allMedia = [...images, ...videos];
 
@@ -184,7 +186,7 @@ const AcceptDenyModal = ({
 
   return (
     // Modal container
-    <div className="fixed top-0 left-0 w-full h-[100svh] items-center justify-center bg-black/50 flex z-10 font-figtree">
+    <div className="fixed top-0 left-0 w-full h-[100svh] items-center justify-center bg-black/50 flex z-10 font-dm">
       <div
         className="w-full min-h-[100svh] max-h-[100svh] py-12 px-4 overflow-auto flex justify-center items-start"
         id="container"
@@ -192,6 +194,7 @@ const AcceptDenyModal = ({
           if (e.target.id === "container") {
             onClose();
             setActiveDetails(false);
+            setDenyFeedback(false);
           }
         }}
       >
@@ -529,10 +532,11 @@ const AcceptDenyModal = ({
                   <div
                     className="flex items-center justify-center py-2 px-4 bg-[#FFFFFF] hover:bg-[#f2f2f2] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
                     onClick={() => {
-                      handleDenyOngoing();
-                      setShowImageModal(false);
-                      onClose();
-                      setActiveDetails(false);
+                      // handleDenyOngoing();
+                      // setShowImageModal(false);
+                      // onClose();
+                      // setActiveDetails(false);
+                      setDenyFeedback(true);
                     }}
                   >
                     <p className="text-xs font-normal text-black truncate">
@@ -568,6 +572,15 @@ const AcceptDenyModal = ({
           fileIndex={fileIndex}
           handleNext={handleNext}
           handlePrevious={handlePrevious}
+        />
+      )}
+
+      {denyFeedback && (
+        <TechDeny
+          isVisible={setDenyFeedback}
+          onClose={() => {
+            setDenyFeedback(false);
+          }}
         />
       )}
     </div>
