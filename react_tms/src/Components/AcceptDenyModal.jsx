@@ -3,6 +3,7 @@ import axiosClient from "../axios";
 import Loading from "../Components/Loading/Loading"; //Loading Component
 import ImageModal from "./ImageModal"; //Image Modal
 import TechDeny from "./Popups/TechDeny";
+import UserAccept from "./Popups/UserAccept";
 
 //Icons
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
@@ -27,7 +28,7 @@ const AcceptDenyModal = ({
   selectedRole,
 }) => {
   const containerRef = useRef(null);
-  const [activeDetails, setActiveDetails] = useState(false);
+  const [userAccept, showUserAccept] = useState(false);
   const [images, setImages] = useState([]);
   const [videos, setVideos] = useState([]);
   const [documents, setDocuments] = useState([]);
@@ -47,7 +48,6 @@ const AcceptDenyModal = ({
     const handleEsc = (event) => {
       if (event.key === "Escape") {
         onClose();
-        setActiveDetails(false);
       }
     };
 
@@ -193,7 +193,6 @@ const AcceptDenyModal = ({
         onClick={(e) => {
           if (e.target.id === "container") {
             onClose();
-            setActiveDetails(false);
             setDenyFeedback(false);
           }
         }}
@@ -498,7 +497,10 @@ const AcceptDenyModal = ({
                   {/* If the selected role is user and the ticket status is 4 or for checking, render the accept and deny buttons */}
                   <div
                     className="flex items-center justify-center py-2 px-4 bg-[#2f2f2f] hover:bg-[#474747] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
-                    onClick={handleAccept}
+                    // onClick={handleAccept}
+                    onClick={() => {
+                      showUserAccept(true);
+                    }}
                   >
                     <p className="text-xs font-normal text-white truncate">
                       Accept
@@ -507,10 +509,9 @@ const AcceptDenyModal = ({
                   <div
                     className="flex items-center justify-center py-2 px-4 bg-[#FFFFFF] hover:bg-[#f2f2f2] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
                     onClick={() => {
-                      onClick = { handleDeny };
-                      setShowImageModal(false);
-                      onClose();
-                      setActiveDetails(false);
+                      // onClick = { handleDeny };
+                      // setShowImageModal(false);
+                      // onClose();
                     }}
                   >
                     <p className="text-xs font-normal text-black truncate">
@@ -535,7 +536,6 @@ const AcceptDenyModal = ({
                       // handleDenyOngoing();
                       // setShowImageModal(false);
                       // onClose();
-                      // setActiveDetails(false);
                       setDenyFeedback(true);
                     }}
                   >
@@ -551,7 +551,6 @@ const AcceptDenyModal = ({
                   onClick={() => {
                     setShowImageModal(false);
                     onClose();
-                    setActiveDetails(false);
                   }}
                 >
                   <p className="text-xs font-normal text-black truncate">
@@ -577,9 +576,18 @@ const AcceptDenyModal = ({
 
       {denyFeedback && (
         <TechDeny
-          isVisible={setDenyFeedback}
+          isVisible={denyFeedback}
           onClose={() => {
             setDenyFeedback(false);
+          }}
+        />
+      )}
+
+      {userAccept && (
+        <UserAccept
+          isVisible={userAccept}
+          onClose={() => {
+            showUserAccept(false);
           }}
         />
       )}
