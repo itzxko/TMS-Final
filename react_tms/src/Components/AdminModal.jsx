@@ -226,7 +226,7 @@ const AdminModal = ({
               <TiArrowLeft className="text-xl" />
             </div>
           </div>
-          <div className="w-full flex flex-col-reverse lg:flex-row-reverse  justify-center items-center py-6 gap-4 lg:gap-12">
+          <div className="w-full flex flex-col-reverse lg:flex-row-reverse  justify-center items-start py-6 gap-4 lg:gap-12">
             <div className="w-full lg:w-1/2 flex flex-col">
               <div className="w-full flex flex-row gap-2 items-center justify-start py-4 px-1">
                 <div className="p-2 bg-[#2f2f2f] rounded-full text-white shadow-xl">
@@ -386,6 +386,20 @@ const AdminModal = ({
                   >
                     <FaAngleLeft className="text-black/0 group-hover:text-black ease-in-out duration-500" />
                   </div>
+                </div>
+              </div>
+              <div className="w-full flex flex-col justify-center items-center py-2">
+                <div className="w-full flex items-center justify-start py-2">
+                  <p className="text-xs font-normal">Previous Deny Reason</p>
+                </div>
+
+                <div className="w-full border border-gray-300 rounded-md overflow-hidden p-4 bg-[#f6edff]">
+                  <textarea
+                    name=""
+                    className="outline-none text-xs font-normal scrollbar-hide w-full resize-none bg-[#f6edff]"
+                    rows={2}
+                    readOnly={true}
+                  ></textarea>
                 </div>
               </div>
             </div>

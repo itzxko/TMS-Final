@@ -220,7 +220,7 @@ const AcceptDenyModal = ({
                 </div>
                 <p className="text-xs font-semibold">Attachments Section</p>
               </div>
-              <div className="w-full flex flex-col items-center justify-center py-4">
+              <div className="w-full flex flex-col items-center justify-center py-2">
                 <div className=" flex item-center justify-start w-full py-2 px-1">
                   <p className="text-xs font-normal">Images and Videos</p>
                 </div>
@@ -296,7 +296,7 @@ const AcceptDenyModal = ({
                   </div>
                 )}
               </div>
-              <div className="w-full flex flex-col items-center justify-center py-4">
+              <div className="w-full flex flex-col items-center justify-center py-2">
                 <div className="w-full flex items-center justify-start py-2 px-1">
                   <p className="text-xs font-normal">Documents</p>
                 </div>
