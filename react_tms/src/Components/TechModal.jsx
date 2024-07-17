@@ -374,7 +374,7 @@ const TechModal = ({
                 <p className="text-xs font-semibold">Information Section</p>
               </div>
               <div className="w-full flex flex-row gap-4 items-center justify-center py-2">
-                <div className="w-2/5 flex flex-col items-center justify-center">
+                <div className="w-2/4 flex flex-col items-center justify-center">
                   <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
                     <p className="text-xs font-normal truncate">Ticket Type</p>
                   </div>
@@ -384,7 +384,7 @@ const TechModal = ({
                     </p>
                   </div>
                 </div>
-                <div className="w-2/5 flex flex-col items-center justify-center">
+                <div className="w-2/4 flex flex-col items-center justify-center">
                   <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
                     <p className="text-xs font-normal truncate">Requester</p>
                   </div>
@@ -394,13 +394,27 @@ const TechModal = ({
                     </p>
                   </div>
                 </div>
-                <div className="w-1/5 flex flex-col items-center justify-center">
+              </div>
+              <div className="w-full flex flex-row gap-4 items-center justify-center py-2">
+                <div className="w-2/4 flex flex-col items-center justify-center">
                   <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
-                    <p className="text-xs font-normal truncate">Property No.</p>
+                    <p className="text-xs font-normal truncate">
+                      Property Number
+                    </p>
                   </div>
                   <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
                     <p className="text-xs font-semibold text-gray-500 truncate">
-                      Sample Serial
+                      20210495-M
+                    </p>
+                  </div>
+                </div>
+                <div className="w-2/4 flex flex-col items-center justify-center">
+                  <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
+                    <p className="text-xs font-normal truncate">Item</p>
+                  </div>
+                  <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
+                    <p className="text-xs font-semibold text-gray-500 truncate">
+                      Sample Item
                     </p>
                   </div>
                 </div>
