@@ -401,6 +401,16 @@ const AcceptDenyModal = ({
                       </div>
                     </div>
                     <div className="w-full flex flex-col items-center justify-center py-2">
+                      <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
+                        <p className="text-xs font-normal truncate">Item</p>
+                      </div>
+                      <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
+                        <p className="text-xs font-semibold text-gray-500 truncate">
+                          Sample Item
+                        </p>
+                      </div>
+                    </div>
+                    <div className="w-full flex flex-col items-center justify-center py-2">
                       <div className="flex justify-start items-center w-full py-2">
                         <p className="text-xs font-normal">Item Description</p>
                       </div>
@@ -439,9 +449,19 @@ const AcceptDenyModal = ({
                         </div>
                         <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
                           <p className="text-xs font-semibold text-gray-500 truncate">
-                            Sample Serial
+                            20210495-M
                           </p>
                         </div>
+                      </div>
+                    </div>
+                    <div className="w-full flex flex-col items-center justify-center py-2">
+                      <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
+                        <p className="text-xs font-normal truncate">Item</p>
+                      </div>
+                      <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
+                        <p className="text-xs font-semibold text-gray-500 truncate">
+                          Sample Item
+                        </p>
                       </div>
                     </div>
                     <div className="w-full flex flex-col items-center justify-center py-2">
@@ -464,7 +484,7 @@ const AcceptDenyModal = ({
                 <>
                   <div className="w-full flex flex-col items-center justify-center">
                     <div className="w-full flex flex-row gap-4 items-center justify-center py-2">
-                      <div className="w-2/5 flex flex-col items-center justify-center">
+                      <div className="w-2/4 flex flex-col items-center justify-center">
                         <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
                           <p className="text-xs font-normal">Ticket Type</p>
                         </div>
@@ -474,7 +494,7 @@ const AcceptDenyModal = ({
                           </p>
                         </div>
                       </div>
-                      <div className="w-2/5 flex flex-col items-center justify-center">
+                      <div className="w-2/4 flex flex-col items-center justify-center">
                         <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
                           <p className="text-xs font-normal truncate">
                             Requester
@@ -486,15 +506,27 @@ const AcceptDenyModal = ({
                           </p>
                         </div>
                       </div>
-                      <div className="w-1/5 flex flex-col items-center justify-center">
+                    </div>
+                    <div className="w-full flex flex-row gap-4 items-center justify-center py-2">
+                      <div className="w-2/4 flex flex-col items-center justify-center">
                         <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
                           <p className="text-xs font-normal truncate">
-                            Property No.
+                            Property Number
                           </p>
                         </div>
                         <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
                           <p className="text-xs font-semibold text-gray-500 truncate">
-                            Sample Serial
+                            20210495-M
+                          </p>
+                        </div>
+                      </div>
+                      <div className="w-2/4 flex flex-col items-center justify-center">
+                        <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
+                          <p className="text-xs font-normal truncate">Item</p>
+                        </div>
+                        <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
+                          <p className="text-xs font-semibold text-gray-500 truncate">
+                            Sample Item
                           </p>
                         </div>
                       </div>
