@@ -1,9 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { TiArrowLeft } from "react-icons/ti";
 import { FaQuestion } from "react-icons/fa";
+import axiosClient from "../../axios";
 
-const TechDeny = ({ isVisible, onClose }) => {
+const TechDeny = ({ isVisible, onClose, ticket_cde}) => {
+    // Function to handle form submission
+    const [reasonForDeny, setReasonForDeny] = useState("");
+    const handleDenyOngoing = async (e) => {
+      e.preventDefault();
+      try {
+        const response = await axiosClient.post("/denyOngoingRequest", {
+          ticket_cde,
+          technical_reason: reasonForDeny
+        });
+        if(response){
+          onClose();
+          location.reload();
+        }  
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
   return (
     <div className="fixed top-0 left-0 w-full h-[100svh] items-center justify-center bg-black/50 flex z-10 font-dm">
       <div
@@ -35,18 +54,22 @@ const TechDeny = ({ isVisible, onClose }) => {
                 className="w-full text-xs font-normal outline-none bg-[#f6edff] resize-none scrollbar-hide"
                 rows={4}
                 placeholder="reason for not accepting the ticket"
+                onChange={(e) => setReasonForDeny(e.target.value)}
               />
             </div>
           </div>
           <div className="w-full flex flex-row gap-2 items-center justify-end pt-4">
-            <div className="py-2 px-4 bg-[#2f2f2f] rounded-md shadow-xl cursor-pointer hover:bg-[#474747] transition-colors duration-500">
+            <div className="py-2 px-4 bg-[#2f2f2f] rounded-md shadow-xl cursor-pointer hover:bg-[#474747] transition-colors duration-500" onClick={(e) => {
+                handleDenyOngoing(e);
+            }}>
               <p className="text-xs font-normal text-white cursor-pointer">
                 Confirm
               </p>
             </div>
             <div
               className="py-2 px-4 bg-white rounded-md shadow-xl cursor-pointer hover:bg-[#f2f2f2] transition-colors duration-500"
-              onClick={() => {
+              onClick={(e) => {
+                
                 onClose();
               }}
             >

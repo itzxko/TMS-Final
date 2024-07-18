@@ -27,6 +27,7 @@ const AdminModal = ({
   name_requester,
   property_no,
   ticket_cde,
+  tech_deny_reason
 }) => {
   const containerRef = useRef(null);
   const [openEmployee, setOpenEmployee] = useState(false); // For the employee data
@@ -411,20 +412,22 @@ const AdminModal = ({
                   </div>
                 </div>
               </div>
-              <div className="w-full flex flex-col justify-center items-center py-2">
-                <div className="w-full flex items-center justify-start py-2">
-                  <p className="text-xs font-normal">Previous Deny Reason</p>
-                </div>
-
-                <div className="w-full border border-gray-300 rounded-md overflow-hidden p-4 bg-[#f6edff]">
-                  <textarea
-                    name=""
-                    className="outline-none text-xs font-normal scrollbar-hide w-full resize-none bg-[#f6edff]"
-                    rows={2}
-                    readOnly={true}
-                  ></textarea>
-                </div>
+             
+              {tech_deny_reason && <div className="w-full flex flex-col justify-center items-center py-2">
+              <div className="w-full flex items-center justify-start py-2">
+                <p className="text-xs font-normal">Previous Deny Reason</p>
               </div>
+
+              <div className="w-full border border-gray-300 rounded-md overflow-hidden p-4 bg-[#f6edff]">
+                <textarea
+                  name=""
+                  className="outline-none text-xs font-normal scrollbar-hide w-full resize-none bg-[#f6edff]"
+                  rows={2}
+                  value={tech_deny_reason}
+                  readOnly={true}
+                ></textarea>
+              </div>
+            </div>}
             </div>
             <div className="w-full lg:w-1/2 flex flex-col">
               <div className="w-full flex flex-row gap-2 items-center justify-start py-4 px-1">

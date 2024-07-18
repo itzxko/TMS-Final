@@ -72,6 +72,9 @@ const Large = () => {
   const [requestCount, setRequestCount] = useState(0);
   const [hide, setHide] = useState(false);
   const [propertyNumber, setPropNumber] = useState("");
+  const [reasonForDeny ,setReasonForDeny] = useState(null);
+  const [TechReasonForDeny ,setTechReasonForDeny] = useState(null);
+  const [feedback, setFeedback] = useState(null);
   //handling scrolling
   const handleScrollDown = (scrollOffset) => {
     if (containerRef.current) {
@@ -607,6 +610,7 @@ const Large = () => {
                                       set_name_requester(
                                         data.ticket_client_name
                                       );
+                                      setFeedback(data.client_feedback)
                                       setPropNumber(data.property_no);
                                       setTicketID(data.id);
                                       set_ticket_cde(data.ticket_cde);
@@ -650,6 +654,7 @@ const Large = () => {
                                       set_request_desc(
                                         data.ticket_desc_concern
                                       );
+                                      setFeedback(data.client_feedback)
                                       set_request_type(data.ticket_type);
                                       set_tickec_desc_remarks(
                                         data.ticket_desc_remarks
@@ -699,6 +704,7 @@ const Large = () => {
                                       setTicket_assigned_to_name(
                                         data.ticket_assigned_to_name
                                       );
+                                      setTechReasonForDeny(data.tech_deny_reason)
                                       setPropNumber(data.property_no);
                                       get_ticket_desc(data.ticket_type);
                                       set_request_desc(
@@ -723,12 +729,14 @@ const Large = () => {
                                     className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
                                     onClick={() => {
                                       setAdminForm(true);
+                                      setTechReasonForDeny(data.tech_deny_reason)
                                       set_name_requester(
                                         data.ticket_client_name
                                       );
                                       setTicket_assigned_to_name(
                                         data.ticket_assigned_to_name
                                       );
+                                      
                                       setPropNumber(data.property_no);
                                       get_ticket_desc(data.ticket_type);
                                       set_request_desc(
@@ -754,6 +762,7 @@ const Large = () => {
                                       set_name_requester(
                                         data.ticket_client_name
                                       );
+                                      setTechReasonForDeny(data.tech_deny_reason)
                                       setPropNumber(data.property_no);
                                       setTicketID(data.id);
                                       set_ticket_cde(data.ticket_cde);
@@ -791,6 +800,7 @@ const Large = () => {
                                       set_name_requester(
                                         data.ticket_client_name
                                       );
+                                      setFeedback(data.client_feedback)
                                       setPropNumber(data.property_no);
                                       setTicketID(data.id);
                                       set_ticket_cde(data.ticket_cde);
@@ -831,6 +841,7 @@ const Large = () => {
                                       setPropNumber(data.property_no);
                                       setTicketID(data.id);
                                       set_ticket_cde(data.ticket_cde);
+                                      setFeedback(data.client_feedback)
                                       set_request_desc(
                                         data.ticket_desc_concern
                                       );
@@ -913,6 +924,7 @@ const Large = () => {
                                       setTicket_assigned_to_name(
                                         data.ticket_assigned_to_name
                                       );
+                                      setTechReasonForDeny(data.tech_deny_reason)
                                       setPropNumber(data.property_no);
                                       get_ticket_desc(data.ticket_type);
                                       set_request_desc(
@@ -943,6 +955,7 @@ const Large = () => {
                                       set_request_desc(
                                         data.ticket_desc_concern
                                       );
+                                     setTechReasonForDeny(data.tech_deny_reason);
                                       setPropNumber(data.property_no);
                                       set_request_type(data.ticket_type);
                                       set_tickec_desc_remarks(
@@ -981,6 +994,8 @@ const Large = () => {
                                       set_request_desc(
                                         data.ticket_desc_concern
                                       );
+                                      setFeedback(data.client_feedback);
+                                      setReasonForDeny(data.deny_reason)
                                       set_request_type(data.ticket_type);
                                       set_tickec_desc_remarks(
                                         data.ticket_desc_remarks
@@ -1011,6 +1026,8 @@ const Large = () => {
                                       set_name_requester(
                                         data.ticket_client_name
                                       );
+                                      setReasonForDeny(data.deny_reason)   
+                                      setFeedback(data.client_feedback)                                  
                                       setPropNumber(data.property_no);
                                       setTicketID(data.id);
                                       set_ticket_cde(data.ticket_cde);
@@ -1047,7 +1064,9 @@ const Large = () => {
                                       set_name_requester(
                                         data.ticket_client_name
                                       );
+                                      setReasonForDeny(data.deny_reason)
                                       setPropNumber(data.property_no);
+                                      setFeedback(data.client_feedback)
                                       setTicketID(data.id);
                                       set_ticket_cde(data.ticket_cde);
                                       set_request_desc(
@@ -1087,7 +1106,8 @@ const Large = () => {
                                       set_request_desc(
                                         data.ticket_desc_concern
                                       );
-
+                                      setFeedback(data.client_feedback)
+                                      setReasonForDeny(data.deny_reason)
                                       set_request_type(data.ticket_type);
                                       set_tickec_desc_remarks(
                                         data.ticket_desc_remarks
@@ -1095,6 +1115,7 @@ const Large = () => {
                                       set_ticket_desc_findings(
                                         data.ticket_desc_findings
                                       );
+                                      ;
                                       set_ticket_desc_replacement(
                                         data.ticket_desc_replacement
                                       );
@@ -1248,6 +1269,7 @@ const Large = () => {
       <UserModal
         data={data}
         isVisible={showUserForm}
+        isFeedBack={feedback}
         onClose={() => setShowUserForm(false)}
       />
       <AdminModal
@@ -1256,6 +1278,7 @@ const Large = () => {
         request_desc={request_desc}
         data={tech_name}
         ticket_cde={ticket_cde}
+        tech_deny_reason={TechReasonForDeny}
         id={id}
         selected={setTicket_assigned_to_name}
         property_no={propertyNumber}
@@ -1271,6 +1294,8 @@ const Large = () => {
         request_desc={request_desc}
         property_no={propertyNumber}
         ticket_cde={ticket_cde}
+        feedback={feedback}
+        deny_reason={reasonForDeny}
         ticket_desc_remarks={ticket_desc_remarks}
         ticket_desc_findings={ticket_desc_findings}
         ticket_desc_replacement={ticket_desc_replacement}
@@ -1284,6 +1309,8 @@ const Large = () => {
         request_desc={request_desc}
         ticket_cde={ticket_cde}
         property_no={propertyNumber}
+        feedback={feedback}
+        deny_reason={reasonForDeny}
         ticket_desc_remarks={ticket_desc_remarks}
         ticket_desc_findings={ticket_desc_findings}
         ticket_desc_replacement={ticket_desc_replacement}
