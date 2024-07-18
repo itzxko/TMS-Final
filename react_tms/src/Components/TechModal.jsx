@@ -11,6 +11,7 @@ import { TiInfoLarge } from "react-icons/ti";
 import { MdAttachment } from "react-icons/md";
 import { TiArrowLeft } from "react-icons/ti";
 import { PiImages } from "react-icons/pi";
+import { PiChatTeardropTextBold } from "react-icons/pi";
 
 const TechModal = ({
   isVisible,
@@ -23,7 +24,9 @@ const TechModal = ({
   ticket_desc_remarks,
   ticket_desc_findings,
   ticket_desc_replacement,
+  property_no,
 }) => {
+  const [remarks, isRemarks] = useState(true);
   const containerRef = useRef(null);
   const [activeDetails, setActiveDetails] = useState(false);
   const [findings, setFindings] = useState("");
@@ -37,6 +40,8 @@ const TechModal = ({
   const [loading, setLoading] = useState(true);
   const [incompleteInput, setIncompleteInput] = useState(false);
   const allMedia = [...images, ...videos];
+  const [itemDesc, setItemDesc] = useState("");
+  const [item, setItem] = useState("");
 
   // Function to toggle image modal visibility
   const imgmodal = () => {
@@ -148,6 +153,21 @@ const TechModal = ({
   useEffect(() => {
     setLoading(true);
     if (isVisible) {
+      const fetchItemData = async () => {
+        try {
+          const response = await axiosClient.get(
+            `/getItemByProperty/${property_no}`
+          );
+          const { Message } = response.data.data;
+          if (Message) {
+            const { CDE_ARTICLE, DESC_ARTICLE } = Message;
+            setItem(CDE_ARTICLE);
+            setItemDesc(DESC_ARTICLE);
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      };
       const fetchImages = async () => {
         try {
           const res = await axiosClient.get(`get_images/` + ticket_cde);
@@ -173,7 +193,12 @@ const TechModal = ({
         }
       };
 
-      Promise.all([fetchDocuments(), fetchVideos(), fetchImages()]).then(() => {
+      Promise.all([
+        fetchDocuments(),
+        fetchVideos(),
+        fetchImages(),
+        fetchItemData(),
+      ]).then(() => {
         setLoading(false);
       });
     }
@@ -199,7 +224,7 @@ const TechModal = ({
         }}
       >
         {/* Modal Content */}
-        <div className="w-full md:w-2/3 lg:w-3/4 bg-[#FAF5FF] flex flex-col items-start justify-center md:p-10 rounded-xl shadow-xl">
+        <div className="w-full md:w-2/3 lg:w-3/4 bg-[#FAF5FF] flex flex-col items-start justify-center p-8 md:p-10 rounded-xl shadow-xl">
           <div className="relative w-full flex items-center justify-center pb-2 md:pb-6">
             <p className="text-xs font-semibold">Ticket Details</p>
 
@@ -237,7 +262,7 @@ const TechModal = ({
                       if (mediaFile?.type === "image") {
                         return (
                           <div
-                            className="w-full h-[260px] rounded-md overflow-hidden cursor-pointer"
+                            className="w-full h-[420px] rounded-md overflow-hidden cursor-pointer"
                             onClick={imgmodal}
                           >
                             <img
@@ -251,7 +276,7 @@ const TechModal = ({
 
                       if (mediaFile?.type === "video") {
                         return (
-                          <div className="w-full h-[260px] rounded-md overflow-hidden cursor-pointer">
+                          <div className="w-full h-[420px] rounded-md overflow-hidden cursor-pointer">
                             <video
                               controls
                               className="w-full h-full object-cover object-center"
@@ -268,7 +293,7 @@ const TechModal = ({
 
                       // If the file is neither an image nor a video, render "No media file" message
                       return (
-                        <div className="w-full min-h-[260px] bg-[#f6edff] rounded-md flex flex-col items-center justify-center border border-gray-300">
+                        <div className="w-full min-h-[420px] bg-[#f6edff] rounded-md flex flex-col items-center justify-center border border-gray-300">
                           <PiImages className="text-xl" />
                           <p className="text-xs font-normal">No media file</p>
                         </div>
@@ -365,6 +390,31 @@ const TechModal = ({
                   </div>
                 </div>
               </div>
+              <div
+                className={
+                  remarks
+                    ? "w-full flex flex-col items-center justify-center py-4"
+                    : "hidden"
+                }
+              >
+                <div className="w-full flex flex-row gap-2 items-center justify-start py-2">
+                  <div className="bg-[#2f2f2f] p-2 rounded-full ">
+                    <PiChatTeardropTextBold className="text-white text-sm" />
+                  </div>
+                  <p className="text-xs font-semibold">Remarks</p>
+                </div>
+                <div className="w-full flex items-center justify-center py-2">
+                  <div className="w-full flex items-center justify-center p-4 rounded-md bg-[#f6edff] border border-gray-300">
+                    <textarea
+                      name=""
+                      rows={4}
+                      id=""
+                      className="w-full text-xs font-normal bg-[#f6edff] outline-none resize-none scrollbar-hide"
+                      readOnly={true}
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="w-full lg:w-1/2 flex flex-col">
               <div className="w-full flex flex-row gap-2 items-center justify-start py-4 px-1">
@@ -373,10 +423,10 @@ const TechModal = ({
                 </div>
                 <p className="text-xs font-semibold">Information Section</p>
               </div>
-              <div className="w-full flex flex-row gap-6 items-center justify-center py-2">
-                <div className="w-1/2 flex flex-col items-center justify-center">
+              <div className="w-full flex flex-row gap-4 items-center justify-center py-2">
+                <div className="w-2/4 flex flex-col items-center justify-center">
                   <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
-                    <p className="text-xs font-normal">Ticket Type</p>
+                    <p className="text-xs font-normal truncate">Ticket Type</p>
                   </div>
                   <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
                     <p className="text-xs font-semibold text-gray-500 truncate">
@@ -384,15 +434,54 @@ const TechModal = ({
                     </p>
                   </div>
                 </div>
-                <div className="w-1/2 flex flex-col items-center justify-center">
+                <div className="w-2/4 flex flex-col items-center justify-center">
                   <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
-                    <p className="text-xs font-normal">Requester</p>
+                    <p className="text-xs font-normal truncate">Requester</p>
                   </div>
                   <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
                     <p className="text-xs font-semibold text-gray-500 truncate">
                       {requester_name}
                     </p>
                   </div>
+                </div>
+              </div>
+              <div className="w-full flex flex-row gap-4 items-center justify-center py-2">
+                <div className="w-2/4 flex flex-col items-center justify-center">
+                  <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
+                    <p className="text-xs font-normal truncate">
+                      Property Number
+                    </p>
+                  </div>
+                  <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
+                    <p className="text-xs font-semibold text-gray-500 truncate">
+                      {property_no}
+                    </p>
+                  </div>
+                </div>
+                <div className="w-2/4 flex flex-col items-center justify-center">
+                  <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
+                    <p className="text-xs font-normal truncate">Item</p>
+                  </div>
+                  <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
+                    <p className="text-xs font-semibold text-gray-500 truncate">
+                      {item}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="w-full flex flex-col items-center justify-center py-2">
+                <div className="flex justify-start items-center w-full py-2">
+                  <p className="text-xs font-normal">Item Description</p>
+                </div>
+                <div className="p-4 rounded-md bg-[#f6edff] w-full border border-gray-300">
+                  <textarea
+                    name=""
+                    id=""
+                    rows={4}
+                    className="outline-none bg-[#f6edff] w-full resize-none text-xs font-normal scrollbar-hide"
+                    value={itemDesc}
+                    readOnly={true}
+                  ></textarea>
                 </div>
               </div>
               <div className="py-2 w-full flex flex-col items-center justify-center">

@@ -2,6 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import axiosClient from "../axios";
 import Loading from "../Components/Loading/Loading"; //Loading Component
 import ImageModal from "./ImageModal"; //Image Modal
+import TechDeny from "./Popups/TechDeny";
+import UserAccept from "./Popups/UserAccept";
+import UserDeny from "./Popups/UserDeny";
 
 //Icons
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
@@ -11,6 +14,7 @@ import { TiInfoLarge } from "react-icons/ti";
 import { MdAttachment } from "react-icons/md";
 import { TiArrowLeft } from "react-icons/ti";
 import { PiImages } from "react-icons/pi";
+import { FaRegLightbulb } from "react-icons/fa";
 
 const AcceptDenyModal = ({
   isVisible,
@@ -24,18 +28,26 @@ const AcceptDenyModal = ({
   ticket_desc_replacement,
   ticket_status,
   selectedRole,
+  property_no,
+  setTriggerFetch,
 }) => {
+  const [feedback, isFeedback] = useState(true);
   const containerRef = useRef(null);
-  const [activeDetails, setActiveDetails] = useState(false);
+  const [userAccept, showUserAccept] = useState(false);
+  const [userDeny, showUserDeny] = useState(false);
   const [images, setImages] = useState([]);
   const [videos, setVideos] = useState([]);
   const [documents, setDocuments] = useState([]);
   const [fileIndex, setFileIndex] = useState(0);
   const [showImageModal, setShowImageModal] = useState(false);
+  const [denyFeedback, setDenyFeedback] = useState(false);
   const [loading, setLoading] = useState(true);
   const allMedia = [...images, ...videos];
+  const [itemDesc, setItemDesc] = useState("");
+  const [item, setItem] = useState("");
 
   // Function to toggle image modal visibility
+
   const imgmodal = () => {
     setShowImageModal(!showImageModal);
   };
@@ -45,7 +57,6 @@ const AcceptDenyModal = ({
     const handleEsc = (event) => {
       if (event.key === "Escape") {
         onClose();
-        setActiveDetails(false);
       }
     };
 
@@ -169,8 +180,27 @@ const AcceptDenyModal = ({
           console.error("Error fetching documents:", error);
         }
       };
-
-      Promise.all([fetchDocuments(), fetchVideos(), fetchImages()]).then(() => {
+      const fetchItemData = async () => {
+        try {
+          const response = await axiosClient.get(
+            `/getItemByProperty/${property_no}`
+          );
+          const { Message } = response.data.data;
+          if (Message) {
+            const { CDE_ARTICLE, DESC_ARTICLE } = Message;
+            setItem(CDE_ARTICLE);
+            setItemDesc(DESC_ARTICLE);
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      Promise.all([
+        fetchDocuments(),
+        fetchVideos(),
+        fetchImages(),
+        fetchItemData(),
+      ]).then(() => {
         setLoading(false);
       });
     }
@@ -184,14 +214,14 @@ const AcceptDenyModal = ({
 
   return (
     // Modal container
-    <div className="fixed top-0 left-0 w-full h-[100svh] items-center justify-center bg-black/50 flex z-10 font-figtree">
+    <div className="fixed top-0 left-0 w-full h-[100svh] items-center justify-center bg-black/50 flex z-10 font-dm">
       <div
         className="w-full min-h-[100svh] max-h-[100svh] py-12 px-4 overflow-auto flex justify-center items-start"
         id="container"
         onClick={(e) => {
           if (e.target.id === "container") {
             onClose();
-            setActiveDetails(false);
+            setDenyFeedback(false);
           }
         }}
       >
@@ -217,7 +247,7 @@ const AcceptDenyModal = ({
                 </div>
                 <p className="text-xs font-semibold">Attachments Section</p>
               </div>
-              <div className="w-full flex flex-col items-center justify-center py-4">
+              <div className="w-full flex flex-col items-center justify-center py-2">
                 <div className=" flex item-center justify-start w-full py-2 px-1">
                   <p className="text-xs font-normal">Images and Videos</p>
                 </div>
@@ -234,7 +264,7 @@ const AcceptDenyModal = ({
                       if (mediaFile?.type === "image") {
                         return (
                           <div
-                            className="w-full h-[260px] rounded-md overflow-hidden cursor-pointer"
+                            className="w-full h-[420px] rounded-md overflow-hidden cursor-pointer"
                             onClick={imgmodal}
                           >
                             <img
@@ -248,7 +278,7 @@ const AcceptDenyModal = ({
 
                       if (mediaFile?.type === "video") {
                         return (
-                          <div className="w-full h-[260px] rounded-md overflow-hidden cursor-pointer">
+                          <div className="w-full h-[420px] rounded-md overflow-hidden cursor-pointer">
                             <video
                               controls
                               className="w-full h-full object-cover object-center"
@@ -265,7 +295,7 @@ const AcceptDenyModal = ({
 
                       // If the file is neither an image nor a video, render "No media file" message
                       return (
-                        <div className="w-full min-h-[260px] bg-[#f6edff] rounded-md flex flex-col items-center justify-center border border-gray-300">
+                        <div className="w-full min-h-[420px] bg-[#f6edff] rounded-md flex flex-col items-center justify-center border border-gray-300">
                           <PiImages className="text-xl" />
                           <p className="text-xs font-normal">No media file</p>
                         </div>
@@ -293,7 +323,7 @@ const AcceptDenyModal = ({
                   </div>
                 )}
               </div>
-              <div className="w-full flex flex-col items-center justify-center py-4">
+              <div className="w-full flex flex-col items-center justify-center py-2">
                 <div className="w-full flex items-center justify-start py-2 px-1">
                   <p className="text-xs font-normal">Documents</p>
                 </div>
@@ -362,6 +392,31 @@ const AcceptDenyModal = ({
                   </div>
                 </div>
               </div>
+              <div
+                className={
+                  feedback
+                    ? "w-full flex flex-col items-center justify-center py-4"
+                    : "hidden"
+                }
+              >
+                <div className="w-full flex flex-row gap-2 items-center justify-start py-2">
+                  <div className="bg-[#2f2f2f] p-2 rounded-full ">
+                    <FaRegLightbulb className="text-white text-sm" />
+                  </div>
+                  <p className="text-xs font-semibold">Feedback</p>
+                </div>
+                <div className="w-full flex items-center justify-center py-2">
+                  <div className="w-full flex items-center justify-center p-4 rounded-md bg-[#f6edff] border border-gray-300">
+                    <textarea
+                      name=""
+                      rows={4}
+                      id=""
+                      className="w-full text-xs font-normal bg-[#f6edff] outline-none resize-none scrollbar-hide"
+                      readOnly={true}
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="w-full lg:w-1/2 flex flex-col">
               <div className="w-full flex flex-row gap-2 items-center justify-start py-4 px-1">
@@ -373,15 +428,54 @@ const AcceptDenyModal = ({
               {selectedRole === "user" && ticket_status === "5" ? (
                 <>
                   {/* If the selected role is user and the ticket status is 5 or done, render the ticket type */}
-                  <div className="w-full flex flex-row items-center justify-center">
-                    <div className="w-full flex flex-col items-center justify-center">
+                  <div className="w-full flex flex-col justify-center items-center">
+                    <div className="w-full flex flex-row items-center justify-center gap-4 py-2">
+                      <div className="w-1/2 flex flex-col items-center justify-center">
+                        <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
+                          <p className="text-xs font-normal">Ticket Type</p>
+                        </div>
+                        <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
+                          <p className="text-xs font-semibold text-gray-500 truncate">
+                            {ticket_type}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="w-1/2 flex flex-col items-center justify-center">
+                        <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
+                          <p className="text-xs font-normal truncate">
+                            Property No.
+                          </p>
+                        </div>
+                        <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
+                          <p className="text-xs font-semibold text-gray-500 truncate">
+                            {property_no}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="w-full flex flex-col items-center justify-center py-2">
                       <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
-                        <p className="text-xs font-normal">Ticket Type</p>
+                        <p className="text-xs font-normal truncate">Item</p>
                       </div>
                       <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
                         <p className="text-xs font-semibold text-gray-500 truncate">
-                          {ticket_type}
+                          {item}
                         </p>
+                      </div>
+                    </div>
+                    <div className="w-full flex flex-col items-center justify-center py-2">
+                      <div className="flex justify-start items-center w-full py-2">
+                        <p className="text-xs font-normal">Item Description</p>
+                      </div>
+                      <div className="p-4 rounded-md bg-[#f6edff] w-full border border-gray-300">
+                        <textarea
+                          name=""
+                          id=""
+                          rows={4}
+                          className="outline-none bg-[#f6edff] w-full resize-none text-xs font-normal scrollbar-hide"
+                          value={itemDesc}
+                          readOnly={true}
+                        ></textarea>
                       </div>
                     </div>
                   </div>
@@ -389,40 +483,122 @@ const AcceptDenyModal = ({
               ) : selectedRole === "user" && ticket_status === "4" ? (
                 <>
                   {/* If the selected role is user and the ticket status is 4 or for checking, render the ticket type and requester */}
-                  <div className="w-full flex flex-row items-center justify-center">
-                    <div className="w-full flex flex-col items-center justify-center">
+                  <div className="w-full flex flex-col justify-center items-center">
+                    <div className="w-full flex flex-row items-center justify-center gap-4 py-2">
+                      <div className="w-1/2 flex flex-col items-center justify-center">
+                        <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
+                          <p className="text-xs font-normal">Ticket Type</p>
+                        </div>
+                        <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
+                          <p className="text-xs font-semibold text-gray-500 truncate">
+                            {ticket_type}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="w-1/2 flex flex-col items-center justify-center">
+                        <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
+                          <p className="text-xs font-normal truncate">
+                            Property No.
+                          </p>
+                        </div>
+                        <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
+                          <p className="text-xs font-semibold text-gray-500 truncate">
+                            {property_no}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="w-full flex flex-col items-center justify-center py-2">
                       <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
-                        <p className="text-xs font-normal">Ticket Type</p>
+                        <p className="text-xs font-normal truncate">Item</p>
                       </div>
                       <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
                         <p className="text-xs font-semibold text-gray-500 truncate">
-                          {ticket_type}
+                          {item}
                         </p>
+                      </div>
+                    </div>
+                    <div className="w-full flex flex-col items-center justify-center py-2">
+                      <div className="flex justify-start items-center w-full py-2">
+                        <p className="text-xs font-normal">Item Description</p>
+                      </div>
+                      <div className="p-4 rounded-md bg-[#f6edff] w-full border border-gray-300">
+                        <textarea
+                          name=""
+                          id=""
+                          rows={4}
+                          className="outline-none bg-[#f6edff] w-full resize-none text-xs font-normal scrollbar-hide"
+                          value={itemDesc}
+                          readOnly={true}
+                        ></textarea>
                       </div>
                     </div>
                   </div>
                 </>
               ) : (
                 <>
-                  <div className="w-full flex flex-row gap-6 items-center justify-center py-2">
-                    <div className="w-1/2 flex flex-col items-center justify-center">
-                      <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
-                        <p className="text-xs font-normal">Ticket Type</p>
+                  <div className="w-full flex flex-col items-center justify-center">
+                    <div className="w-full flex flex-row gap-4 items-center justify-center py-2">
+                      <div className="w-2/4 flex flex-col items-center justify-center">
+                        <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
+                          <p className="text-xs font-normal">Ticket Type</p>
+                        </div>
+                        <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
+                          <p className="text-xs font-semibold text-gray-500 truncate">
+                            {ticket_type}
+                          </p>
+                        </div>
                       </div>
-                      <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
-                        <p className="text-xs font-semibold text-gray-500 truncate">
-                          {ticket_type}
-                        </p>
+                      <div className="w-2/4 flex flex-col items-center justify-center">
+                        <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
+                          <p className="text-xs font-normal truncate">
+                            Requester
+                          </p>
+                        </div>
+                        <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
+                          <p className="text-xs font-semibold text-gray-500 truncate">
+                            {requester_name}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                    <div className="w-1/2 flex flex-col items-center justify-center">
-                      <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
-                        <p className="text-xs font-normal">Requester</p>
+                    <div className="w-full flex flex-row gap-4 items-center justify-center py-2">
+                      <div className="w-2/4 flex flex-col items-center justify-center">
+                        <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
+                          <p className="text-xs font-normal truncate">
+                            Property Number
+                          </p>
+                        </div>
+                        <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
+                          <p className="text-xs font-semibold text-gray-500 truncate">
+                            {property_no}
+                          </p>
+                        </div>
                       </div>
-                      <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
-                        <p className="text-xs font-semibold text-gray-500 truncate">
-                          {requester_name}
-                        </p>
+                      <div className="w-2/4 flex flex-col items-center justify-center">
+                        <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
+                          <p className="text-xs font-normal truncate">Item</p>
+                        </div>
+                        <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
+                          <p className="text-xs font-semibold text-gray-500 truncate">
+                            {item}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="w-full flex flex-col items-center justify-center py-2">
+                      <div className="flex justify-start items-center w-full py-2">
+                        <p className="text-xs font-normal">Item Description</p>
+                      </div>
+                      <div className="p-4 rounded-md bg-[#f6edff] w-full border border-gray-300">
+                        <textarea
+                          name=""
+                          id=""
+                          rows={4}
+                          className="outline-none bg-[#f6edff] w-full resize-none text-xs font-normal scrollbar-hide"
+                          value={itemDesc}
+                          readOnly={true}
+                        ></textarea>
                       </div>
                     </div>
                   </div>
@@ -495,7 +671,10 @@ const AcceptDenyModal = ({
                   {/* If the selected role is user and the ticket status is 4 or for checking, render the accept and deny buttons */}
                   <div
                     className="flex items-center justify-center py-2 px-4 bg-[#2f2f2f] hover:bg-[#474747] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
-                    onClick={handleAccept}
+                    // onClick={handleAccept}
+                    onClick={() => {
+                      showUserAccept(true);
+                    }}
                   >
                     <p className="text-xs font-normal text-white truncate">
                       Accept
@@ -504,10 +683,10 @@ const AcceptDenyModal = ({
                   <div
                     className="flex items-center justify-center py-2 px-4 bg-[#FFFFFF] hover:bg-[#f2f2f2] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
                     onClick={() => {
-                      onClick = { handleDeny };
-                      setShowImageModal(false);
-                      onClose();
-                      setActiveDetails(false);
+                      // onClick = { handleDeny };
+                      // setShowImageModal(false);
+                      // onClose();
+                      showUserDeny(true);
                     }}
                   >
                     <p className="text-xs font-normal text-black truncate">
@@ -529,10 +708,10 @@ const AcceptDenyModal = ({
                   <div
                     className="flex items-center justify-center py-2 px-4 bg-[#FFFFFF] hover:bg-[#f2f2f2] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
                     onClick={() => {
-                      handleDenyOngoing();
-                      setShowImageModal(false);
-                      onClose();
-                      setActiveDetails(false);
+                      // handleDenyOngoing();
+                      // setShowImageModal(false);
+                      // onClose();
+                      setDenyFeedback(true);
                     }}
                   >
                     <p className="text-xs font-normal text-black truncate">
@@ -547,7 +726,6 @@ const AcceptDenyModal = ({
                   onClick={() => {
                     setShowImageModal(false);
                     onClose();
-                    setActiveDetails(false);
                   }}
                 >
                   <p className="text-xs font-normal text-black truncate">
@@ -568,6 +746,33 @@ const AcceptDenyModal = ({
           fileIndex={fileIndex}
           handleNext={handleNext}
           handlePrevious={handlePrevious}
+        />
+      )}
+
+      {denyFeedback && (
+        <TechDeny
+          isVisible={denyFeedback}
+          onClose={() => {
+            setDenyFeedback(false);
+          }}
+        />
+      )}
+
+      {userDeny && (
+        <UserDeny
+          onClose={() => {
+            showUserDeny(false);
+          }}
+        />
+      )}
+
+      {userAccept && (
+        <UserAccept
+          isVisible={userAccept}
+          property_no={property_no}
+          onClose={() => {
+            showUserAccept(false);
+          }}
         />
       )}
     </div>
