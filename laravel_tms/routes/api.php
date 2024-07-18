@@ -46,8 +46,6 @@ Route::middleware([TechAuthorization::class])->group(function () {
     Route::post('/techUpdate', [TechnicalController::class, 'updateTechnical']);
     Route::post('/acceptOngoingRequest', [TechnicalController::class, 'acceptOngoingRequest']);
     Route::post('/denyOngoingRequest', [TechnicalController::class, 'denyOngoingRequest']);
-
-    
 });
 Route::middleware([TechAdminMiddleware::class])->group(function () {
     // Retrieves images, videos, and documents associated with a ticket
