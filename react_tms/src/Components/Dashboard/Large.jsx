@@ -613,7 +613,7 @@ const Large = () => {
                                       set_request_desc(
                                         data.ticket_desc_concern
                                       );
-                                      
+
                                       set_request_type(data.ticket_type);
                                       set_tickec_desc_remarks(
                                         data.ticket_desc_remarks
@@ -1081,13 +1081,13 @@ const Large = () => {
                                       set_name_requester(
                                         data.ticket_client_name
                                       );
-                                      setPropNumber(data.property_no)
+                                      setPropNumber(data.property_no);
                                       setTicketID(data.id);
                                       set_ticket_cde(data.ticket_cde);
                                       set_request_desc(
                                         data.ticket_desc_concern
                                       );
-                                      
+
                                       set_request_type(data.ticket_type);
                                       set_tickec_desc_remarks(
                                         data.ticket_desc_remarks

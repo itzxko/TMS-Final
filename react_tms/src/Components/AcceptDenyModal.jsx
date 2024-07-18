@@ -4,6 +4,7 @@ import Loading from "../Components/Loading/Loading"; //Loading Component
 import ImageModal from "./ImageModal"; //Image Modal
 import TechDeny from "./Popups/TechDeny";
 import UserAccept from "./Popups/UserAccept";
+import UserDeny from "./Popups/UserDeny";
 
 //Icons
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
@@ -13,6 +14,7 @@ import { TiInfoLarge } from "react-icons/ti";
 import { MdAttachment } from "react-icons/md";
 import { TiArrowLeft } from "react-icons/ti";
 import { PiImages } from "react-icons/pi";
+import { FaRegLightbulb } from "react-icons/fa";
 
 const AcceptDenyModal = ({
   isVisible,
@@ -29,8 +31,10 @@ const AcceptDenyModal = ({
   property_no,
   setTriggerFetch,
 }) => {
+  const [feedback, isFeedback] = useState(true);
   const containerRef = useRef(null);
   const [userAccept, showUserAccept] = useState(false);
+  const [userDeny, showUserDeny] = useState(false);
   const [images, setImages] = useState([]);
   const [videos, setVideos] = useState([]);
   const [documents, setDocuments] = useState([]);
@@ -388,6 +392,31 @@ const AcceptDenyModal = ({
                   </div>
                 </div>
               </div>
+              <div
+                className={
+                  feedback
+                    ? "w-full flex flex-col items-center justify-center py-4"
+                    : "hidden"
+                }
+              >
+                <div className="w-full flex flex-row gap-2 items-center justify-start py-2">
+                  <div className="bg-[#2f2f2f] p-2 rounded-full ">
+                    <FaRegLightbulb className="text-white text-sm" />
+                  </div>
+                  <p className="text-xs font-semibold">Feedback</p>
+                </div>
+                <div className="w-full flex items-center justify-center py-2">
+                  <div className="w-full flex items-center justify-center p-4 rounded-md bg-[#f6edff] border border-gray-300">
+                    <textarea
+                      name=""
+                      rows={4}
+                      id=""
+                      className="w-full text-xs font-normal bg-[#f6edff] outline-none resize-none scrollbar-hide"
+                      readOnly={true}
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="w-full lg:w-1/2 flex flex-col">
               <div className="w-full flex flex-row gap-2 items-center justify-start py-4 px-1">
@@ -657,6 +686,7 @@ const AcceptDenyModal = ({
                       // onClick = { handleDeny };
                       // setShowImageModal(false);
                       // onClose();
+                      showUserDeny(true);
                     }}
                   >
                     <p className="text-xs font-normal text-black truncate">
@@ -724,6 +754,14 @@ const AcceptDenyModal = ({
           isVisible={denyFeedback}
           onClose={() => {
             setDenyFeedback(false);
+          }}
+        />
+      )}
+
+      {userDeny && (
+        <UserDeny
+          onClose={() => {
+            showUserDeny(false);
           }}
         />
       )}

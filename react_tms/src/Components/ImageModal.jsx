@@ -105,7 +105,7 @@ const ImageModal = ({ onClose, images, fileIndex }) => {
   const isImage = /\.(jpg|jpeg|png|gif)$/i.test(currentImage);
 
   return (
-    <div className="fixed inset-0 w-full h-screen bg-black bg-opacity-25 text-black flex items-center justify-center">
+    <div className="fixed inset-0 w-full h-screen bg-black/75 text-black flex items-center justify-center">
       <div
         ref={modalRef}
         className="flex py-20 px-4 justify-center items-center"
