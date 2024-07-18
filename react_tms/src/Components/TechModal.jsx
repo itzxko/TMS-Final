@@ -41,6 +41,8 @@ const TechModal = ({
   const [itemDesc, setItemDesc] = useState("");
   const [item, setItem] = useState("");
 
+
+  console.log(property_no)
   // Function to toggle image modal visibility
   const imgmodal = () => {
     setShowImageModal(!showImageModal);
