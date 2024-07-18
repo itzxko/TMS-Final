@@ -337,7 +337,9 @@ const Large = () => {
                 <div className="flex items-center justify-center px-4 py-3 bg-[#FAF5FF] rounded-lg cursor-pointer ease-in-out duration-500">
                   <div
                     className="flex items-center justify-center pr-2"
-                    onClick={(e) => filteredSearch(e)}
+                    onClick={(e) => filteredSearch(e)
+                    
+                    }
                   >
                     <BiSearch className="text-sm" />
                   </div>
@@ -349,7 +351,13 @@ const Large = () => {
                     role="presentation"
                     spellCheck="false"
                     className="outline-none bg-[#FAF5FF] text-xs font-normal pl-3 border-l border-gray-300"
-                    onChange={(e) => setSearch(e.target.value.toLowerCase())}
+                    onChange={(e) => setSearch(e.target.value.toLowerCase())                  
+                    }
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        filteredSearch(e);
+                      }
+                    }}
                   />
                 </div>
                 <div className="relative flex flex-row justify-end items-start">

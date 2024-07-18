@@ -182,15 +182,15 @@ class RequestController extends Controller
     }
 
     public function getPendingTicket()
-    {   
+    {
         $tickets = DB::table('ticketing_main')
-        ->orderBy("ticket_update_date", "desc")
-        ->paginate(10);
-        
-        
+            ->orderBy("ticket_update_date", "desc")
+            ->paginate(10);
+
+
         $statuses = ["1" => "requested", "2" => "assigned", "3" => "ongoing", "4" => "forChecking", "5" => "done"];
         $counts = [];
-        
+
         foreach ($statuses as $status => $name) {
             $counts[$name] = DB::table("ticketing_main")
                 ->where('ticket_status', '=', $status)
@@ -202,7 +202,7 @@ class RequestController extends Controller
         $ongoing = $counts["ongoing"];
         $forChecking = $counts["forChecking"];
         $done = $counts["done"];
-            
+
         return response()->json([
             "Message" => $tickets,
             "requested" => $requested,
@@ -216,12 +216,12 @@ class RequestController extends Controller
     // Get all tickets assigned to the authenticated user
     public function getTicketByTechnical()
     {
-        if(Auth::user()->role !== "technical"){
-            return response()->json(["Message" => "You are unauthorized!"], "Request Failed", 401);
+        if (Auth::user()->role !== "technical") {
+            return $this->success(["Message" => "You are unauthorized!"], "Request Failed", 401);
         }
         $statuses = ["1" => "requested", "2" => "assigned", "3" => "ongoing", "4" => "forChecking", "5" => "done"];
         $counts = [];
-        
+
         foreach ($statuses as $status => $name) {
             $counts[$name] = DB::table("ticketing_main")
                 ->where('ticket_status', '=', $status)
@@ -233,31 +233,31 @@ class RequestController extends Controller
         $assigned = $counts["assigned"];
         $ongoing = $counts["ongoing"];
         $forChecking = $counts["forChecking"];
-        $done = $counts["done"];            
+        $done = $counts["done"];
 
         $tickets = DB::table('ticketing_main')
             ->where("ticket_assigned_to_id", Auth::user()->emp_no)
             ->orderBy("ticket_update_date", "desc")->paginate(10);
         return response()->json([
-                "Message" => $tickets,
-                "requested" => $requested,
-                "assigned" => $assigned,
-                "ongoing" => $ongoing,
-                "forChecking" => $forChecking,
-                "done" => $done
-            ], 200);
+            "Message" => $tickets,
+            "requested" => $requested,
+            "assigned" => $assigned,
+            "ongoing" => $ongoing,
+            "forChecking" => $forChecking,
+            "done" => $done
+        ], 200);
     }
-    
+
 
 
     public function getTicketByUser()
     {
-        if(Auth::user()->role !== "user"){
-            return response()->json(["Message" => "You are unauthorized!"], "Request Failed", 401);
+        if (Auth::user()->role !== "user") {
+            return $this->success(["Message" => "You are unauthorized!"], "Request Failed", 401);
         }
         $statuses = ["1" => "requested", "2" => "assigned", "3" => "ongoing", "4" => "forChecking", "5" => "done"];
         $counts = [];
-        
+
         foreach ($statuses as $status => $name) {
             $counts[$name] = DB::table("ticketing_main")
                 ->where('ticket_status', '=', $status)
@@ -269,39 +269,39 @@ class RequestController extends Controller
         $assigned = $counts["assigned"];
         $ongoing = $counts["ongoing"];
         $forChecking = $counts["forChecking"];
-        $done = $counts["done"];            
+        $done = $counts["done"];
 
         $tickets = DB::table('ticketing_main')
-                ->where("ticket_client", Auth::user()->emp_no)
-                ->orderBy("ticket_update_date", "desc")->paginate(10);
+            ->where("ticket_client", Auth::user()->emp_no)
+            ->orderBy("ticket_update_date", "desc")->paginate(10);
         return response()->json([
-                    "Message" => $tickets,
-                    "requested" => $requested,
-                    "assigned" => $assigned,
-                    "ongoing" => $ongoing,
-                    "forChecking" => $forChecking,
-                    "done" => $done
-                ], 200);
+            "Message" => $tickets,
+            "requested" => $requested,
+            "assigned" => $assigned,
+            "ongoing" => $ongoing,
+            "forChecking" => $forChecking,
+            "done" => $done
+        ], 200);
     }
 
     public function filterPendingTicket($type)
     {
         // Filter pending tickets by type
-        if(Auth::user()->role === "admin"){
+        if (Auth::user()->role === "admin") {
             $query = DB::table('ticketing_main')
-            ->orderBy("ticket_update_date", "desc");
+                ->orderBy("ticket_update_date", "desc");
         }
-        if(Auth::user()->role === "user"){
+        if (Auth::user()->role === "user") {
             $query = DB::table('ticketing_main')
-            ->where("ticket_client", Auth::user()->emp_no)
-            ->orderBy("ticket_update_date", "desc");
+                ->where("ticket_client", Auth::user()->emp_no)
+                ->orderBy("ticket_update_date", "desc");
         }
-        if(Auth::user()->role === "technical"){
+        if (Auth::user()->role === "technical") {
             $query = DB::table('ticketing_main')
-            ->where("ticket_assigned_to_id", Auth::user()->emp_no)
-            ->orderBy("ticket_update_date", "desc");
+                ->where("ticket_assigned_to_id", Auth::user()->emp_no)
+                ->orderBy("ticket_update_date", "desc");
         }
-       
+
         if ($type !== "All") {
             $filter = $query->where('ticket_type', $type)->paginate(10);
             return $this->success(["Message" => $filter], "Request success", 201);
@@ -316,7 +316,9 @@ class RequestController extends Controller
         $query = DB::table('ticketing_main')
             ->orderBy("ticket_update_date", "desc");
         if ($search !== "" || $search != "") {
-            $filter = $query->where('ticket_type', 'like', '%' . $search . '%')->paginate(10);
+            $filter = $query->where('ticket_type', 'like', '%' . $search . '%')
+                ->orWhere('ticket_desc_concern', 'like', '%' . $search . '%')
+                ->paginate(10);
             return $this->success(["Message" => $filter], "Request success", 201);
         }
         $filter = $query->paginate(10);
