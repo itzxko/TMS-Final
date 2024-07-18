@@ -7,24 +7,47 @@ import { MdOutlineBrokenImage } from "react-icons/md";
 import { GrDocumentText } from "react-icons/gr";
 import imageCompression from "browser-image-compression";
 import Loading from "../Components/Loading/Loading";
+import { RiCloseLine } from "react-icons/ri";
+
+import items from "../JSON/Items.json";
 
 const UserModal = ({ isVisible, onClose, data }) => {
   const [ticket_type, set_ticket_type] = useState("Select Ticket Type");
+  const [itemInfo, showItemInfo] = useState(false);
   const [ticket_if_others, set_ticket_if_others] = useState(null);
   const [ticket_desc_concern, set_ticket_desc_concern] = useState("");
   const [file, setFile] = useState([]);
   const [video, set_video] = useState([]);
   const [_document, set_document] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [itemSelected, isItemSelected] = useState(false);
   const [openType, setOpenType] = useState(false);
+  const [openItems, setOpenItems] = useState(false);
   const [loading, setLoading] = useState(false);
   const [incompleteInput, setIncompleteInput] = useState(false);
   const [limitError, setLimitError] = useState(false);
+  const [items, setItems] = useState([]);
+  const [propNumber, setPropNumber] = useState("");
+  const fetchItems = async () => {
+    try {
+      const response = await axiosClient.get("/getItems");
+      const { Message } = response.data.data;
+      setItems(Message);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    fetchItems();
+  }, []);
 
   // Toggle open/close the dropdown for ticket types
   const handleOpenType = () => {
     setOpenType(!openType);
-    console.log(openType);
+  };
+
+  const removeItem = () => {
+    document.getElementById("item-tb").innerText = "Select Item";
   };
 
   /*This function handles the change event for file inputs. 
@@ -122,6 +145,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
 
     formData.append("ticket_client_name", localStorage.getItem("username"));
     formData.append("ticket_type", ticket_type);
+    formData.append("property_no", propNumber);
     formData.append("ticket_if_others", ticket_if_others);
     formData.append("ticket_desc_concern", ticket_desc_concern);
 
@@ -210,8 +234,12 @@ const UserModal = ({ isVisible, onClose, data }) => {
         onClick={(e) => {
           if (e.target.id === "container") {
             onClose();
+            setOpenItems(false);
+            setOpenType(false);
+            setOpenItems(false);
+            setOpenType(false);
+            setOpenBrand(false);
             selected(null);
-            setActiveDetails(false);
           }
         }}
       >
@@ -220,48 +248,130 @@ const UserModal = ({ isVisible, onClose, data }) => {
             <p className="text-sm font-semibold">New Ticket.</p>
             <div
               className="absolute left-0 p-2 hover:bg-gray-200 ease-in-out duration-500 rounded-md"
-              onClick={() => onClose()}
+              onClick={() => {
+                setOpenItems(false);
+                setOpenType(false);
+                onClose();
+              }}
             >
               <TiArrowLeft className="text-xl" />
             </div>
           </div>
+          <div className="w-full flex flex-row gap-4 py-2 items-center justify-center">
+            <div className="relative w-1/2 flex flex-col items-center justify-center ">
+              <div className="flex items-center justify-start py-2 px-1 w-full">
+                <p className="text-xs font-normal truncate">Ticket Type</p>
+                <p className="text-xs font-semibold text-red-700">*</p>
+              </div>
+              <div
+                className="px-4 py-3 w-full bg-[#f6edff] rounded-md border border-gray-300 flex items-center justify-between cursor-pointer"
+                onClick={() => {
+                  handleOpenType();
+                  setOpenItems(false);
+                }}
+              >
+                {/* Display selected ticket type */}
+                <p className="text-xs font-semibold text-gray-500 truncate">
+                  {ticket_type}
+                </p>
+                {openType ? (
+                  <RiArrowDropUpLine className="text-md" />
+                ) : (
+                  <RiArrowDropDownLine className="text-md" />
+                )}
+              </div>
+              <div
+                className={
+                  openType
+                    ? "bg-[#f6edff] absolute top-[80px] w-full rounded-md border border-gray-300 overflow-hidden cursor-pointer shadow-xl z-[10]"
+                    : "hidden"
+                }
+              >
+                {/* Display ticket types */}
+                {data.map((item) => (
+                  <div
+                    key={item.ID}
+                    className="py-2 w-full px-4 border-b"
+                    onClick={() => {
+                      setOpenType(false);
+                      set_ticket_type(item.TYPE_DESC);
+                    }}
+                  >
+                    <p className="text-xs truncate">{item.TYPE_DESC}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className=" w-1/2 flex flex-col items-center justify-center">
+              <div className="flex items-center justify-start py-2 px-1 w-full">
+                <p className="text-xs font-normal truncate">Property Number</p>
+                <p className="text-xs font-semibold text-red-700">*</p>
+              </div>
+              <div className="px-4 py-3 w-full bg-[#f6edff] rounded-md border border-gray-300 flex items-center justify-between cursor-pointer">
+                <p className="text-xs font-semibold text-gray-500 truncate">
+                  {propNumber || "Select Item First"}
+                </p>
+              </div>
+            </div>
+          </div>
           <div className="relative w-full flex flex-col items-center justify-center py-2">
             <div className="flex items-center justify-start py-2 px-1 w-full">
-              <p className="text-xs font-normal">Ticket Type</p>
+              <p className="text-xs font-normal truncate">Select Item</p>
               <p className="text-xs font-semibold text-red-700">*</p>
             </div>
             <div
-              className="px-4 py-3 w-full bg-[#f6edff] rounded-md border border-gray-300 flex items-center justify-between"
-              onClick={handleOpenType}
+              className="px-4 py-3 w-full bg-[#f6edff] rounded-md border border-gray-300 flex items-center justify-between cursor-pointer"
+              onClick={() => {
+                setOpenItems(!openItems);
+                setOpenType(false);
+              }}
             >
               {/* Display selected ticket type */}
-              <p className="text-xs font-semibold text-gray-500">
-                {ticket_type}
+              <p
+                className="text-xs font-semibold text-gray-500 truncate"
+                id="item-tb"
+              >
+                Select Item
               </p>
-              {openType ? (
-                <RiArrowDropUpLine className="text-xl" />
-              ) : (
-                <RiArrowDropDownLine className="text-xl" />
-              )}
+              <div className="flex flex-row">
+                {itemSelected ? (
+                  <RiCloseLine
+                    className="text-sm"
+                    onClick={() => {
+                      removeItem();
+                      isItemSelected(false);
+                      setPropNumber("");
+                    }}
+                  />
+                ) : null}
+                {openItems ? (
+                  <RiArrowDropUpLine className="text-md" />
+                ) : (
+                  <RiArrowDropDownLine className="text-md" />
+                )}
+              </div>
             </div>
             <div
               className={
-                openType
-                  ? "bg-[#f6edff] absolute top-[100px] w-full rounded-md border border-gray-300 overflow-hidden cursor-pointer shadow-xl"
+                openItems
+                  ? "bg-[#f6edff] absolute top-[86px] w-full rounded-md border border-gray-300 overflow-hidden cursor-pointer shadow-xl z-[10]"
                   : "hidden"
               }
             >
               {/* Display ticket types */}
-              {data.map((item) => (
+              {items.map((item) => (
                 <div
-                  key={item.ID}
+                  key={item.NO_PROPERTY}
                   className="py-2 w-full px-4 border-b"
                   onClick={() => {
-                    set_ticket_type(item.TYPE_DESC);
-                    setOpenType(false);
+                    setOpenItems(false);
+                    isItemSelected(true);
+                    setPropNumber(item.NO_PROPERTY);
+                    document.getElementById("item-tb").innerText =
+                      item.CDE_ARTICLE;
                   }}
                 >
-                  <p className="text-xs truncate">{item.TYPE_DESC}</p>
+                  <p className="text-xs truncate">{item.CDE_ARTICLE}</p>
                 </div>
               ))}
             </div>
@@ -457,7 +567,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
                 )}
               </>
             </div>
-            <div className="w-1/2 flex flex-row gap-2 items-center justify-end">
+            <div className="w-1/2 flex flex-row gap-2 items-center justify-end py-4">
               <div
                 className="flex items-center justify-center py-2 px-4 bg-[#2f2f2f] hover:bg-[#474747] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
                 onClick={handleSubmit}

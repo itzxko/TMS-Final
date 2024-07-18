@@ -25,7 +25,9 @@ const AdminModal = ({
   id,
   selected,
   name_requester,
+  property_no,
   ticket_cde,
+  tech_deny_reason
 }) => {
   const containerRef = useRef(null);
   const [openEmployee, setOpenEmployee] = useState(false); // For the employee data
@@ -44,7 +46,8 @@ const AdminModal = ({
   const [loading, setLoading] = useState(true); // For loading state
   const [incompleteInput, setIncompleteInput] = useState(false); // For the incomplete input warning
   const allMedia = [...images, ...videos]; // Combine images and videos
-
+  const [itemDesc, setItemDesc] = useState("");
+  const [item, setItem] = useState("");
   // This part is for the employee data
   const handleEmployee = () => {
     setOpenEmployee(!openEmployee);
@@ -105,6 +108,27 @@ const AdminModal = ({
         console.log(err);
       });
   };
+
+  const fetchItemData = async () => {
+    try {
+      const response = await axiosClient.get(
+        `/getItemByProperty/${property_no}`
+      );
+      const { Message } = response.data.data;
+      if (Message) {
+        const { CDE_ARTICLE, DESC_ARTICLE } = Message;
+        setItem(CDE_ARTICLE);
+        setItemDesc(DESC_ARTICLE);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    if (isVisible) {
+      fetchItemData();
+    }
+  }, [isVisible]);
 
   // This part is for the fetching of the employee data
   useEffect(() => {}, [Id, ticket_assigned_to_name, _office_code]);
@@ -226,7 +250,7 @@ const AdminModal = ({
               <TiArrowLeft className="text-xl" />
             </div>
           </div>
-          <div className="w-full flex flex-col-reverse lg:flex-row-reverse  justify-center items-center py-6 gap-4 lg:gap-12">
+          <div className="w-full flex flex-col-reverse lg:flex-row-reverse  justify-center items-start py-6 gap-4 lg:gap-12">
             <div className="w-full lg:w-1/2 flex flex-col">
               <div className="w-full flex flex-row gap-2 items-center justify-start py-4 px-1">
                 <div className="p-2 bg-[#2f2f2f] rounded-full text-white shadow-xl">
@@ -256,7 +280,7 @@ const AdminModal = ({
                       if (mediaFile?.type === "image") {
                         return (
                           <div
-                            className="w-full h-[320px] rounded-md overflow-hidden cursor-pointer"
+                            className="w-full h-[420px] rounded-md overflow-hidden cursor-pointer"
                             onClick={imgmodal}
                           >
                             {/* Render the image file */}
@@ -273,7 +297,7 @@ const AdminModal = ({
                       }
                       if (mediaFile?.type === "video") {
                         return (
-                          <div className="w-full h-[320px] rounded-md overflow-hidden cursor-pointer">
+                          <div className="w-full h-[420px] rounded-md overflow-hidden cursor-pointer">
                             <video
                               controls
                               className="w-full h-full object-cover object-center"
@@ -291,7 +315,7 @@ const AdminModal = ({
 
                       // If the file is neither an image nor a video, render "No media file" message
                       return (
-                        <div className="w-full min-h-[260px] bg-[#f6edff] rounded-md flex flex-col items-center justify-center border border-gray-300">
+                        <div className="w-full min-h-[420px] bg-[#f6edff] rounded-md flex flex-col items-center justify-center border border-gray-300">
                           <PiImages className="text-xl" />
                           <p className="text-xs font-normal">No media file</p>
                         </div>
@@ -313,7 +337,7 @@ const AdminModal = ({
                     </div>
                   </div>
                 ) : (
-                  <div className="w-full min-h-[260px] bg-[#f6edff] rounded-md flex flex-col items-center justify-center border border-gray-300">
+                  <div className="w-full min-h-[420px] bg-[#f6edff] rounded-md flex flex-col items-center justify-center border border-gray-300">
                     <PiImages className="text-xl" />
                     <p className="text-xs font-normal">No media file</p>
                   </div>
@@ -388,6 +412,22 @@ const AdminModal = ({
                   </div>
                 </div>
               </div>
+             
+              {tech_deny_reason && <div className="w-full flex flex-col justify-center items-center py-2">
+              <div className="w-full flex items-center justify-start py-2">
+                <p className="text-xs font-normal">Previous Deny Reason</p>
+              </div>
+
+              <div className="w-full border border-gray-300 rounded-md overflow-hidden p-4 bg-[#f6edff]">
+                <textarea
+                  name=""
+                  className="outline-none text-xs font-normal scrollbar-hide w-full resize-none bg-[#f6edff]"
+                  rows={2}
+                  value={tech_deny_reason}
+                  readOnly={true}
+                ></textarea>
+              </div>
+            </div>}
             </div>
             <div className="w-full lg:w-1/2 flex flex-col">
               <div className="w-full flex flex-row gap-2 items-center justify-start py-4 px-1">
@@ -396,26 +436,65 @@ const AdminModal = ({
                 </div>
                 <p className="text-xs font-semibold">Information Section</p>
               </div>
-              <div className="w-full flex flex-row gap-6 items-center justify-center py-2">
-                <div className="w-1/2 flex flex-col items-center justify-center">
+              <div className="w-full flex flex-row gap-4 items-center justify-center py-2">
+                <div className="w-2/4 flex flex-col items-center justify-center">
                   <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
-                    <p className="text-xs font-normal">Ticket Type</p>
+                    <p className="text-xs font-normal truncate">Ticket Type</p>
                   </div>
                   <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
-                    <p className="text-xs font-semibold text-gray-500">
+                    <p className="text-xs font-semibold text-gray-500 truncate">
                       {ticket_type}
                     </p>
                   </div>
                 </div>
-                <div className="w-1/2 flex flex-col items-center justify-center">
+                <div className="w-2/4 flex flex-col items-center justify-center">
                   <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
-                    <p className="text-xs font-normal">Requester</p>
+                    <p className="text-xs font-normal truncate">Requester</p>
                   </div>
                   <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
-                    <p className="text-xs font-semibold text-gray-500">
+                    <p className="text-xs font-semibold text-gray-500 truncate">
                       {name_requester}
                     </p>
                   </div>
+                </div>
+              </div>
+              <div className="w-full flex flex-row gap-4 items-center justify-center py-2">
+                <div className="w-2/4 flex flex-col items-center justify-center">
+                  <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
+                    <p className="text-xs font-normal truncate">
+                      Property Number
+                    </p>
+                  </div>
+                  <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
+                    <p className="text-xs font-semibold text-gray-500 truncate">
+                      {property_no}
+                    </p>
+                  </div>
+                </div>
+                <div className="w-2/4 flex flex-col items-center justify-center">
+                  <div className="py-2 px-1 flex flex-row items-center justify-start w-full">
+                    <p className="text-xs font-normal truncate">Item</p>
+                  </div>
+                  <div className="px-4 py-3 bg-[#f6edff] w-full flex items-center justify-center border border-gray-300 rounded-md">
+                    <p className="text-xs font-semibold text-gray-500 truncate">
+                      {item}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="w-full flex flex-col items-center justify-center py-2">
+                <div className="flex justify-start items-center w-full py-2">
+                  <p className="text-xs font-normal">Item Description</p>
+                </div>
+                <div className="p-4 rounded-md bg-[#f6edff] w-full border border-gray-300">
+                  <textarea
+                    name=""
+                    id=""
+                    rows={4}
+                    className="outline-none bg-[#f6edff] w-full resize-none text-xs font-normal scrollbar-hide"
+                    value={itemDesc}
+                    readOnly={true}
+                  ></textarea>
                 </div>
               </div>
               <div className="py-2 w-full flex flex-col items-center justify-center">

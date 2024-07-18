@@ -74,6 +74,7 @@ class TechnicalController extends Controller
         // Perform an update directly
         DB::table('ticketing_main')->where('ticket_cde', $request->ticket_cde)->update([
             'ticket_status' => 3,
+            'tech_deny_reason' => '',
             'ticket_update_date' => now()
         ]);
 
@@ -84,14 +85,27 @@ class TechnicalController extends Controller
     public function denyOngoingRequest(Request $request)
     {
         // Perform an update directly
-        DB::table('ticketing_main')->where('ticket_cde', $request->ticket_cde)->update([
-            'ticket_status' => 1,
-            'ticket_office_cde' => '',
-            'ticket_assigned_to_name' => '',
-            'ticket_accepted_by' => '',
-            'ticket_assigned_to_id' => '',
-            'ticket_update_date' => now()
-        ]);
+        try{
+            $addFeedback = DB::table("ticketing_main")
+                    ->where('ticket_assigned_to_id', Auth::user()->emp_no)
+                    ->where('ticket_cde', $request->ticket_cde)
+                    ->update([
+                                'tech_deny_reason' => $request->technical_reason,  
+                                'ticket_status' => 1,
+                                'ticket_office_cde' => '',
+                                'ticket_assigned_to_name' => '',
+                                'ticket_accepted_by' => '',
+                                'ticket_assigned_to_id' => '',
+                                'ticket_update_date' => now()
+                            ]);
+            if($addFeedback){
+                return $this->success(["Message" => "Successfully Denied"], "Request Success for Deny", 201);
+            }        
+            return $this->error(["Message" => "Failed to Deny"], "Request Failed for Deny", 201);
+
+        }catch(\Exception $e){
+            return $this->error(["Message" => $e->getMessage()], "Request failed!!!!", 500);
+        }
 
         return $this->success(['message' => 'Request accepted']);
     }

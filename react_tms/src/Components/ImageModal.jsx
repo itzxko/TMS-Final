@@ -21,7 +21,7 @@ const ImageModal = ({ onClose, images, fileIndex }) => {
   // Ensure initial fileIndex points to a valid image
   useEffect(() => {
     if (!/\.(jpg|jpeg|png|gif)$/i.test(images[fileIndex])) {
-      const firstImageIndex = images.findIndex(image =>
+      const firstImageIndex = images.findIndex((image) =>
         /\.(jpg|jpeg|png|gif)$/i.test(image)
       );
       if (firstImageIndex !== -1) {
@@ -59,10 +59,7 @@ const ImageModal = ({ onClose, images, fileIndex }) => {
     }
 
     // Find the previous valid image file
-    while (
-      newIndex >= 0 &&
-      !/\.(jpg|jpeg|png|gif)$/i.test(images[newIndex])
-    ) {
+    while (newIndex >= 0 && !/\.(jpg|jpeg|png|gif)$/i.test(images[newIndex])) {
       newIndex--;
       if (newIndex < 0) {
         newIndex = images.length - 1; // Loop back to the last file
@@ -106,9 +103,9 @@ const ImageModal = ({ onClose, images, fileIndex }) => {
   // Determine if current image is an image file
   const currentImage = images[currentImageIndex];
   const isImage = /\.(jpg|jpeg|png|gif)$/i.test(currentImage);
-  
+
   return (
-    <div className="fixed inset-0 w-full h-screen bg-black bg-opacity-25 text-black flex items-center justify-center">
+    <div className="fixed inset-0 w-full h-screen bg-black/75 text-black flex items-center justify-center">
       <div
         ref={modalRef}
         className="flex py-20 px-4 justify-center items-center"

@@ -46,6 +46,8 @@ Route::middleware([TechAuthorization::class])->group(function () {
     Route::post('/techUpdate', [TechnicalController::class, 'updateTechnical']);
     Route::post('/acceptOngoingRequest', [TechnicalController::class, 'acceptOngoingRequest']);
     Route::post('/denyOngoingRequest', [TechnicalController::class, 'denyOngoingRequest']);
+
+    
 });
 Route::middleware([TechAdminMiddleware::class])->group(function () {
        // Retrieves images, videos, and documents associated with a ticket
@@ -70,6 +72,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/denyRequest', [TechnicalController::class, 'denyRequest']);
 
     Route::post('/logout', [UserController::class, 'logout']);
+
+    Route::get('/getItems', [RequestController::class, 'getItems']);
+    Route::get('/getItemByProperty/{prop_no}', [RequestController::class, 'getItemByProperty']);
+    Route::post('/add_feedback', [RequestController::class, 'clientFeedBack']);
+    Route::post('/deny_update', [RequestController::class, 'userReasonForDeny']);
 });
 
 // User registration and authentication routes

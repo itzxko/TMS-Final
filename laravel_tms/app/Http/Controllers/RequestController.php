@@ -48,12 +48,12 @@ class RequestController extends Controller
         // Insert into ticketing_main table
         try {
             $existingTicket = DB::table('ticketing_main')
-                ->where('ticket_desc_concern', $request->ticket_desc_concern)
+                ->where('property_no', $request->property_no)
                 ->first();
 
             if ($existingTicket) {
                 DB::rollBack(); // Rollback the transaction
-                return response()->json(["Message" => "A ticket with the same description already exists"], 400);
+                return response()->json(["Message" => "A ticket with the same property no already exists"], 400);
             }
 
             $ticketCode = $this->ticket_code; // Assuming $this->ticket_code is defined somewhere
@@ -65,6 +65,7 @@ class RequestController extends Controller
                 "ticket_client_name" => $request->ticket_client_name,
                 "ticket_client_office_cde" => Auth::user()->office_code,
                 "ticket_type" => $request->ticket_type,
+                'property_no' => $request->property_no,
                 "ticket_if_others" => $request->ticket_if_others ?? null,
                 "ticket_desc_concern" => $request->ticket_desc_concern,
                 "ticket_update_date" => now(),
@@ -284,6 +285,7 @@ class RequestController extends Controller
                 ], 200);
     }
 
+
     public function filterPendingTicket($type)
     {
         // Filter pending tickets by type
@@ -377,4 +379,56 @@ class RequestController extends Controller
             return response()->json(['error' => 'Internal server error'], 500);
         }
     }
+
+
+    public function getItems(){
+        try{
+            $items = DB::table('tbl_summary')
+                    ->where('MR_TO', Auth::user()->emp_no)
+                    ->get();
+            return $this->success(["Message" => $items], "Request Success", 200);
+        }catch(\Exception $e){
+            return $this->error(["Message" => $e->getMessage()], "Request failed", 500);
+        }
+    }
+    public function getItemByProperty($prop_no){
+        try{
+            $items = DB::table('tbl_summary')
+                    ->where('NO_PROPERTY', $prop_no)
+                    ->first(['CDE_ARTICLE', 'DESC_ARTICLE']);
+            return $this->success(["Message" => $items], "Request Success", 200);
+        }catch(\Exception $e){
+            return $this->error(["Message" => $e->getMessage()], "Request failed", 500);
+        }
+    }
+    public function clientFeedBack(Request $request){
+        try{
+           $addFeedback = DB::table("ticketing_main")
+            ->where('ticket_client', Auth::user()->emp_no)
+            ->where('ticket_cde', $request->ticket_cde)
+            ->update(['client_feedback' => $request->feedback, 'ticket_status' => 5]);
+            if($addFeedback){
+                return $this->success(["Message" => "Request Success"], "Insert Feedback Success", 201);
+            }
+            return $this->error(["Message" => "Hotdog Error sa ClientFeedBack() sa backend"], "Request failed", 500);
+        }catch(\Exception $e){
+            return $this->error(["Message" => $e->getMessage()], "Request failed", 500);
+        }
+    }
+
+    public function userReasonForDeny(Request $request){
+        try{
+            $addFeedback = DB::table("ticketing_main")
+             ->where('ticket_client', Auth::user()->emp_no)
+             ->where('ticket_cde', $request->ticket_cde)
+             ->update(['deny_reason' => $request->feedback, 'ticket_status' => 3]);
+             if($addFeedback){
+                 return $this->success(["Message" => "Request Success"], "Deny Success", 201);
+             }
+             return $this->error(["Message" => "Hotdog Error sa userReasonForDeny() sa backend"], "Request failed", 500);
+         }catch(\Exception $e){
+             return $this->error(["Message" => $e->getMessage()], "Request failed", 500);
+         }
+    }
+
 }
