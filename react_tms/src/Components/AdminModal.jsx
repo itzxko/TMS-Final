@@ -109,24 +109,25 @@ const AdminModal = ({
   };
 
   const fetchItemData = async () => {
-    try{
-      const response = await axiosClient.get(`/getItemByProperty/${property_no}`)
+    try {
+      const response = await axiosClient.get(
+        `/getItemByProperty/${property_no}`
+      );
       const { Message } = response.data.data;
-      if(Message){
-        const { CDE_ARTICLE, DESC_ARTICLE} = Message;
+      if (Message) {
+        const { CDE_ARTICLE, DESC_ARTICLE } = Message;
         setItem(CDE_ARTICLE);
         setItemDesc(DESC_ARTICLE);
       }
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
   useEffect(() => {
-    if(isVisible){
-      fetchItemData();  
+    if (isVisible) {
+      fetchItemData();
     }
-  }, [isVisible])
-  
+  }, [isVisible]);
 
   // This part is for the fetching of the employee data
   useEffect(() => {}, [Id, ticket_assigned_to_name, _office_code]);
@@ -278,7 +279,7 @@ const AdminModal = ({
                       if (mediaFile?.type === "image") {
                         return (
                           <div
-                            className="w-full h-[320px] rounded-md overflow-hidden cursor-pointer"
+                            className="w-full h-[420px] rounded-md overflow-hidden cursor-pointer"
                             onClick={imgmodal}
                           >
                             {/* Render the image file */}
@@ -295,7 +296,7 @@ const AdminModal = ({
                       }
                       if (mediaFile?.type === "video") {
                         return (
-                          <div className="w-full h-[320px] rounded-md overflow-hidden cursor-pointer">
+                          <div className="w-full h-[420px] rounded-md overflow-hidden cursor-pointer">
                             <video
                               controls
                               className="w-full h-full object-cover object-center"
@@ -313,7 +314,7 @@ const AdminModal = ({
 
                       // If the file is neither an image nor a video, render "No media file" message
                       return (
-                        <div className="w-full min-h-[260px] bg-[#f6edff] rounded-md flex flex-col items-center justify-center border border-gray-300">
+                        <div className="w-full min-h-[420px] bg-[#f6edff] rounded-md flex flex-col items-center justify-center border border-gray-300">
                           <PiImages className="text-xl" />
                           <p className="text-xs font-normal">No media file</p>
                         </div>
@@ -335,7 +336,7 @@ const AdminModal = ({
                     </div>
                   </div>
                 ) : (
-                  <div className="w-full min-h-[260px] bg-[#f6edff] rounded-md flex flex-col items-center justify-center border border-gray-300">
+                  <div className="w-full min-h-[420px] bg-[#f6edff] rounded-md flex flex-col items-center justify-center border border-gray-300">
                     <PiImages className="text-xl" />
                     <p className="text-xs font-normal">No media file</p>
                   </div>

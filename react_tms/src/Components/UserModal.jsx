@@ -27,19 +27,19 @@ const UserModal = ({ isVisible, onClose, data }) => {
   const [incompleteInput, setIncompleteInput] = useState(false);
   const [limitError, setLimitError] = useState(false);
   const [items, setItems] = useState([]);
-  const [propNumber, setPropNumber] = useState("")
+  const [propNumber, setPropNumber] = useState("");
   const fetchItems = async () => {
-    try{
-      const response = await axiosClient.get('/getItems');
+    try {
+      const response = await axiosClient.get("/getItems");
       const { Message } = response.data.data;
       setItems(Message);
-    }catch(err){
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
   useEffect(() => {
-    fetchItems()
-  }, [])
+    fetchItems();
+  }, []);
 
   // Toggle open/close the dropdown for ticket types
   const handleOpenType = () => {
@@ -294,7 +294,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
                     className="py-2 w-full px-4 border-b"
                     onClick={() => {
                       setOpenType(false);
-                      set_ticket_type(item.TYPE_DESC)
+                      set_ticket_type(item.TYPE_DESC);
                     }}
                   >
                     <p className="text-xs truncate">{item.TYPE_DESC}</p>
@@ -309,14 +309,14 @@ const UserModal = ({ isVisible, onClose, data }) => {
               </div>
               <div className="px-4 py-3 w-full bg-[#f6edff] rounded-md border border-gray-300 flex items-center justify-between cursor-pointer">
                 <p className="text-xs font-semibold text-gray-500 truncate">
-                  {propNumber}
+                  {propNumber || "Select Item First"}
                 </p>
               </div>
             </div>
           </div>
           <div className="relative w-full flex flex-col items-center justify-center py-2">
             <div className="flex items-center justify-start py-2 px-1 w-full">
-              <p className="text-xs font-normal truncate">Select Items</p>
+              <p className="text-xs font-normal truncate">Select Item</p>
               <p className="text-xs font-semibold text-red-700">*</p>
             </div>
             <div
@@ -340,7 +340,7 @@ const UserModal = ({ isVisible, onClose, data }) => {
                     onClick={() => {
                       removeItem();
                       isItemSelected(false);
-                      setPropNumber("")
+                      setPropNumber("");
                     }}
                   />
                 ) : null}
@@ -367,7 +367,8 @@ const UserModal = ({ isVisible, onClose, data }) => {
                     setOpenItems(false);
                     isItemSelected(true);
                     setPropNumber(item.NO_PROPERTY);
-                    document.getElementById("item-tb").innerText = item.CDE_ARTICLE;
+                    document.getElementById("item-tb").innerText =
+                      item.CDE_ARTICLE;
                   }}
                 >
                   <p className="text-xs truncate">{item.CDE_ARTICLE}</p>
