@@ -31,7 +31,7 @@ const AcceptDenyModal = ({
   property_no,
   setTriggerFetch,
   feedback,
-  deny_reason
+  deny_reason,
 }) => {
   const containerRef = useRef(null);
   const [userAccept, showUserAccept] = useState(false);
@@ -88,8 +88,6 @@ const AcceptDenyModal = ({
     };
   }, [isVisible]);
 
- 
-
   const handleDeny = async (e) => {
     try {
       const response = await axiosClient.post("/denyRequest", { ticket_cde });
@@ -112,7 +110,6 @@ const AcceptDenyModal = ({
       console.error(error);
     }
   };
-
 
   // Function to handle next media file
   const handleNext = () => {
@@ -693,7 +690,6 @@ const AcceptDenyModal = ({
                       // setShowImageModal(false);
                       // onClose();
                       setDenyFeedback(true);
-                     
                     }}
                   >
                     <p className="text-xs font-normal text-black truncate">
@@ -743,7 +739,7 @@ const AcceptDenyModal = ({
 
       {userDeny && (
         <UserDeny
-           ticket_cde={ticket_cde}
+          ticket_cde={ticket_cde}
           onClose={() => {
             showUserDeny(false);
           }}
