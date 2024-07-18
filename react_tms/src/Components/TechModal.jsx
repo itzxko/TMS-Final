@@ -25,6 +25,8 @@ const TechModal = ({
   ticket_desc_findings,
   ticket_desc_replacement,
   property_no,
+  feedback,
+  deny_reason
 }) => {
   const [remarks, isRemarks] = useState(true);
   const containerRef = useRef(null);
@@ -43,6 +45,8 @@ const TechModal = ({
   const [itemDesc, setItemDesc] = useState("");
   const [item, setItem] = useState("");
 
+
+  console.log(property_no)
   // Function to toggle image modal visibility
   const imgmodal = () => {
     setShowImageModal(!showImageModal);
@@ -392,7 +396,7 @@ const TechModal = ({
               </div>
               <div
                 className={
-                  remarks
+                  deny_reason
                     ? "w-full flex flex-col items-center justify-center py-4"
                     : "hidden"
                 }
@@ -410,6 +414,7 @@ const TechModal = ({
                       rows={4}
                       id=""
                       className="w-full text-xs font-normal bg-[#f6edff] outline-none resize-none scrollbar-hide"
+                      value={deny_reason}
                       readOnly={true}
                     ></textarea>
                   </div>

@@ -403,11 +403,11 @@ class RequestController extends Controller
             return $this->error(["Message" => $e->getMessage()], "Request failed", 500);
         }
     }
-    public function clientFeedBack(Request $request, $prop_no){
+    public function clientFeedBack(Request $request){
         try{
            $addFeedback = DB::table("ticketing_main")
-            ->where('property_no', $prop_no)
             ->where('ticket_client', Auth::user()->emp_no)
+            ->where('ticket_cde', $request->ticket_cde)
             ->update(['client_feedback' => $request->feedback, 'ticket_status' => 5]);
             if($addFeedback){
                 return $this->success(["Message" => "Request Success"], "Insert Feedback Success", 201);
@@ -416,6 +416,21 @@ class RequestController extends Controller
         }catch(\Exception $e){
             return $this->error(["Message" => $e->getMessage()], "Request failed", 500);
         }
+    }
+
+    public function userReasonForDeny(Request $request){
+        try{
+            $addFeedback = DB::table("ticketing_main")
+             ->where('ticket_client', Auth::user()->emp_no)
+             ->where('ticket_cde', $request->ticket_cde)
+             ->update(['deny_reason' => $request->feedback, 'ticket_status' => 3]);
+             if($addFeedback){
+                 return $this->success(["Message" => "Request Success"], "Deny Success", 201);
+             }
+             return $this->error(["Message" => "Hotdog Error sa userReasonForDeny() sa backend"], "Request failed", 500);
+         }catch(\Exception $e){
+             return $this->error(["Message" => $e->getMessage()], "Request failed", 500);
+         }
     }
 
 }

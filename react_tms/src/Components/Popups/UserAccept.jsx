@@ -4,12 +4,15 @@ import { TiArrowLeft } from "react-icons/ti";
 import { FaRegLightbulb } from "react-icons/fa";
 import axiosClient from "../../axios";
 
-const UserAccept = ({ isVisible, onClose, isAccept, property_no }) => {
-  const [feedback, setFeedBack] = useState();
+const UserAccept = ({ isVisible, onClose, isAccept, ticket_cde }) => {
+  const [feedback, setFeedBack] = useState("");
 
   const sendFeedBack = async () => {
     try{
-      const res = axiosClient.post(`/add_feedback/${property_no}`, { feedback });
+      const res = await axiosClient.post(`/add_feedback`, { 
+        feedback, 
+        ticket_cde 
+      });
       if(res){
         location.reload();
       }
@@ -18,6 +21,19 @@ const UserAccept = ({ isVisible, onClose, isAccept, property_no }) => {
     }
   }
 
+  const skipFeedBack = async () => {
+    try{
+      const res = await axiosClient.post(`/add_feedback`, { 
+        feedback: null, 
+        ticket_cde 
+        });
+        if(res){
+          location.reload();
+        }
+      }catch(err){
+        console.log(err)
+      }
+  }
   
 
   return (
@@ -40,7 +56,7 @@ const UserAccept = ({ isVisible, onClose, isAccept, property_no }) => {
               </div>
               <p className="text-xs font-semibold truncate">Feedback</p>
             </div>
-            <div className="absolute left-0 top-0">
+            <div className="absolute left-0 top-0 cursor-pointer" onClick={() => onClose()}>
               <TiArrowLeft className="text-xl" />
             </div>
           </div>
@@ -69,7 +85,7 @@ const UserAccept = ({ isVisible, onClose, isAccept, property_no }) => {
               className="py-2 px-4 bg-white rounded-md shadow-xl cursor-pointer hover:bg-[#f2f2f2] transition-colors duration-500"
               onClick={(e) => {
                 e.preventDefault();
-                sendFeedBack();
+                skipFeedBack();
               }}
             >
               <p className="text-xs font-normal text-black cursor-pointer">
