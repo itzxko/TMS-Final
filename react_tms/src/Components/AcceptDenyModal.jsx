@@ -27,7 +27,7 @@ const AcceptDenyModal = ({
   ticket_status,
   selectedRole,
   property_no,
-  setTriggerFetch
+  setTriggerFetch,
 }) => {
   const containerRef = useRef(null);
   const [userAccept, showUserAccept] = useState(false);
@@ -41,11 +41,8 @@ const AcceptDenyModal = ({
   const allMedia = [...images, ...videos];
   const [itemDesc, setItemDesc] = useState("");
   const [item, setItem] = useState("");
-  
+
   // Function to toggle image modal visibility
-
-
-  
 
   const imgmodal = () => {
     setShowImageModal(!showImageModal);
@@ -180,20 +177,26 @@ const AcceptDenyModal = ({
         }
       };
       const fetchItemData = async () => {
-        try{
-          const response = await axiosClient.get(`/getItemByProperty/${property_no}`)
+        try {
+          const response = await axiosClient.get(
+            `/getItemByProperty/${property_no}`
+          );
           const { Message } = response.data.data;
-          if(Message){
-            const { CDE_ARTICLE, DESC_ARTICLE} = Message;
+          if (Message) {
+            const { CDE_ARTICLE, DESC_ARTICLE } = Message;
             setItem(CDE_ARTICLE);
-            setItemDesc(DESC_ARTICLE)
+            setItemDesc(DESC_ARTICLE);
           }
-          
-        }catch(err){
-          console.log(err)
+        } catch (err) {
+          console.log(err);
         }
-      } 
-      Promise.all([fetchDocuments(), fetchVideos(), fetchImages(), fetchItemData()]).then(() => {
+      };
+      Promise.all([
+        fetchDocuments(),
+        fetchVideos(),
+        fetchImages(),
+        fetchItemData(),
+      ]).then(() => {
         setLoading(false);
       });
     }
@@ -257,7 +260,7 @@ const AcceptDenyModal = ({
                       if (mediaFile?.type === "image") {
                         return (
                           <div
-                            className="w-full h-[260px] rounded-md overflow-hidden cursor-pointer"
+                            className="w-full h-[420px] rounded-md overflow-hidden cursor-pointer"
                             onClick={imgmodal}
                           >
                             <img
@@ -271,7 +274,7 @@ const AcceptDenyModal = ({
 
                       if (mediaFile?.type === "video") {
                         return (
-                          <div className="w-full h-[260px] rounded-md overflow-hidden cursor-pointer">
+                          <div className="w-full h-[420px] rounded-md overflow-hidden cursor-pointer">
                             <video
                               controls
                               className="w-full h-full object-cover object-center"
@@ -288,7 +291,7 @@ const AcceptDenyModal = ({
 
                       // If the file is neither an image nor a video, render "No media file" message
                       return (
-                        <div className="w-full min-h-[260px] bg-[#f6edff] rounded-md flex flex-col items-center justify-center border border-gray-300">
+                        <div className="w-full min-h-[420px] bg-[#f6edff] rounded-md flex flex-col items-center justify-center border border-gray-300">
                           <PiImages className="text-xl" />
                           <p className="text-xs font-normal">No media file</p>
                         </div>
