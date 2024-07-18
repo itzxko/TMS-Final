@@ -11,6 +11,7 @@ import { TiInfoLarge } from "react-icons/ti";
 import { MdAttachment } from "react-icons/md";
 import { TiArrowLeft } from "react-icons/ti";
 import { PiImages } from "react-icons/pi";
+import { PiChatTeardropTextBold } from "react-icons/pi";
 
 const TechModal = ({
   isVisible,
@@ -25,6 +26,7 @@ const TechModal = ({
   ticket_desc_replacement,
   property_no,
 }) => {
+  const [remarks, isRemarks] = useState(true);
   const containerRef = useRef(null);
   const [activeDetails, setActiveDetails] = useState(false);
   const [findings, setFindings] = useState("");
@@ -385,6 +387,31 @@ const TechModal = ({
                     onClick={() => handleScrollLeft(160)}
                   >
                     <FaAngleLeft className="text-black/0 group-hover:text-black ease-in-out duration-500" />
+                  </div>
+                </div>
+              </div>
+              <div
+                className={
+                  remarks
+                    ? "w-full flex flex-col items-center justify-center py-4"
+                    : "hidden"
+                }
+              >
+                <div className="w-full flex flex-row gap-2 items-center justify-start py-2">
+                  <div className="bg-[#2f2f2f] p-2 rounded-full ">
+                    <PiChatTeardropTextBold className="text-white text-sm" />
+                  </div>
+                  <p className="text-xs font-semibold">Remarks</p>
+                </div>
+                <div className="w-full flex items-center justify-center py-2">
+                  <div className="w-full flex items-center justify-center p-4 rounded-md bg-[#f6edff] border border-gray-300">
+                    <textarea
+                      name=""
+                      rows={4}
+                      id=""
+                      className="w-full text-xs font-normal bg-[#f6edff] outline-none resize-none scrollbar-hide"
+                      readOnly={true}
+                    ></textarea>
                   </div>
                 </div>
               </div>

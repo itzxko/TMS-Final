@@ -613,7 +613,7 @@ const Large = () => {
                                       set_request_desc(
                                         data.ticket_desc_concern
                                       );
-                                      
+
                                       set_request_type(data.ticket_type);
                                       set_tickec_desc_remarks(
                                         data.ticket_desc_remarks
@@ -1038,42 +1038,6 @@ const Large = () => {
                                     </div>
                                   </button>
                                 ) : role === "technical" &&
-                                data.ticket_status === "4" ? (
-                                // when ticket status is 5 or done
-                                <button
-                                  className="bg-[#2f2f2f] text-white py-2 px-3 rounded-md hover:bg-[#474747] ease-in-out duration-500"
-                                  onClick={() => {
-                                    setShowAcceptDenyModal(true);
-                                    set_name_requester(
-                                      data.ticket_client_name
-                                    );
-                                    setPropNumber(data.property_no);
-                                    setTicketID(data.id);
-                                    set_ticket_cde(data.ticket_cde);
-                                    set_request_desc(
-                                      data.ticket_desc_concern
-                                    );
-                                    set_request_type(data.ticket_type);
-                                    set_tickec_desc_remarks(
-                                      data.ticket_desc_remarks
-                                    );
-                                    set_ticket_desc_findings(
-                                      data.ticket_desc_findings
-                                    );
-                                    set_ticket_desc_replacement(
-                                      data.ticket_desc_replacement
-                                    );
-                                    set_ticket_status(data.ticket_status);
-                                  }}
-                                >
-                                  <div className="flex flex-row gap-1 items-center justify-center w-full">
-                                    <RxInfoCircled className="text-sm" />{" "}
-                                    <p className="text-xs font-normal truncate">
-                                      Details
-                                    </p>
-                                  </div>
-                                </button>
-                              ) : role === "technical" &&
                                   data.ticket_status === "2" ? (
                                   // when ticket status is 5 or done
                                   <button
@@ -1117,6 +1081,7 @@ const Large = () => {
                                       set_name_requester(
                                         data.ticket_client_name
                                       );
+                                      setPropNumber(data.property_no);
                                       setTicketID(data.id);
                                       set_ticket_cde(data.ticket_cde);
                                       set_request_desc(
