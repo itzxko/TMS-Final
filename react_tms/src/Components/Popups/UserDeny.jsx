@@ -1,9 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { TiArrowLeft } from "react-icons/ti";
 import { PiChatTeardropTextBold } from "react-icons/pi";
+import axiosClient from "../../axios";
 
-const UserDeny = ({ onClose }) => {
+const UserDeny = ({ onClose, ticket_cde }) => {
+  const [reasonForDeny, setReasonForDeny] = useState("");
+
+  const sendFeedBack = async () => {
+    if(reasonForDeny === ""){
+        alert("Please Fill the required field!");
+        return;
+    }
+    try{
+      const res = await axiosClient.post(`/deny_update`, { 
+        feedback: reasonForDeny, 
+        ticket_cde 
+      });
+      if(res){
+        onClose();
+        location.reload();
+      }
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+
   return (
     <div className="fixed top-0 left-0 w-full h-[100svh] items-center justify-center bg-black/50 flex z-10 font-dm">
       <div
@@ -24,7 +47,7 @@ const UserDeny = ({ onClose }) => {
               </div>
               <p className="text-xs font-semibold truncate">Remarks</p>
             </div>
-            <div className="absolute left-0 top-0">
+            <div className="absolute left-0 top-0 cursor-pointer" onClick={() => onClose()}>
               <TiArrowLeft className="text-xl" />
             </div>
           </div>
@@ -34,12 +57,17 @@ const UserDeny = ({ onClose }) => {
                 type="text"
                 className="w-full text-xs font-normal outline-none bg-[#f6edff] resize-none scrollbar-hide"
                 rows={4}
+                required
+                onChange={(e) => setReasonForDeny(e.target.value)}
                 placeholder="please provide remarks for the technical personnel"
               />
             </div>
           </div>
           <div className="w-full flex flex-row gap-2 items-center justify-end pt-4">
-            <div className="py-2 px-4 bg-[#2f2f2f] rounded-md shadow-xl cursor-pointer hover:bg-[#474747] transition-colors duration-500">
+            <div className="py-2 px-4 bg-[#2f2f2f] rounded-md shadow-xl cursor-pointer hover:bg-[#474747] transition-colors duration-500" onClick={() => {
+              sendFeedBack();
+              
+            }}>
               <p className="text-xs font-normal text-white cursor-pointer">
                 Confirm
               </p>

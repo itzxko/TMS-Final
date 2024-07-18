@@ -30,8 +30,9 @@ const AcceptDenyModal = ({
   selectedRole,
   property_no,
   setTriggerFetch,
+  feedback,
+  deny_reason
 }) => {
-  const [feedback, isFeedback] = useState(true);
   const containerRef = useRef(null);
   const [userAccept, showUserAccept] = useState(false);
   const [userDeny, showUserDeny] = useState(false);
@@ -87,16 +88,7 @@ const AcceptDenyModal = ({
     };
   }, [isVisible]);
 
-  // Function to handle form submission
-  const handleAccept = async (e) => {
-    try {
-      const response = await axiosClient.post("/acceptRequest", { ticket_cde });
-      onClose();
-      location.reload();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+ 
 
   const handleDeny = async (e) => {
     try {
@@ -121,18 +113,6 @@ const AcceptDenyModal = ({
     }
   };
 
-  // Function to handle form submission
-  const handleDenyOngoing = async (e) => {
-    try {
-      const response = await axiosClient.post("/denyOngoingRequest", {
-        ticket_cde,
-      });
-      onClose();
-      location.reload();
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   // Function to handle next media file
   const handleNext = () => {
@@ -412,6 +392,7 @@ const AcceptDenyModal = ({
                       rows={4}
                       id=""
                       className="w-full text-xs font-normal bg-[#f6edff] outline-none resize-none scrollbar-hide"
+                      value={feedback}
                       readOnly={true}
                     ></textarea>
                   </div>
@@ -707,11 +688,12 @@ const AcceptDenyModal = ({
                   </div>
                   <div
                     className="flex items-center justify-center py-2 px-4 bg-[#FFFFFF] hover:bg-[#f2f2f2] ease-in-out duration-500 rounded-md shadow-xl cursor-pointer"
-                    onClick={() => {
+                    onClick={(e) => {
                       // handleDenyOngoing();
                       // setShowImageModal(false);
                       // onClose();
                       setDenyFeedback(true);
+                     
                     }}
                   >
                     <p className="text-xs font-normal text-black truncate">
@@ -752,6 +734,7 @@ const AcceptDenyModal = ({
       {denyFeedback && (
         <TechDeny
           isVisible={denyFeedback}
+          ticket_cde={ticket_cde}
           onClose={() => {
             setDenyFeedback(false);
           }}
@@ -760,6 +743,7 @@ const AcceptDenyModal = ({
 
       {userDeny && (
         <UserDeny
+           ticket_cde={ticket_cde}
           onClose={() => {
             showUserDeny(false);
           }}
@@ -768,8 +752,8 @@ const AcceptDenyModal = ({
 
       {userAccept && (
         <UserAccept
+          ticket_cde={ticket_cde}
           isVisible={userAccept}
-          property_no={property_no}
           onClose={() => {
             showUserAccept(false);
           }}
