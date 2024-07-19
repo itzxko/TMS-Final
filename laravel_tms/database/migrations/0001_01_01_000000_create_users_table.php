@@ -34,6 +34,8 @@ return new class extends Migration
             $table->dateTime('date_created')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->enum('status', ['0', '1', '2', ''])->nullable();
             $table->string('office_code', 45)->nullable();
+            $table->string('role', 255)->nullable();
+            $table->integer('otp', 11)->nullable();
         });
         Schema::create('ticket_type', function (Blueprint $table) {
             $table->bigIncrements('ID'); // Change 'int' to 'bigIncrements' for the auto-incrementing primary key
@@ -85,6 +87,10 @@ return new class extends Migration
             $table->string('ticket_status', 12)->nullable()->comment('status of ticket: 1 - requested, 2 - assigned, 3 - ongoing, 4 - for checking, 5 - done');
             $table->string('ticket_status_if_date', 255)->nullable()->comment('date requested');
             $table->dateTime('ticket_update_date')->nullable()->comment('date last updated');
+            $table->text('property_no')->nullable()->comment('property number');
+            $table->text('client_feedback')->nullable()->comment('client feedback');
+            $table->text('deny_reason')->nullable()->comment('deny reason');
+            $table->text('tech_deny_reason')->nullable()->comment('tech deny reason');
         });
         Schema::create('ticketing_history', function (Blueprint $table) {
             $table->id(); // This will create an auto-incrementing primary key "id"

@@ -361,6 +361,11 @@ const Small = () => {
                     spellCheck="false"
                     className="outline-none bg-[#FAF5FF] text-xs font-normal hidden group-hover:block pl-3 border-l border-gray-300"
                     onChange={(e) => setSearch(e.target.value.toLowerCase())}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        filteredSearch(e);
+                      }
+                    }}
                   />
                 </div>
                 <div className="relative flex flex-row justify-end">
