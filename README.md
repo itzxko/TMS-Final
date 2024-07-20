@@ -13,7 +13,6 @@ The Ticketing Management System is a web-based application designed to streamlin
 ## TECHNOLOGIES USED
 - FRONTEND: `HTML`, `TAILWINDCSS`, `REACT.JS`, `JAVASCRIPT`
 - BACKEND: `PHP`, `LARAVEL`
-- AUTHENTICATION: `JWT (JSON WEB TOKENS)`
 
 ## INSTALLATION
 1. Clone the repository:
