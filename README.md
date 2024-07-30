@@ -29,7 +29,7 @@ The Ticketing Management System is a web-based application designed to streamlin
       ```
    2. Install necessary dependencies:
       ```bash
-      npm install
+      npm install --legacy-peer-deps
       ```
    3. To start the frontend run
       ```bash
